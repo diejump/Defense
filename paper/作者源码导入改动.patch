@@ -1,0 +1,305 @@
+--- upstream\DShield\NodeClassificationTasks\defense\dshield.py
++++ upstream\DShield\NodeClassificationTasks\defense\dshield.py
+@@ -17,7 +17,7 @@
+ import torch.nn.functional as F
+ 
+ import torch_geometric.nn as geo_nn
+-from bmr.gat_runtime import DeterministicGATConv
++from torch_geometric.nn import GATConv as DeterministicGATConv
+ from torch import autograd
+ from torch_geometric.utils import index_to_mask, k_hop_subgraph
+ 
+--- upstream\DShield\NodeClassificationTasks\models\GAT.py
++++ upstream\DShield\NodeClassificationTasks\models\GAT.py
+@@ -5,7 +5,7 @@
+ import torch.optim as optim
+ from copy import deepcopy
+ import torch_geometric.nn as geo_nn
+-from bmr.gat_runtime import DeterministicGATConv
++from torch_geometric.nn import GATConv as DeterministicGATConv
+ from .metric import accuracy
+ 
+ try:
+--- upstream\DShield\NodeClassificationTasks\models\RobustGCN.py
++++ upstream\DShield\NodeClassificationTasks\models\RobustGCN.py
+@@ -7,7 +7,7 @@
+ import numpy as np
+ import scipy.sparse as sp
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from copy import deepcopy
+ from models.metric import accuracy
+ from torch_sparse import SparseTensor, matmul, fill_diag, sum as sparsesum, mul
+--- upstream\LoSplit\models\ABL.py
++++ upstream\LoSplit\models\ABL.py
+@@ -6,7 +6,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from copy import deepcopy
+ 
+ # import heuristic_selection as hs
+--- upstream\LoSplit\models\backdoor_SPEAR.py
++++ upstream\LoSplit\models\backdoor_SPEAR.py
+@@ -4,7 +4,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from models.GCN import GCN
+ from models.GAT import GAT
+ from models.SAGE import GraphSage
+--- upstream\LoSplit\models\backdoor_UGBA.py
++++ upstream\LoSplit\models\backdoor_UGBA.py
+@@ -4,7 +4,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from models.GCN import GCN
+ from models.GAT import GAT
+ from models.SAGE import GraphSage
+--- upstream\LoSplit\models\GAT.py
++++ upstream\LoSplit\models\GAT.py
+@@ -4,10 +4,10 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-from bmr import compat as utils
++from src import metrics as utils
+ from copy import deepcopy
+ from torch_geometric.nn import GCNConv
+-from bmr.gat_runtime import DeterministicGATConv as GATConv
++from torch_geometric.nn import GATConv
+ import numpy as np
+ import scipy.sparse as sp
+ from torch_geometric.utils import from_scipy_sparse_matrix
+--- upstream\LoSplit\models\GCN.py
++++ upstream\LoSplit\models\GCN.py
+@@ -4,7 +4,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-from bmr.compat import accuracy
++from src.metrics import accuracy
+ from copy import deepcopy
+ from torch_geometric.nn import GCNConv
+ import numpy as np
+--- upstream\LoSplit\models\GCN_Encoder.py
++++ upstream\LoSplit\models\GCN_Encoder.py
+@@ -5,7 +5,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from copy import deepcopy
+ from torch_geometric.nn import GCNConv
+ import numpy as np
+--- upstream\LoSplit\models\GCN_SPEAR.py
++++ upstream\LoSplit\models\GCN_SPEAR.py
+@@ -3,7 +3,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from copy import deepcopy
+ from torch_geometric.nn import GCNConv
+ import numpy as np
+--- upstream\LoSplit\models\GNNGuard.py
++++ upstream\LoSplit\models\GNNGuard.py
+@@ -6,7 +6,7 @@
+ from copy import deepcopy
+ # from torch_geometric.nn import GCNConv
+ from models._GNNGuard.gcn_conv import GCNConv
+-import utils
++from src import metrics as utils
+ 
+ 
+ class GNNGuard(nn.Module):
+--- upstream\LoSplit\models\GTA.py
++++ upstream\LoSplit\models\GTA.py
+@@ -4,7 +4,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from models.GCN import GCN
+ from models.GAT import GAT
+ from models.SAGE import GraphSage
+--- upstream\LoSplit\models\LoSplit.py
++++ upstream\LoSplit\models\LoSplit.py
+@@ -4,7 +4,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-from bmr.compat import accuracy
++from src.metrics import accuracy
+ from copy import deepcopy
+ from torch_geometric.nn import GCNConv
+ import numpy as np
+--- upstream\LoSplit\models\RobustGCN.py
++++ upstream\LoSplit\models\RobustGCN.py
+@@ -5,7 +5,7 @@
+ import numpy as np
+ import scipy.sparse as sp
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from copy import deepcopy
+ 
+ 
+--- upstream\LoSplit\models\SAGE.py
++++ upstream\LoSplit\models\SAGE.py
+@@ -3,7 +3,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from copy import deepcopy
+ from torch_geometric.nn import SAGEConv
+ import numpy as np
+--- upstream\RIGBD\models\ABL.py
++++ upstream\RIGBD\models\ABL.py
+@@ -6,7 +6,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from copy import deepcopy
+ 
+ import heuristic_selection as hs
+--- upstream\RIGBD\models\backdoor.py
++++ upstream\RIGBD\models\backdoor.py
+@@ -5,7 +5,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from models.MLP import MLP
+ from models.GCN import GCN
+ from torch.nn.functional import cosine_similarity
+--- upstream\RIGBD\models\GAT.py
++++ upstream\RIGBD\models\GAT.py
+@@ -4,10 +4,10 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-from bmr import compat as utils
++from src import metrics as utils
+ from copy import deepcopy
+ from torch_geometric.nn import GCNConv
+-from bmr.gat_runtime import DeterministicGATConv as GATConv
++from torch_geometric.nn import GATConv
+ import numpy as np
+ import scipy.sparse as sp
+ from torch_geometric.utils import from_scipy_sparse_matrix
+--- upstream\RIGBD\models\GCN.py
++++ upstream\RIGBD\models\GCN.py
+@@ -286,7 +286,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-from bmr.compat import accuracy
++from src.metrics import accuracy
+ from copy import deepcopy
+ from torch_geometric.nn import GCNConv
+ import numpy as np
+--- upstream\RIGBD\models\GCN2.py
++++ upstream\RIGBD\models\GCN2.py
+@@ -4,7 +4,7 @@
+ from torch_geometric.nn import GCN2Conv
+ from torch_geometric.nn.conv.gcn_conv import gcn_norm
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ import torch.nn as nn
+ from copy import deepcopy
+ from torch.nn.parameter import Parameter
+--- upstream\RIGBD\models\GCN_Encoder.py
++++ upstream\RIGBD\models\GCN_Encoder.py
+@@ -5,7 +5,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from copy import deepcopy
+ from torch_geometric.nn import GCNConv
+ import numpy as np
+--- upstream\RIGBD\models\GNNGuard.py
++++ upstream\RIGBD\models\GNNGuard.py
+@@ -6,7 +6,7 @@
+ from copy import deepcopy
+ # from torch_geometric.nn import GCNConv
+ from models._GNNGuard.gcn_conv import GCNConv
+-import utils
++from src import metrics as utils
+ 
+ 
+ class GNNGuard(nn.Module):
+--- upstream\RIGBD\models\GTA.py
++++ upstream\RIGBD\models\GTA.py
+@@ -4,7 +4,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from models.GCN import GCN
+ 
+ #%%
+--- upstream\RIGBD\models\MLP.py
++++ upstream\RIGBD\models\MLP.py
+@@ -3,7 +3,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from copy import deepcopy
+ from torch_geometric.nn import GCNConv
+ import numpy as np
+--- upstream\RIGBD\models\random_smooth.py
++++ upstream\RIGBD\models\random_smooth.py
+@@ -6,7 +6,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from copy import deepcopy
+ 
+ 
+--- upstream\RIGBD\models\RobustGCN.py
++++ upstream\RIGBD\models\RobustGCN.py
+@@ -5,7 +5,7 @@
+ import numpy as np
+ import scipy.sparse as sp
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from copy import deepcopy
+ 
+ 
+--- upstream\RIGBD\models\SAGE.py
++++ upstream\RIGBD\models\SAGE.py
+@@ -3,7 +3,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from src import metrics as utils
+ from copy import deepcopy
+ from torch_geometric.nn import SAGEConv
+ import numpy as np

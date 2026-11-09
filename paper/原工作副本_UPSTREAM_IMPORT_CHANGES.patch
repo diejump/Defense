@@ -1,0 +1,212 @@
+--- a/upstream/DShield/NodeClassificationTasks/models/SAGE.py
++++ b/upstream/DShield/NodeClassificationTasks/models/SAGE.py
+@@ -5,7 +5,7 @@
+ import torch.optim as optim
+ from copy import deepcopy
+ import torch_geometric.nn as geo_nn
+-from models.metric import accuracy
++from upstream.DShield.NodeClassificationTasks.models.metric import accuracy
+ 
+ try:
+     if 'logger' not in globals():
+--- a/upstream/DShield/NodeClassificationTasks/models/MLP.py
++++ b/upstream/DShield/NodeClassificationTasks/models/MLP.py
+@@ -4,9 +4,9 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from upstream.DShield.NodeClassificationTasks import utils
+ from copy import deepcopy
+-from models.metric import accuracy
++from upstream.DShield.NodeClassificationTasks.models.metric import accuracy
+ 
+ try:
+     if 'logger' not in globals():
+--- a/upstream/DShield/NodeClassificationTasks/attack/ugba.py
++++ b/upstream/DShield/NodeClassificationTasks/attack/ugba.py
+@@ -8,8 +8,8 @@
+ import torch.nn.functional as F
+ import torch.optim as optim
+ 
+-from models.GCN import GCN
+-from models.metric import accuracy
++from upstream.DShield.NodeClassificationTasks.models.GCN import GCN
++from upstream.DShield.NodeClassificationTasks.models.metric import accuracy
+ 
+ try:
+     if 'logger' not in globals():
+--- a/upstream/DShield/NodeClassificationTasks/attack/gta.py
++++ b/upstream/DShield/NodeClassificationTasks/attack/gta.py
+@@ -5,7 +5,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-from models.GCN import GCN
++from upstream.DShield.NodeClassificationTasks.models.GCN import GCN
+ 
+ try:
+     if 'logger' not in globals():
+--- a/upstream/DShield/NodeClassificationTasks/attack/dpgba.py
++++ b/upstream/DShield/NodeClassificationTasks/attack/dpgba.py
+@@ -8,10 +8,10 @@
+ import logging
+ import numpy as np
+ 
+-from models.GCN import GCN
+-from models.MLP import MLP
+-from models.reconstruct import MLPAE
+-from models.metric import accuracy
++from upstream.DShield.NodeClassificationTasks.models.GCN import GCN
++from upstream.DShield.NodeClassificationTasks.models.MLP import MLP
++from upstream.DShield.NodeClassificationTasks.models.reconstruct import MLPAE
++from upstream.DShield.NodeClassificationTasks.models.metric import accuracy
+ 
+ try:
+     if 'logger' not in globals():
+@@ -331,10 +331,10 @@
+             acc_train_clean = accuracy(output[train_idx], labels[train_idx])
+             acc_train_attach = accuracy(output[attach_idx], labels[attach_idx])
+             optimizer_trigger.zero_grad()
+-            rs = np.random.RandomState()
++            rs = np.random.RandomState(self.seed + i)
+             # select target nodes for triggers
+             if self.outter_size <= len(unlabeled_idx):
+-                idx_outter = torch.cat([attach_idx, unlabeled_idx[rs.choice(len(unlabeled_idx), size=4096, replace=False)]])
++                idx_outter = torch.cat([attach_idx, unlabeled_idx[rs.choice(len(unlabeled_idx), size=self.outter_size, replace=False)]])
+             else:
+                 idx_outter = torch.cat([attach_idx, unlabeled_idx])
+             trojan_feat, trojan_weights = self.trojan(features[idx_outter], self.thrd)  # may revise the process of generate
+--- a/upstream/DShield/NodeClassificationTasks/defense/dshield.py
++++ b/upstream/DShield/NodeClassificationTasks/defense/dshield.py
+@@ -19,7 +19,7 @@
+ from torch import autograd
+ from torch_geometric.utils import index_to_mask, k_hop_subgraph
+ 
+-from models.metric import accuracy
++from upstream.DShield.NodeClassificationTasks.models.metric import accuracy
+ 
+ from umap import UMAP
+ from sklearn.cluster import HDBSCAN
+--- a/upstream/RIGBD/models/GCN.py
++++ b/upstream/RIGBD/models/GCN.py
+@@ -285,7 +285,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from bmr.compat import accuracy
+ from copy import deepcopy
+ from torch_geometric.nn import GCNConv
+ import numpy as np
+@@ -519,7 +519,7 @@
+             self.eval()
+             output = self.forward(self.features, self.edge_index, self.edge_weight)
+             loss_val = F.nll_loss(output[idx_val], labels[idx_val])
+-            acc_val = utils.accuracy(output[idx_val], labels[idx_val])
++            acc_val = accuracy(output[idx_val], labels[idx_val])
+             
+             # if verbose and i % 10 == 0:
+             # print('Epoch {}, training loss: {}'.format(i, loss_train.item()))
+@@ -548,7 +548,7 @@
+             output = self.forward(features, edge_index, edge_weight)
+             # print(torch.exp(output[idx_test]))
+             # print(output[idx_test].max(1)[1])
+-            acc_test = utils.accuracy(output[idx_test], labels[idx_test])
++            acc_test = accuracy(output[idx_test], labels[idx_test])
+         # torch.cuda.empty_cache()
+         # print("Test set results:",
+         #       "loss= {:.4f}".format(loss_test.item()),
+@@ -559,7 +559,7 @@
+         self.eval()
+         output = self.forward(features, edge_index, edge_weight)
+         correct_nids = (output.argmax(dim=1)[idx_test]==labels[idx_test]).nonzero().flatten()   # return a tensor
+-        acc_test = utils.accuracy(output[idx_test], labels[idx_test])
++        acc_test = accuracy(output[idx_test], labels[idx_test])
+         # torch.cuda.empty_cache()
+         return acc_test,correct_nids
+ 
+--- a/upstream/LoSplit/models/GCN.py
++++ b/upstream/LoSplit/models/GCN.py
+@@ -3,7 +3,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from bmr.compat import accuracy
+ from copy import deepcopy
+ from torch_geometric.nn import GCNConv
+ import numpy as np
+@@ -182,7 +182,7 @@
+         num_classes=labels.max().item() + 1
+         mask = torch.zeros_like(labels, dtype=torch.bool)
+         mask[idx_attach] = 1  
+-        choices = torch.tensor([i for i in range(num_classes) if i != target_label])
++        choices = torch.tensor([i for i in range(num_classes) if i != target_label], device=labels.device)
+         random_replacements = choices[torch.randint(0, len(choices), size=(mask.sum(),))]
+         reshuffle_labels = labels
+         reshuffle_labels[mask] = random_replacements        
+@@ -341,7 +341,7 @@
+             self.eval()
+             output = self.forward(self.features, self.edge_index, self.edge_weight)
+             loss_val = F.nll_loss(output[idx_val], labels[idx_val])
+-            acc_val = utils.accuracy(output[idx_val], labels[idx_val])
++            acc_val = accuracy(output[idx_val], labels[idx_val])
+             
+             if verbose and i % 10 == 0:
+                 print('Epoch {}, training loss: {}'.format(i, loss_train.item()))
+@@ -368,7 +368,7 @@
+         self.eval()
+         with torch.no_grad():
+             output = self.forward(features, edge_index, edge_weight)
+-            acc_test = utils.accuracy(output[idx_test], labels[idx_test])
++            acc_test = accuracy(output[idx_test], labels[idx_test])
+         # torch.cuda.empty_cache()
+         # print("Test set results:",
+         #       "loss= {:.4f}".format(loss_test.item()),
+@@ -379,7 +379,7 @@
+         self.eval()
+         output = self.forward(features, edge_index, edge_weight)
+         correct_nids = (output.argmax(dim=1)[idx_test]==labels[idx_test]).nonzero().flatten()   # return a tensor
+-        acc_test = utils.accuracy(output[idx_test], labels[idx_test])
++        acc_test = accuracy(output[idx_test], labels[idx_test])
+         # torch.cuda.empty_cache()
+         return acc_test,correct_nids
+ 
+--- a/upstream/LoSplit/models/LoSplit.py
++++ b/upstream/LoSplit/models/LoSplit.py
+@@ -3,7 +3,7 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.optim as optim
+-import utils
++from bmr.compat import accuracy
+ from copy import deepcopy
+ from torch_geometric.nn import GCNConv
+ import numpy as np
+@@ -123,14 +123,14 @@
+ 
+     def split_node(self, idx_train, labels, num_epoch, num_attach):
+         idx_losses_record, losses_np = self.compute_loss_value(idx_train, labels)
+-        labels_list = labels[idx_train[idx_losses_record]]
++        labels_list = labels[idx_train[idx_losses_record]].detach().cpu().numpy()
+         labels_np = np.array(labels_list)
+         
+ 
+         loss_features = np.tile(losses_np.reshape(-1, 1), (1, 5))  
+         loss_features += np.random.normal(0, 0.01, size=loss_features.shape)  
+ 
+-        classes = np.unique(labels)
++        classes = np.unique(labels_list)
+ 
+         class_vars = [np.var(losses_np[labels_list == c]) for c in classes]
+         target_label = classes[np.argmax(class_vars)]
+@@ -365,7 +365,7 @@
+         self.eval()
+         with torch.no_grad():
+             output = self.forward(features, edge_index, edge_weight)
+-            acc_test = utils.accuracy(output[idx_test], labels[idx_test])
++            acc_test = accuracy(output[idx_test], labels[idx_test])
+         # torch.cuda.empty_cache()
+         # print("Test set results:",
+         #       "loss= {:.4f}".format(loss_test.item()),

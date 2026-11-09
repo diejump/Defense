@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-09",
+  "status": "passed",
+  "real_data_runs": 30,
+  "datasets": [
+    "Cora",
+    "Citeseer"
+  ],
+  "models": [
+    "GCN",
+    "GAT",
+    "GraphSAGE"
+  ],
+  "methods": [
+    "none",
+    "abp",
+    "rigbd",
+    "losplit",
+    "dshield"
+  ],
+  "seed": 10,
+  "split_seed": 10,
+  "verification": "D:\\GNNAttackReaserch\\abp\\outputs\\local_20261109\\verification.json",
+  "protocol_tests": 9,
+  "source_sampling_matches": true,
+  "author_files_recorded": 108,
+  "ABP_definition_check": {
+    "status": "passed",
+    "combinations": 32767,
+    "maximum_nodes": 5,
+    "implementation_sha256": "48e9ef4af19ea9dd5fec2e85cece5484d46528029bd1ea8c6762d3df3d2a6b0a"
+  },
+  "attack_interfaces": {
+    "status": "passed",
+    "purpose": "算法接口检查，使用明确的小图用例，不计算或报告科研效果指标",
+    "checks": [
+      {
+        "attack": "GTA",
+        "status": "passed",
+        "input_nodes": 512,
+        "features": 16,
+        "training_nodes": 128,
+        "training_attached": 3,
+        "poisoned_nodes": 521,
+        "evaluation_attached": 2,
+        "changed_nodes": 527,
+        "actual_parameters": {
+          "thrd": 0.5,
+          "hidden": 32,
+          "trojan_epochs": 2,
+          "lr": 0.01,
+          "weight_decay": 0.0005,
+          "trigger_size": 3,
+          "target_class": 0,
+          "device": "cpu",
+          "loss_factor": 1.0
+        }
+      },
+      {
+        "attack": "UGBA",
+        "status": "passed",
+        "input_nodes": 512,
+        "features": 16,
+        "training_nodes": 128,
+        "training_attached": 3,
+        "poisoned_nodes": 521,
+        "evaluation_attached": 2,
+        "changed_nodes": 527,
+        "actual_parameters": {
+          "thrd": 0.5,
+          "hidden": 32,
+          "trojan_epochs": 2,
+          "lr": 0.01,
+          "weight_decay": 0.0005,
+          "trigger_size": 3,
+          "target_class": 0,
+          "device": "cpu",
+          "seed": 10,
+          "inner_epochs": 1,
+          "target_loss_weight": 5.0,
+          "homo_loss_weight": 100.0,
+          "homo_boost_thrd": 0.8
+        }
+      },
+      {
+        "attack": "DPGBA",
+        "status": "passed",
+        "input_nodes": 512,
+        "features": 16,
+        "training_nodes": 128,
+        "training_attached": 3,
+        "poisoned_nodes": 521,
+        "evaluation_attached": 2,
+        "changed_nodes": 527,
+        "actual_parameters": {
+          "thrd": 0.5,
+          "hidden": 32,
+          "trojan_epochs": 2,
+          "lr": 0.01,
+          "weight_decay": 0.0005,
+          "trigger_size": 3,
+          "target_class": 0,
+          "device": "cpu",
+          "seed": 10,
+          "inner_epochs": 1,
+          "rec_epochs": 2,
+          "k": 1,
+          "outter_size": 32,
+          "target_weight": 1.0,
+          "ood_weight": 1.0,
+          "target_class_weight": 1.0,
+          "dataset_name": "Cora"
+        }
+      }
+    ]
+  },
+  "material_passport": {
+    "origin_skill": "ARS-Codex/experiment-agent",
+    "mode": "run+validate",
+    "verification_status": "VERIFIED"
+  },
+  "environment": {
+    "python": "3.10.20 (main, May 10 2026, 19:31:32) [MSC v.1944 64 bit (AMD64)]",
+    "torch": "2.0.0+cu118",
+    "pyg": "2.5.3",
+    "platform": "Windows-10-10.0.22631-SP0"
+  }
+}

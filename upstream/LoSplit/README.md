@@ -1,0 +1,33 @@
+## LoSplit: Loss-Guided Dynamic Split for Training-Time Defense Against Graph Backdoor Attacks [NeurIPS 25] [paper](https://openreview.net/forum?id=3Cpw7YftBm)
+This repository provides the implementation of **LoSplit**, the first training-time defense for mitigating graph backdoor attacks. Our method supports various attack settings, including **GTA**, **UGBA**, **DPGBA**, and **SPEAR**.
+
+## 🚀 Reproducing Results
+1. To fetch all the weights and pre-training parameters please fetch through https://drive.google.com/file/d/1oiXl55sFEWvAd3dQVt_1cPFoZyoni0iX/view?usp=share_link
+
+2. Modify the address for these **2** args: '**(1) --trigger_generator_address**', '(2) **--pre_train_param (induding poison_x, poison_edge_index, poison_edge_weights, poison_labels, idx_poison_found, idx_clean_found, target_label)**'
+
+To reproduce the results reported in the paper, run the following scripts:
+
+
+```bash
+bash install.sh
+```
+
+```bash
+bash defense.sh [--device_id=]
+```
+
+- If you want to run the code on a specific GPU, specify it via the optional argument `--device_id=`
+
+- if you want to specify the device for a specific task,you should modify the device_id in the `defense.sh` file.
+
+This Implementation is built upon [SPEAR](https://github.com/yhDing/SPEAR)
+
+If you find this repo helful, please cite our paper. Thank you.
+
+```bibtex
+@inproceedings{jinlosplit,
+  title={LoSplit: Loss-Guided Dynamic Split for Training-Time Defense Against Graph Backdoor Attacks},
+  author={Jin, Di and Zhang, Yuxiang and Feng, Bingdao and Wang, Xiaobao and He, Dongxiao and Wang, Zhen},
+  booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems}
+}

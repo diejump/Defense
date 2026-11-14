@@ -27,6 +27,8 @@ def generation_parameters(args):
     # 保护旧样本：分母或过滤规则改变时不能复用旧设置的生成结果。
     values["budget_basis"] = "original_train_nodes"
     values["target_filter"] = "after_selection_no_refill"
+    if args.attack == "GTA":
+        values["generator_label_scope"] = "dshield_original_full_node_labels"
     return values
 
 
@@ -54,7 +56,8 @@ def make_generator(args, device, available_count):
         values["inner_epochs"] = 1 if args.attack_inner is None else args.attack_inner
         values["rec_epochs"] = args.rec_epochs
         values["k"] = args.detector_updates
-        values["outter_size"] = min(args.outer_size, available_count)
+        # 保留作者的候选不足分支；提前取min会误入固定抽4096个的分支。
+        values["outter_size"] = args.outer_size
         values["target_weight"] = 1.0 if args.target_weight is None else args.target_weight
         values["ood_weight"] = args.ood_weight
         values["target_class_weight"] = args.class_weight
@@ -80,7 +83,7 @@ def to_cpu(data):
 
 
 def labels_for_generator(data, target):
-    # 生成阶段同样只提供训练标签；GTA的目标类样本不能从测试标签筛选。
+    # UGBA和DPGBA沿用项目现有训练标签限制；GTA按原入口另传完整原标签。
     labels = torch.full_like(data["labels"], -1)
     labels[data["train"]] = data["labels"][data["train"]]
     if int(labels.max()) + 1 != data["classes"]:
@@ -88,6 +91,13 @@ def labels_for_generator(data, target):
     if not bool((labels[data["train"]] == target).any()):
         raise ValueError("训练集没有目标类样本，请调整目标类别或划分种子。")
     return labels
+
+
+def attack_labels_for_generator(data, original_labels, args):
+    if args.attack == "GTA":
+        # 对齐DShield/main.py的GTA入口：fit和get_poisoned均接收data.y。
+        return original_labels.clone()
+    return labels_for_generator(data, args.target)
 
 
 def generate(args):
@@ -119,7 +129,7 @@ def generate(args):
     tqdm.write("原训练节点：" + str(original_train_count) + "，选样预算：" + str(requested_count)
                + "，过滤原目标类：" + str(requested_count - count) + "，实际触发器组数：" + str(count))
     generator, actual_parameters = make_generator(args, device, available.numel())
-    attack_labels = labels_for_generator(data, args.target)
+    attack_labels = attack_labels_for_generator(data, info["truth"], args)
     begin = start_clock(device)
     with logging_redirect_tqdm():
         generator.fit(data["x"], data["edges"], data["weights"], attack_labels.clone(),
@@ -172,7 +182,10 @@ def generate(args):
                            "attached_fraction_of_training_nodes": count / train.numel(),
                            "clean_test": info["clean_test"].numel(), "ASR_denominator": affected.numel()},
                 "generator_source": "upstream/DShield/NodeClassificationTasks/attack/" + args.attack.lower() + ".py"}
-    metadata["generator_label_scope"] = "仅原训练节点的标签；其他原节点为-1；生成器自行赋予附着目标标签"
+    if args.attack == "GTA":
+        metadata["generator_label_scope"] = "按DShield原GTA入口传入完整原节点标签；仅攻击生成使用；防御监督范围仍由训练索引决定"
+    else:
+        metadata["generator_label_scope"] = "仅原训练节点的标签；其他原节点为-1；生成器自行赋予附着目标标签"
     target_counts = [0] * data["classes"]
     target_counts[args.target] = count
     allocation["poisoned_target_counts"] = target_counts

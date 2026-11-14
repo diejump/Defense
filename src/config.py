@@ -47,7 +47,7 @@ def parser(description):
     p.add_argument("--gta-loss-factor", type=float, default=1.0, help="GTA损失系数")
     p.add_argument("--rec-epochs", type=int, default=100, help="DPGBA重建训练轮数")
     p.add_argument("--detector-updates", type=int, default=5, help="DPGBA判别器更新次数")
-    p.add_argument("--outer-size", type=int, default=1024, help="DPGBA外层样本数上限")
+    p.add_argument("--outer-size", type=int, default=4096, help="DPGBA作者入口分支阈值，默认4096；原函数在抽样分支固定抽4096个")
     p.add_argument("--ood-weight", type=float, default=1.0, help="DPGBA分布项权重")
     p.add_argument("--class-weight", type=float, default=1.0, help="DPGBA目标类项权重")
     p.add_argument("--rigbd-repeats", "--rigbd-k", dest="rigbd_repeats", type=int, default=None, help="覆盖作者RIGBD的K；默认读取原始配置20")

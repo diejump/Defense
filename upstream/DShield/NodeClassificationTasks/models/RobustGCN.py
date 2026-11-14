@@ -7,7 +7,7 @@ import torch.nn.functional as F
 import numpy as np
 import scipy.sparse as sp
 import torch.optim as optim
-from src import metrics as utils
+import utils
 from copy import deepcopy
 from models.metric import accuracy
 from torch_sparse import SparseTensor, matmul, fill_diag, sum as sparsesum, mul

@@ -4,11 +4,10 @@ from pathlib import Path
 import torch
 from tqdm.auto import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
-from upstream.DShield.NodeClassificationTasks.attack.ugba import UGBA
-from upstream.DShield.NodeClassificationTasks.attack.gta import GTA
-from upstream.DShield.NodeClassificationTasks.attack.dpgba import DPGBA
 from .data import load_clean
 from .common import setup, save_json, file_hash, start_clock, elapsed
+from .poison_budget import validate_budget, resolve_budget
+from .class_sampling import select_attached
 
 
 def bundle_directory(args):
@@ -18,17 +17,25 @@ def bundle_directory(args):
 
 
 def generation_parameters(args):
-    names = ["dataset", "attack", "seed", "split_seed", "poison_fraction", "poison_count",
+    names = ["dataset", "attack", "seed", "split_seed", "rate", "vs_number", "class_sampling",
              "target", "trigger_size", "attack_epochs", "attack_hidden", "attack_inner", "attack_lr",
              "attack_weight_decay", "threshold", "target_weight", "homo_weight", "homo_threshold",
              "gta_loss_factor", "rec_epochs", "detector_updates", "outer_size", "ood_weight", "class_weight"]
     values = {}
     for name in names:
         values[name] = getattr(args, name)
+    # 保护旧样本：分母或过滤规则改变时不能复用旧设置的生成结果。
+    values["budget_basis"] = "original_train_nodes"
+    values["target_filter"] = "after_selection_no_refill"
     return values
 
 
 def make_generator(args, device, available_count):
+    from .author_paths import activate
+    activate("dshield", args.attack)
+    from attack.ugba import UGBA
+    from attack.gta import GTA
+    from attack.dpgba import DPGBA
     values = dict(thrd=args.threshold, hidden=args.attack_hidden, trojan_epochs=args.attack_epochs,
                   lr=args.attack_lr, weight_decay=args.attack_weight_decay, trigger_size=args.trigger_size,
                   target_class=args.target, device=device)
@@ -84,6 +91,7 @@ def labels_for_generator(data, target):
 
 
 def generate(args):
+    validate_budget(args)
     folder = bundle_directory(args)
     settings = generation_parameters(args)
     metadata_path = folder / "metadata.json"
@@ -103,14 +111,13 @@ def generate(args):
     data, info = load_clean(args, device)
     if not 0 <= args.target < data["classes"]:
         raise ValueError("目标类别超出此数据集的范围。")
-    count = args.poison_count
-    if count is None:
-        count = int(data["x"].size(0) * args.poison_fraction)
-    if count < 1 or count >= info["pool"].numel():
-        raise ValueError("附着数量需要为正，并保留未标注候选节点。")
-    order = torch.randperm(info["pool"].numel(), device=device)
-    attached = info["pool"][order[:count]]
-    available = info["pool"][order[count:]]
+    original_train_count = data["train"].numel()
+    requested_count = resolve_budget(args, original_train_count, info["pool"].numel())
+    attached, available, allocation = select_attached(info["pool"], info["truth"], requested_count,
+        data["classes"], args.seed, args.class_sampling, args.target)
+    count = attached.numel()
+    tqdm.write("原训练节点：" + str(original_train_count) + "，选样预算：" + str(requested_count)
+               + "，过滤原目标类：" + str(requested_count - count) + "，实际触发器组数：" + str(count))
     generator, actual_parameters = make_generator(args, device, available.numel())
     attack_labels = labels_for_generator(data, args.target)
     begin = start_clock(device)
@@ -121,6 +128,8 @@ def generate(args):
     x, edges, weights, labels = generator.get_poisoned(data["x"], data["edges"], data["weights"],
                                                     attack_labels.clone(), attached)
     x, edges, weights = keep_positive_edges((x, edges, weights))
+    if not bool((labels[attached] == args.target).all()):
+        raise ValueError("生成器未将全部选中原节点改为指定target。")
     train = torch.cat([data["train"], attached]).sort().values
     # 保留作者标签长度：原节点有标签槽位，新增触发节点没有标签槽位。
     observed = torch.full_like(labels, -1)
@@ -154,10 +163,29 @@ def generate(args):
                 "generator_seconds": generation_seconds, "source": info["source"],
                 "sha256": hashes, "bundle_id": hashes["training.pt"] + ":" + hashes["evaluation.pt"],
                 "counts": {"original_nodes": data["x"].size(0), "training_nodes": train.numel(),
+                           "original_training_nodes": original_train_count,
+                           "selected_before_target_filter": requested_count,
+                           "filtered_target_nodes": requested_count - count,
                            "attached": count, "validation": data["val"].numel(),
+                           "label_changes": int((info["truth"][attached] != args.target).sum()),
+                           "added_training_trigger_nodes": x.size(0) - data["x"].size(0),
+                           "attached_fraction_of_training_nodes": count / train.numel(),
                            "clean_test": info["clean_test"].numel(), "ASR_denominator": affected.numel()},
                 "generator_source": "upstream/DShield/NodeClassificationTasks/attack/" + args.attack.lower() + ".py"}
     metadata["generator_label_scope"] = "仅原训练节点的标签；其他原节点为-1；生成器自行赋予附着目标标签"
+    target_counts = [0] * data["classes"]
+    target_counts[args.target] = count
+    allocation["poisoned_target_counts"] = target_counts
+    allocation["target_class"] = args.target
+    metadata["class_allocation"] = allocation
+    metadata["budget"] = {"rate_percent": args.rate, "vs_number": args.vs_number,
+        "budget_basis": "original_train_nodes", "original_train_nodes": original_train_count,
+        "requested_trigger_groups": requested_count, "filtered_target_count": requested_count - count,
+        "resolved_trigger_groups": count, "total_original_nodes": data["x"].size(0),
+        "target_filter": "after_selection_no_refill",
+        "rounding": "floor(N_train*rate/100)", "added_trigger_nodes": count * args.trigger_size}
+    save_json(folder / "class_allocation.json", allocation)
+    hashes["class_allocation.json"] = file_hash(folder / "class_allocation.json")
     save_json(metadata_path, metadata)
     tqdm.write("固定样本已保存：" + str(folder))
     return folder

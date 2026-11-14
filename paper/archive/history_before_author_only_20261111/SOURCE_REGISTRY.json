@@ -1,0 +1,832 @@
+{
+  "date": "2026-11-09",
+  "sources": {
+    "dshield": {
+      "directory": "upstream\\DShield",
+      "url": "https://github.com/csyuhao/DShield",
+      "commit": "a1fab6a0ce52ea0c99ae5591a930a11e2da611a1",
+      "observed_git_head": "a1fab6a0ce52ea0c99ae5591a930a11e2da611a1"
+    },
+    "rigbd": {
+      "directory": "upstream\\RIGBD",
+      "url": "https://github.com/zzwjames/RIGBD",
+      "commit": "32415022d1becebd76296b0abc1b63853093697b",
+      "observed_git_head": "32415022d1becebd76296b0abc1b63853093697b"
+    },
+    "losplit": {
+      "directory": "upstream\\LoSplit",
+      "url": "https://github.com/zyx924768045/LoSplit",
+      "commit": "171874c7e1dd4db4286ad5ab3423cd23871bc98e",
+      "observed_git_head": "171874c7e1dd4db4286ad5ab3423cd23871bc98e"
+    },
+    "abl": {
+      "directory": "upstream/ABL",
+      "url": "https://github.com/bboylyg/ABL",
+      "commit": "3fd736ce0906f24b0672b471ae20016362eefde4",
+      "retrieved": "2026-11-10",
+      "use": "保留原始实现，src/abl.py执行GNN适配"
+    }
+  },
+  "files": [
+    {
+      "file": "upstream/RIGBD/defense.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\defense.py",
+      "input_sha256": "e8dca79dbf15c6cdf77f5b6b09e717dc3defe6cea444333940240f0d0b446588",
+      "working_sha256": "e8dca79dbf15c6cdf77f5b6b09e717dc3defe6cea444333940240f0d0b446588",
+      "pre_20261110_sha256": "e8dca79dbf15c6cdf77f5b6b09e717dc3defe6cea444333940240f0d0b446588"
+    },
+    {
+      "file": "upstream/RIGBD/help_funcs.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\help_funcs.py",
+      "input_sha256": "d7a1bf5ac5e73a6c74da4949df9d3760f061aabd0336f1e409eedf5eecf33c27",
+      "working_sha256": "d7a1bf5ac5e73a6c74da4949df9d3760f061aabd0336f1e409eedf5eecf33c27",
+      "pre_20261110_sha256": "d7a1bf5ac5e73a6c74da4949df9d3760f061aabd0336f1e409eedf5eecf33c27"
+    },
+    {
+      "file": "upstream/RIGBD/install.sh",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\install.sh",
+      "input_sha256": "1ad9133f59c464ff5b81b317c3281c4920e2c036cb51c85162b0c6df86b8415c",
+      "working_sha256": "1ad9133f59c464ff5b81b317c3281c4920e2c036cb51c85162b0c6df86b8415c",
+      "pre_20261110_sha256": "1ad9133f59c464ff5b81b317c3281c4920e2c036cb51c85162b0c6df86b8415c"
+    },
+    {
+      "file": "upstream/RIGBD/README.md",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\README.md",
+      "input_sha256": "a724bdd11ea3b2ceb8b70361877fab1e5802002af4bb31336bd235d617a669c7",
+      "working_sha256": "a724bdd11ea3b2ceb8b70361877fab1e5802002af4bb31336bd235d617a669c7",
+      "pre_20261110_sha256": "a724bdd11ea3b2ceb8b70361877fab1e5802002af4bb31336bd235d617a669c7"
+    },
+    {
+      "file": "upstream/RIGBD/train_model.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\train_model.py",
+      "input_sha256": "27f988de965617822a151d89fa26cfb5f407fe77e1c3aaac48b62fbfd1696fca",
+      "working_sha256": "27f988de965617822a151d89fa26cfb5f407fe77e1c3aaac48b62fbfd1696fca",
+      "pre_20261110_sha256": "27f988de965617822a151d89fa26cfb5f407fe77e1c3aaac48b62fbfd1696fca"
+    },
+    {
+      "file": "upstream/RIGBD/utils.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\utils.py",
+      "input_sha256": "8f53f3e5500d311621d8a407ec93b62df1c2246e2c2464cd7d87a0a5ca32f7cc",
+      "working_sha256": "8f53f3e5500d311621d8a407ec93b62df1c2246e2c2464cd7d87a0a5ca32f7cc",
+      "pre_20261110_sha256": "8f53f3e5500d311621d8a407ec93b62df1c2246e2c2464cd7d87a0a5ca32f7cc"
+    },
+    {
+      "file": "upstream/RIGBD/__init__.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\__init__.py",
+      "input_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "working_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "pre_20261110_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5"
+    },
+    {
+      "file": "upstream/RIGBD/models/ABL.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\ABL.py",
+      "input_sha256": "24f80dcc29b8b98dc8f928e8a7728605aecfaab56890c665b4a65548e0737d2e",
+      "working_sha256": "b7aabe1e3a3cc7b6391da410b96fe5f03f67b3c8482cf8b7415d2df084b90726",
+      "pre_20261110_sha256": "b7aabe1e3a3cc7b6391da410b96fe5f03f67b3c8482cf8b7415d2df084b90726"
+    },
+    {
+      "file": "upstream/RIGBD/models/backdoor.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\backdoor.py",
+      "input_sha256": "d736d521b25b02219b0a5ee23c34ea72b13c2b423c19be3abe25a0beacdb4860",
+      "working_sha256": "dfeecf9f743573ee35b940432ce375e6d889bd36fafb817a278afecc12cbb180",
+      "pre_20261110_sha256": "dfeecf9f743573ee35b940432ce375e6d889bd36fafb817a278afecc12cbb180"
+    },
+    {
+      "file": "upstream/RIGBD/models/baseline.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\baseline.py",
+      "input_sha256": "0a46fac8ce6993632006ebecad7c8a08a0370512534bc8c673690cd65b78d199",
+      "working_sha256": "0a46fac8ce6993632006ebecad7c8a08a0370512534bc8c673690cd65b78d199",
+      "pre_20261110_sha256": "0a46fac8ce6993632006ebecad7c8a08a0370512534bc8c673690cd65b78d199"
+    },
+    {
+      "file": "upstream/RIGBD/models/construct.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\construct.py",
+      "input_sha256": "be7a0d4059aac3ab79f160f8ae7ab425a18313379bdcc0219a3e910df0a94d09",
+      "working_sha256": "be7a0d4059aac3ab79f160f8ae7ab425a18313379bdcc0219a3e910df0a94d09",
+      "pre_20261110_sha256": "be7a0d4059aac3ab79f160f8ae7ab425a18313379bdcc0219a3e910df0a94d09"
+    },
+    {
+      "file": "upstream/RIGBD/models/GAT.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\GAT.py",
+      "input_sha256": "2c81541f6d191e569d45e4b33c25a6f1983aa7753ae9c25a51506aa65e42e703",
+      "working_sha256": "3e401167c747b95170b574424e343ea1e8923495ee68856d1df7634c4121992e",
+      "pre_20261110_sha256": "3e401167c747b95170b574424e343ea1e8923495ee68856d1df7634c4121992e"
+    },
+    {
+      "file": "upstream/RIGBD/models/GCN.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\GCN.py",
+      "input_sha256": "cf6ffd2c5dd93459690a906e8e68afa029878823cc9a821bbbe126eea2e05da6",
+      "working_sha256": "39b825f13c5f87a14b9dd5106814038992035b0ad525118e25c33b44fc11f0e4",
+      "pre_20261110_sha256": "39b825f13c5f87a14b9dd5106814038992035b0ad525118e25c33b44fc11f0e4"
+    },
+    {
+      "file": "upstream/RIGBD/models/GCN2.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\GCN2.py",
+      "input_sha256": "2ee653c701549842a689ccbad15b9fa5fc89af450797a003369e6e66afe739a9",
+      "working_sha256": "361abdde24b4f8774817012db34d12e01829d5ada0d26e0d1f258c3e1b4ee7ac",
+      "pre_20261110_sha256": "361abdde24b4f8774817012db34d12e01829d5ada0d26e0d1f258c3e1b4ee7ac"
+    },
+    {
+      "file": "upstream/RIGBD/models/GCN_Encoder.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\GCN_Encoder.py",
+      "input_sha256": "4220c648e07712dea16a5ad740fc510230b9e2145085f67bfd08edf9a9bfe1fe",
+      "working_sha256": "1fec88fa28aa7515d731ce945c5d1f893abccaab9e86bbd7c9816496845bb057",
+      "pre_20261110_sha256": "1fec88fa28aa7515d731ce945c5d1f893abccaab9e86bbd7c9816496845bb057"
+    },
+    {
+      "file": "upstream/RIGBD/models/GIN.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\GIN.py",
+      "input_sha256": "4959f57a42183f551da635f86e5cb0981d73f6b1938ed645d51da58cba44b0fe",
+      "working_sha256": "4959f57a42183f551da635f86e5cb0981d73f6b1938ed645d51da58cba44b0fe",
+      "pre_20261110_sha256": "4959f57a42183f551da635f86e5cb0981d73f6b1938ed645d51da58cba44b0fe"
+    },
+    {
+      "file": "upstream/RIGBD/models/GNNGuard.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\GNNGuard.py",
+      "input_sha256": "84adef28890d2b28bcb27d1c1061775d04fe158e781f1c9168c71f9086a66ec0",
+      "working_sha256": "b4f247343426732898be007b42b5072906b83e40fdff4050ce44b26688b1acc2",
+      "pre_20261110_sha256": "b4f247343426732898be007b42b5072906b83e40fdff4050ce44b26688b1acc2"
+    },
+    {
+      "file": "upstream/RIGBD/models/GTA.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\GTA.py",
+      "input_sha256": "42340b3fef85b9ebb40fa3de13a870d8f1af594191505b9f4a8cb0fc7f183f2e",
+      "working_sha256": "f454a46a2dd93cf618114d0197f95f884b232062e86518501fc180d661d24855",
+      "pre_20261110_sha256": "f454a46a2dd93cf618114d0197f95f884b232062e86518501fc180d661d24855"
+    },
+    {
+      "file": "upstream/RIGBD/models/MLP.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\MLP.py",
+      "input_sha256": "0f89fd08e740d80365c975fda4029ede551a0a6d90b7a6f3d08f29109ebfe2b2",
+      "working_sha256": "c5d8f894f731dc913f7a473a24f0df308b8279b979d3c45639753ce138729dca",
+      "pre_20261110_sha256": "c5d8f894f731dc913f7a473a24f0df308b8279b979d3c45639753ce138729dca"
+    },
+    {
+      "file": "upstream/RIGBD/models/random_smooth.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\random_smooth.py",
+      "input_sha256": "d989ff21e1d0d751735b26c5da8f73d514669b99b5ac32df02268f367804220c",
+      "working_sha256": "d4b041df913b1daa4685ec2cb640005a872f061d8a2d43aa6c5bdaf9d455be37",
+      "pre_20261110_sha256": "d4b041df913b1daa4685ec2cb640005a872f061d8a2d43aa6c5bdaf9d455be37"
+    },
+    {
+      "file": "upstream/RIGBD/models/reconstruct.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\reconstruct.py",
+      "input_sha256": "979edd9d91e859b8833738529ec60bb3f7daa8bbc1d63537226df4b01d1aa82b",
+      "working_sha256": "979edd9d91e859b8833738529ec60bb3f7daa8bbc1d63537226df4b01d1aa82b",
+      "pre_20261110_sha256": "979edd9d91e859b8833738529ec60bb3f7daa8bbc1d63537226df4b01d1aa82b"
+    },
+    {
+      "file": "upstream/RIGBD/models/RobustGCN.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\RobustGCN.py",
+      "input_sha256": "264f425652a6643051b6e9e621ea9fa28cba1abd34eb819e6804c1a68b0612e4",
+      "working_sha256": "ff55a3988ce4ccf0af2577812b40e4049f195a4f6c9bdc52bfc600cd5c273ca1",
+      "pre_20261110_sha256": "ff55a3988ce4ccf0af2577812b40e4049f195a4f6c9bdc52bfc600cd5c273ca1"
+    },
+    {
+      "file": "upstream/RIGBD/models/SAGE.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\SAGE.py",
+      "input_sha256": "7efa1dee8980fbb008da51bfa1fca8b71604d58290418e4c6578159d922258bb",
+      "working_sha256": "a1f2170caf36efbdf88c7effa077a147f560cd2d8ff45bddcb03e4b9730fd7ae",
+      "pre_20261110_sha256": "a1f2170caf36efbdf88c7effa077a147f560cd2d8ff45bddcb03e4b9730fd7ae"
+    },
+    {
+      "file": "upstream/RIGBD/models/str_reconstruct.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\str_reconstruct.py",
+      "input_sha256": "a4cce81eefad412b7eea55a2a3a6e14f98ec2aab3e94497c7cb08ff665bd5d88",
+      "working_sha256": "a4cce81eefad412b7eea55a2a3a6e14f98ec2aab3e94497c7cb08ff665bd5d88",
+      "pre_20261110_sha256": "a4cce81eefad412b7eea55a2a3a6e14f98ec2aab3e94497c7cb08ff665bd5d88"
+    },
+    {
+      "file": "upstream/RIGBD/models/__init__.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\__init__.py",
+      "input_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "working_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "pre_20261110_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5"
+    },
+    {
+      "file": "upstream/RIGBD/models/_GNNGuard/gat_conv.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\_GNNGuard\\gat_conv.py",
+      "input_sha256": "68e27928e9afd91e0df92f6273477233066a22afd5b6e85f36882f4d597dc55c",
+      "working_sha256": "68e27928e9afd91e0df92f6273477233066a22afd5b6e85f36882f4d597dc55c",
+      "pre_20261110_sha256": "68e27928e9afd91e0df92f6273477233066a22afd5b6e85f36882f4d597dc55c"
+    },
+    {
+      "file": "upstream/RIGBD/models/_GNNGuard/GCN.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\_GNNGuard\\GCN.py",
+      "input_sha256": "9e6e6679ea595b3be5a1cc9448c4dd1e8310c677d75a6c3eeca3ea4bc4610481",
+      "working_sha256": "9e6e6679ea595b3be5a1cc9448c4dd1e8310c677d75a6c3eeca3ea4bc4610481",
+      "pre_20261110_sha256": "9e6e6679ea595b3be5a1cc9448c4dd1e8310c677d75a6c3eeca3ea4bc4610481"
+    },
+    {
+      "file": "upstream/RIGBD/models/_GNNGuard/gcn_conv.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\_GNNGuard\\gcn_conv.py",
+      "input_sha256": "054e115186dfe5782dd8c9a5787d730068ad7183346f785c7617750d0a69ff31",
+      "working_sha256": "054e115186dfe5782dd8c9a5787d730068ad7183346f785c7617750d0a69ff31",
+      "pre_20261110_sha256": "054e115186dfe5782dd8c9a5787d730068ad7183346f785c7617750d0a69ff31"
+    },
+    {
+      "file": "upstream/RIGBD/models/_GNNGuard/gin_conv.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\_GNNGuard\\gin_conv.py",
+      "input_sha256": "e635f240010300bddcb84b4a85d3444ffdc92b3edc3508006fce7e1fe95af936",
+      "working_sha256": "e635f240010300bddcb84b4a85d3444ffdc92b3edc3508006fce7e1fe95af936",
+      "pre_20261110_sha256": "e635f240010300bddcb84b4a85d3444ffdc92b3edc3508006fce7e1fe95af936"
+    },
+    {
+      "file": "upstream/RIGBD/models/_GNNGuard/inits.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\models\\_GNNGuard\\inits.py",
+      "input_sha256": "bc6fcb6c02ce80aaa92c71e16e7071955d5b7fdd2ceb0f213bf0f300cf0cc49b",
+      "working_sha256": "bc6fcb6c02ce80aaa92c71e16e7071955d5b7fdd2ceb0f213bf0f300cf0cc49b",
+      "pre_20261110_sha256": "bc6fcb6c02ce80aaa92c71e16e7071955d5b7fdd2ceb0f213bf0f300cf0cc49b"
+    },
+    {
+      "file": "upstream/RIGBD/script/train_defense.sh",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\RIGBD\\script\\train_defense.sh",
+      "input_sha256": "cc82eb47b894126d94279aef88ff1f5dfda315572124bd822ae8f3b086fc40aa",
+      "working_sha256": "cc82eb47b894126d94279aef88ff1f5dfda315572124bd822ae8f3b086fc40aa",
+      "pre_20261110_sha256": "cc82eb47b894126d94279aef88ff1f5dfda315572124bd822ae8f3b086fc40aa"
+    },
+    {
+      "file": "upstream/LoSplit/Clean.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\Clean.py",
+      "input_sha256": "cc6877c51a84dded398ddfde47febe35beabd3ccee665b2b9d4b780bd3c5dcb7",
+      "working_sha256": "cc6877c51a84dded398ddfde47febe35beabd3ccee665b2b9d4b780bd3c5dcb7",
+      "pre_20261110_sha256": "cc6877c51a84dded398ddfde47febe35beabd3ccee665b2b9d4b780bd3c5dcb7"
+    },
+    {
+      "file": "upstream/LoSplit/defense.sh",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\defense.sh",
+      "input_sha256": "f3ee6ef841227293a9ea75e10280d6354e968e76f5fd605c56191e238437cf33",
+      "working_sha256": "f3ee6ef841227293a9ea75e10280d6354e968e76f5fd605c56191e238437cf33",
+      "pre_20261110_sha256": "f3ee6ef841227293a9ea75e10280d6354e968e76f5fd605c56191e238437cf33"
+    },
+    {
+      "file": "upstream/LoSplit/GTA_LoSplit.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\GTA_LoSplit.py",
+      "input_sha256": "dfbdf3f7965ab8c494b1ff0bbac077911e043ec078c8223d9901447654540c62",
+      "working_sha256": "dfbdf3f7965ab8c494b1ff0bbac077911e043ec078c8223d9901447654540c62",
+      "pre_20261110_sha256": "dfbdf3f7965ab8c494b1ff0bbac077911e043ec078c8223d9901447654540c62"
+    },
+    {
+      "file": "upstream/LoSplit/GTA_RIGBD.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\GTA_RIGBD.py",
+      "input_sha256": "87060cb1b8a9ce39922a6dbd75607f5ed94bb91a16ab0f8b23ff933789942059",
+      "working_sha256": "87060cb1b8a9ce39922a6dbd75607f5ed94bb91a16ab0f8b23ff933789942059",
+      "pre_20261110_sha256": "87060cb1b8a9ce39922a6dbd75607f5ed94bb91a16ab0f8b23ff933789942059"
+    },
+    {
+      "file": "upstream/LoSplit/help_funcs.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\help_funcs.py",
+      "input_sha256": "76e2fdd0489354aa4074643034bc12e111c6ba127b369b93a255c4d0c5921146",
+      "working_sha256": "76e2fdd0489354aa4074643034bc12e111c6ba127b369b93a255c4d0c5921146",
+      "pre_20261110_sha256": "76e2fdd0489354aa4074643034bc12e111c6ba127b369b93a255c4d0c5921146"
+    },
+    {
+      "file": "upstream/LoSplit/heuristic_selection.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\heuristic_selection.py",
+      "input_sha256": "faabc331e31fbb8b807a03814ab7833f5c8637d8ea0c8fbf11d224f481c3236b",
+      "working_sha256": "faabc331e31fbb8b807a03814ab7833f5c8637d8ea0c8fbf11d224f481c3236b",
+      "pre_20261110_sha256": "faabc331e31fbb8b807a03814ab7833f5c8637d8ea0c8fbf11d224f481c3236b"
+    },
+    {
+      "file": "upstream/LoSplit/install.sh",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\install.sh",
+      "input_sha256": "d73a72a53519da2d6574550a3d44d9b1d6ae30a0fc6be1ac4fbe5e1f6f10fdae",
+      "working_sha256": "d73a72a53519da2d6574550a3d44d9b1d6ae30a0fc6be1ac4fbe5e1f6f10fdae",
+      "pre_20261110_sha256": "d73a72a53519da2d6574550a3d44d9b1d6ae30a0fc6be1ac4fbe5e1f6f10fdae"
+    },
+    {
+      "file": "upstream/LoSplit/README.md",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\README.md",
+      "input_sha256": "a4b2d5d4e78b2697f885ae6ecf27a5eb16f804d5f1b097129fb20396f7d1cf5f",
+      "working_sha256": "a4b2d5d4e78b2697f885ae6ecf27a5eb16f804d5f1b097129fb20396f7d1cf5f",
+      "pre_20261110_sha256": "a4b2d5d4e78b2697f885ae6ecf27a5eb16f804d5f1b097129fb20396f7d1cf5f"
+    },
+    {
+      "file": "upstream/LoSplit/run_clean.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\run_clean.py",
+      "input_sha256": "bc592adbbba588ea6fe88cbb568a268d93035152d72a5b345f1a7502d1febaee",
+      "working_sha256": "bc592adbbba588ea6fe88cbb568a268d93035152d72a5b345f1a7502d1febaee",
+      "pre_20261110_sha256": "bc592adbbba588ea6fe88cbb568a268d93035152d72a5b345f1a7502d1febaee"
+    },
+    {
+      "file": "upstream/LoSplit/select_feature.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\select_feature.py",
+      "input_sha256": "61114d1da5ff3482470c8fbda0a2da97afb22512d3a522fe44ed1590d274517e",
+      "working_sha256": "61114d1da5ff3482470c8fbda0a2da97afb22512d3a522fe44ed1590d274517e",
+      "pre_20261110_sha256": "61114d1da5ff3482470c8fbda0a2da97afb22512d3a522fe44ed1590d274517e"
+    },
+    {
+      "file": "upstream/LoSplit/select_sample.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\select_sample.py",
+      "input_sha256": "9a0580c7553ea2f12d75a0ac249878778d73ff9efe3cb0804681865ec2c1641c",
+      "working_sha256": "9a0580c7553ea2f12d75a0ac249878778d73ff9efe3cb0804681865ec2c1641c",
+      "pre_20261110_sha256": "9a0580c7553ea2f12d75a0ac249878778d73ff9efe3cb0804681865ec2c1641c"
+    },
+    {
+      "file": "upstream/LoSplit/SPEAR_LoSplit.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\SPEAR_LoSplit.py",
+      "input_sha256": "8370a4b8c581e1a987691c2afcb4d23d9e66dd0c14b68464c41fb7338543810d",
+      "working_sha256": "8370a4b8c581e1a987691c2afcb4d23d9e66dd0c14b68464c41fb7338543810d",
+      "pre_20261110_sha256": "8370a4b8c581e1a987691c2afcb4d23d9e66dd0c14b68464c41fb7338543810d"
+    },
+    {
+      "file": "upstream/LoSplit/SPEAR_RIGBD.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\SPEAR_RIGBD.py",
+      "input_sha256": "fb9c542f4bf30489e4684a877b5f31dc71b78802023a3c9c98a7c291f711cb2f",
+      "working_sha256": "fb9c542f4bf30489e4684a877b5f31dc71b78802023a3c9c98a7c291f711cb2f",
+      "pre_20261110_sha256": "fb9c542f4bf30489e4684a877b5f31dc71b78802023a3c9c98a7c291f711cb2f"
+    },
+    {
+      "file": "upstream/LoSplit/UGBA_LoSplit.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\UGBA_LoSplit.py",
+      "input_sha256": "157ff2908038e033b9aef1a30f38ba559860d1e3f2efc0c636ac271e55ca1827",
+      "working_sha256": "157ff2908038e033b9aef1a30f38ba559860d1e3f2efc0c636ac271e55ca1827",
+      "pre_20261110_sha256": "157ff2908038e033b9aef1a30f38ba559860d1e3f2efc0c636ac271e55ca1827"
+    },
+    {
+      "file": "upstream/LoSplit/UGBA_RIGBD.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\UGBA_RIGBD.py",
+      "input_sha256": "65996772a19a1265aabe38716694757c8ed3dfcba9f5fcae6308386034d62348",
+      "working_sha256": "65996772a19a1265aabe38716694757c8ed3dfcba9f5fcae6308386034d62348",
+      "pre_20261110_sha256": "65996772a19a1265aabe38716694757c8ed3dfcba9f5fcae6308386034d62348"
+    },
+    {
+      "file": "upstream/LoSplit/utils.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\utils.py",
+      "input_sha256": "f46211331212cb62bd94ed3b4e6cea3ae5badb591df6c2045a0eb2ca8e91a54d",
+      "working_sha256": "f46211331212cb62bd94ed3b4e6cea3ae5badb591df6c2045a0eb2ca8e91a54d",
+      "pre_20261110_sha256": "f46211331212cb62bd94ed3b4e6cea3ae5badb591df6c2045a0eb2ca8e91a54d"
+    },
+    {
+      "file": "upstream/LoSplit/__init__.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\__init__.py",
+      "input_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "working_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "pre_20261110_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5"
+    },
+    {
+      "file": "upstream/LoSplit/models/ABL.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\ABL.py",
+      "input_sha256": "19f34c1021d68a4442391785392c29107017aad4fa8c5168eb4233f3f0ce70a1",
+      "working_sha256": "525f547ff2f50e4626953b987e10e6f55881b2d06bc0f3d3be23909dccca86e8",
+      "pre_20261110_sha256": "525f547ff2f50e4626953b987e10e6f55881b2d06bc0f3d3be23909dccca86e8"
+    },
+    {
+      "file": "upstream/LoSplit/models/backdoor_SPEAR.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\backdoor_SPEAR.py",
+      "input_sha256": "51d481c0ba09deadae973c97e96da1fd9fe972065ab6271848537270aa4c8998",
+      "working_sha256": "d6fbbe576227894cedd962087dea58c7d733c244c34dca9267fff2d5931d047d",
+      "pre_20261110_sha256": "d6fbbe576227894cedd962087dea58c7d733c244c34dca9267fff2d5931d047d"
+    },
+    {
+      "file": "upstream/LoSplit/models/backdoor_UGBA.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\backdoor_UGBA.py",
+      "input_sha256": "bcafa102b2387589def45995ee2c1d65b49144d0097bd3ac93d4b057e45a74b7",
+      "working_sha256": "ba6a1dc82c1c0a5530e94bc1e550fa5ba5abc4f0edd4c4deef5d3534a8d1b6e6",
+      "pre_20261110_sha256": "ba6a1dc82c1c0a5530e94bc1e550fa5ba5abc4f0edd4c4deef5d3534a8d1b6e6"
+    },
+    {
+      "file": "upstream/LoSplit/models/construct.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\construct.py",
+      "input_sha256": "47b138898bd11230c57a646e0758f5f4f5e9ad4973c899f160054002a952be6d",
+      "working_sha256": "47b138898bd11230c57a646e0758f5f4f5e9ad4973c899f160054002a952be6d",
+      "pre_20261110_sha256": "47b138898bd11230c57a646e0758f5f4f5e9ad4973c899f160054002a952be6d"
+    },
+    {
+      "file": "upstream/LoSplit/models/GAT.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\GAT.py",
+      "input_sha256": "ba2fa64c35871a308f956104fa5b29fa435b074e28933e4f4303c69f57aa8b51",
+      "working_sha256": "42950f6f2ea65230954a12b11f5caedffa7debe8fcee4b2ba219beb35c7744e8",
+      "pre_20261110_sha256": "42950f6f2ea65230954a12b11f5caedffa7debe8fcee4b2ba219beb35c7744e8"
+    },
+    {
+      "file": "upstream/LoSplit/models/GCN.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\GCN.py",
+      "input_sha256": "e5a965ab84abb6b5a956ac583e28f4e0957e5c7aa6b6aa5f329c582afac86157",
+      "working_sha256": "f3d2490a287618cf25287f8490af667d1b3270f09bc21c1d827d3a300e476bcf",
+      "pre_20261110_sha256": "f3d2490a287618cf25287f8490af667d1b3270f09bc21c1d827d3a300e476bcf"
+    },
+    {
+      "file": "upstream/LoSplit/models/GCN_Encoder.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\GCN_Encoder.py",
+      "input_sha256": "4220c648e07712dea16a5ad740fc510230b9e2145085f67bfd08edf9a9bfe1fe",
+      "working_sha256": "1fec88fa28aa7515d731ce945c5d1f893abccaab9e86bbd7c9816496845bb057",
+      "pre_20261110_sha256": "1fec88fa28aa7515d731ce945c5d1f893abccaab9e86bbd7c9816496845bb057"
+    },
+    {
+      "file": "upstream/LoSplit/models/GCN_SPEAR.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\GCN_SPEAR.py",
+      "input_sha256": "0a8b64dfed20ce8c8b27b3c654f1db980f6cd8f6ec76534122afad0130a99238",
+      "working_sha256": "34df517daa5960ad98c8be765843ac9a3b439314c1654a8273d9ee34e7fa8926",
+      "pre_20261110_sha256": "34df517daa5960ad98c8be765843ac9a3b439314c1654a8273d9ee34e7fa8926"
+    },
+    {
+      "file": "upstream/LoSplit/models/GIN.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\GIN.py",
+      "input_sha256": "4959f57a42183f551da635f86e5cb0981d73f6b1938ed645d51da58cba44b0fe",
+      "working_sha256": "4959f57a42183f551da635f86e5cb0981d73f6b1938ed645d51da58cba44b0fe",
+      "pre_20261110_sha256": "4959f57a42183f551da635f86e5cb0981d73f6b1938ed645d51da58cba44b0fe"
+    },
+    {
+      "file": "upstream/LoSplit/models/GNNGuard.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\GNNGuard.py",
+      "input_sha256": "84adef28890d2b28bcb27d1c1061775d04fe158e781f1c9168c71f9086a66ec0",
+      "working_sha256": "b4f247343426732898be007b42b5072906b83e40fdff4050ce44b26688b1acc2",
+      "pre_20261110_sha256": "b4f247343426732898be007b42b5072906b83e40fdff4050ce44b26688b1acc2"
+    },
+    {
+      "file": "upstream/LoSplit/models/GTA.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\GTA.py",
+      "input_sha256": "f1c0e101ef2b18ca395cf8dc68fda0ee205048885152f5d547935de763689bc3",
+      "working_sha256": "cdf9557dc2941513aee32f0bd2b36b3ad1781493827b38fead4b1ceb990b310c",
+      "pre_20261110_sha256": "cdf9557dc2941513aee32f0bd2b36b3ad1781493827b38fead4b1ceb990b310c"
+    },
+    {
+      "file": "upstream/LoSplit/models/LogReg.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\LogReg.py",
+      "input_sha256": "26e514914df1bb253b8492e25b2e3e62df72d31fa106b05a63c4a78f0b2315cf",
+      "working_sha256": "26e514914df1bb253b8492e25b2e3e62df72d31fa106b05a63c4a78f0b2315cf",
+      "pre_20261110_sha256": "26e514914df1bb253b8492e25b2e3e62df72d31fa106b05a63c4a78f0b2315cf"
+    },
+    {
+      "file": "upstream/LoSplit/models/LoSplit.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\LoSplit.py",
+      "input_sha256": "cbf110f44b164fdc30e35482fd9fcd5e7c2e69c150b33f5f68acaa8f2b3cf07e",
+      "working_sha256": "f9faa3080ad097e57b6e9c3b640aecd2336012a342673cf52b797a6266610590",
+      "pre_20261110_sha256": "f9faa3080ad097e57b6e9c3b640aecd2336012a342673cf52b797a6266610590"
+    },
+    {
+      "file": "upstream/LoSplit/models/MLP.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\MLP.py",
+      "input_sha256": "447925979686338fd4205600422ffb2f0317d544da2e9bdc4995ef585f044d12",
+      "working_sha256": "447925979686338fd4205600422ffb2f0317d544da2e9bdc4995ef585f044d12",
+      "pre_20261110_sha256": "447925979686338fd4205600422ffb2f0317d544da2e9bdc4995ef585f044d12"
+    },
+    {
+      "file": "upstream/LoSplit/models/reconstruct.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\reconstruct.py",
+      "input_sha256": "51057bd7f1df2723f842c18c100edc4770ed46298168cfd8fb1c35c3554989c8",
+      "working_sha256": "51057bd7f1df2723f842c18c100edc4770ed46298168cfd8fb1c35c3554989c8",
+      "pre_20261110_sha256": "51057bd7f1df2723f842c18c100edc4770ed46298168cfd8fb1c35c3554989c8"
+    },
+    {
+      "file": "upstream/LoSplit/models/RobustGCN.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\RobustGCN.py",
+      "input_sha256": "6a4ec475820a9de8fea062944dbfd4008d9a0e217ab95f9e3ca129594aff32eb",
+      "working_sha256": "e745a0aad19a01e0f5e6b150f665d773b24be80da98b373e67619428e7d91088",
+      "pre_20261110_sha256": "e745a0aad19a01e0f5e6b150f665d773b24be80da98b373e67619428e7d91088"
+    },
+    {
+      "file": "upstream/LoSplit/models/SAGE.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\SAGE.py",
+      "input_sha256": "534c06ce31f8a9e860d3582fd0fa6567052675ec80d4e430c51ea62f568a246f",
+      "working_sha256": "8f28ee3b6412a31ad62dd630d9f42def83b542fe374b6473832ed9aa3f8e4be7",
+      "pre_20261110_sha256": "8f28ee3b6412a31ad62dd630d9f42def83b542fe374b6473832ed9aa3f8e4be7"
+    },
+    {
+      "file": "upstream/LoSplit/models/__init__.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\__init__.py",
+      "input_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "working_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "pre_20261110_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5"
+    },
+    {
+      "file": "upstream/LoSplit/models/_GNNGuard/gat_conv.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\_GNNGuard\\gat_conv.py",
+      "input_sha256": "68e27928e9afd91e0df92f6273477233066a22afd5b6e85f36882f4d597dc55c",
+      "working_sha256": "68e27928e9afd91e0df92f6273477233066a22afd5b6e85f36882f4d597dc55c",
+      "pre_20261110_sha256": "68e27928e9afd91e0df92f6273477233066a22afd5b6e85f36882f4d597dc55c"
+    },
+    {
+      "file": "upstream/LoSplit/models/_GNNGuard/GCN.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\_GNNGuard\\GCN.py",
+      "input_sha256": "9e6e6679ea595b3be5a1cc9448c4dd1e8310c677d75a6c3eeca3ea4bc4610481",
+      "working_sha256": "9e6e6679ea595b3be5a1cc9448c4dd1e8310c677d75a6c3eeca3ea4bc4610481",
+      "pre_20261110_sha256": "9e6e6679ea595b3be5a1cc9448c4dd1e8310c677d75a6c3eeca3ea4bc4610481"
+    },
+    {
+      "file": "upstream/LoSplit/models/_GNNGuard/gcn_conv.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\_GNNGuard\\gcn_conv.py",
+      "input_sha256": "054e115186dfe5782dd8c9a5787d730068ad7183346f785c7617750d0a69ff31",
+      "working_sha256": "054e115186dfe5782dd8c9a5787d730068ad7183346f785c7617750d0a69ff31",
+      "pre_20261110_sha256": "054e115186dfe5782dd8c9a5787d730068ad7183346f785c7617750d0a69ff31"
+    },
+    {
+      "file": "upstream/LoSplit/models/_GNNGuard/gin_conv.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\_GNNGuard\\gin_conv.py",
+      "input_sha256": "e635f240010300bddcb84b4a85d3444ffdc92b3edc3508006fce7e1fe95af936",
+      "working_sha256": "e635f240010300bddcb84b4a85d3444ffdc92b3edc3508006fce7e1fe95af936",
+      "pre_20261110_sha256": "e635f240010300bddcb84b4a85d3444ffdc92b3edc3508006fce7e1fe95af936"
+    },
+    {
+      "file": "upstream/LoSplit/models/_GNNGuard/inits.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\models\\_GNNGuard\\inits.py",
+      "input_sha256": "bc6fcb6c02ce80aaa92c71e16e7071955d5b7fdd2ceb0f213bf0f300cf0cc49b",
+      "working_sha256": "bc6fcb6c02ce80aaa92c71e16e7071955d5b7fdd2ceb0f213bf0f300cf0cc49b",
+      "pre_20261110_sha256": "bc6fcb6c02ce80aaa92c71e16e7071955d5b7fdd2ceb0f213bf0f300cf0cc49b"
+    },
+    {
+      "file": "upstream/LoSplit/save_selected_feature/check.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\LoSplit\\save_selected_feature\\check.py",
+      "input_sha256": "9610867d0c1b9ab04636936ba3b48d2807620b50d69b41b559be4641ce9aa74e",
+      "working_sha256": "9610867d0c1b9ab04636936ba3b48d2807620b50d69b41b559be4641ce9aa74e",
+      "pre_20261110_sha256": "9610867d0c1b9ab04636936ba3b48d2807620b50d69b41b559be4641ce9aa74e"
+    },
+    {
+      "file": "upstream/DShield/LICENSE",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\LICENSE",
+      "input_sha256": "5a894ffe000619846f847fa48d7799e2a4ee31c2a3230d3b1f44cb850f6e13a3",
+      "working_sha256": "5a894ffe000619846f847fa48d7799e2a4ee31c2a3230d3b1f44cb850f6e13a3",
+      "pre_20261110_sha256": "5a894ffe000619846f847fa48d7799e2a4ee31c2a3230d3b1f44cb850f6e13a3"
+    },
+    {
+      "file": "upstream/DShield/README.md",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\README.md",
+      "input_sha256": "31a09e2a896b1fd843cbef940623c72fb693c22f4cb5007d574efbec7416fe85",
+      "working_sha256": "31a09e2a896b1fd843cbef940623c72fb693c22f4cb5007d574efbec7416fe85",
+      "pre_20261110_sha256": "31a09e2a896b1fd843cbef940623c72fb693c22f4cb5007d574efbec7416fe85"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/heuristic_selection.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\heuristic_selection.py",
+      "input_sha256": "3fc5f737b85d6334c63aff46b5e7ad21da600b7e1a66cb76a2000880b67b3503",
+      "working_sha256": "3fc5f737b85d6334c63aff46b5e7ad21da600b7e1a66cb76a2000880b67b3503",
+      "pre_20261110_sha256": "3fc5f737b85d6334c63aff46b5e7ad21da600b7e1a66cb76a2000880b67b3503"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/main.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\main.py",
+      "input_sha256": "1f573b5d29e38d77912c0fd94d98fb00d303160c3af1e603147d15143c2a6f3d",
+      "working_sha256": "1f573b5d29e38d77912c0fd94d98fb00d303160c3af1e603147d15143c2a6f3d",
+      "pre_20261110_sha256": "1f573b5d29e38d77912c0fd94d98fb00d303160c3af1e603147d15143c2a6f3d"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/utils.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\utils.py",
+      "input_sha256": "c53eda03fd696c2987c4aa7341987615258d4f75478484de3c24b4de5d3d8f04",
+      "working_sha256": "c53eda03fd696c2987c4aa7341987615258d4f75478484de3c24b4de5d3d8f04",
+      "pre_20261110_sha256": "c53eda03fd696c2987c4aa7341987615258d4f75478484de3c24b4de5d3d8f04"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/viz_main.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\viz_main.py",
+      "input_sha256": "163cf024264fa559b6659913de69dfb652be06b678257939eb4b9e1e350a1581",
+      "working_sha256": "163cf024264fa559b6659913de69dfb652be06b678257939eb4b9e1e350a1581",
+      "pre_20261110_sha256": "163cf024264fa559b6659913de69dfb652be06b678257939eb4b9e1e350a1581"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/__init__.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\__init__.py",
+      "input_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "working_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "pre_20261110_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/analysis/study.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\analysis\\study.py",
+      "input_sha256": "922a9d721ee63c4fea56cf5ace4d3f1f4cc4d5a89da35eb48c5b1aa379fb17c4",
+      "working_sha256": "922a9d721ee63c4fea56cf5ace4d3f1f4cc4d5a89da35eb48c5b1aa379fb17c4",
+      "pre_20261110_sha256": "922a9d721ee63c4fea56cf5ace4d3f1f4cc4d5a89da35eb48c5b1aa379fb17c4"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/adaca.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\adaca.py",
+      "input_sha256": "330227f6683ee01174bc9cf52ebbb49890b30464a11bb78fa3fdbf9a5167e023",
+      "working_sha256": "330227f6683ee01174bc9cf52ebbb49890b30464a11bb78fa3fdbf9a5167e023",
+      "pre_20261110_sha256": "330227f6683ee01174bc9cf52ebbb49890b30464a11bb78fa3fdbf9a5167e023"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/adada.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\adada.py",
+      "input_sha256": "765103176af4d57df4c5112b15e0aca81129c7ff9853cffaafcec0648365182c",
+      "working_sha256": "765103176af4d57df4c5112b15e0aca81129c7ff9853cffaafcec0648365182c",
+      "pre_20261110_sha256": "765103176af4d57df4c5112b15e0aca81129c7ff9853cffaafcec0648365182c"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/dpgba.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\dpgba.py",
+      "input_sha256": "e73bb1d27ef159a2be0d3a629cf7e7d60d3f159cc72fa4bfc5090855c2ee747b",
+      "working_sha256": "e73bb1d27ef159a2be0d3a629cf7e7d60d3f159cc72fa4bfc5090855c2ee747b",
+      "pre_20261110_sha256": "e73bb1d27ef159a2be0d3a629cf7e7d60d3f159cc72fa4bfc5090855c2ee747b"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/explain_backdoor.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\explain_backdoor.py",
+      "input_sha256": "70427fc88c0abacd588591b8a3b31422a4bcf070ebc22e39024e79b84bfd148b",
+      "working_sha256": "70427fc88c0abacd588591b8a3b31422a4bcf070ebc22e39024e79b84bfd148b",
+      "pre_20261110_sha256": "70427fc88c0abacd588591b8a3b31422a4bcf070ebc22e39024e79b84bfd148b"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/gcba.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\gcba.py",
+      "input_sha256": "7109bb7f08b0c3d047c394fe4179db8c091254f110ebb9f62b983ad3c842e69b",
+      "working_sha256": "7109bb7f08b0c3d047c394fe4179db8c091254f110ebb9f62b983ad3c842e69b",
+      "pre_20261110_sha256": "7109bb7f08b0c3d047c394fe4179db8c091254f110ebb9f62b983ad3c842e69b"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/gta.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\gta.py",
+      "input_sha256": "ef4226e403a0772196cbc8ba99309ef65eaab782d66acf4847b938f8e70ac6a9",
+      "working_sha256": "ef4226e403a0772196cbc8ba99309ef65eaab782d66acf4847b938f8e70ac6a9",
+      "pre_20261110_sha256": "ef4226e403a0772196cbc8ba99309ef65eaab782d66acf4847b938f8e70ac6a9"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/mlgb.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\mlgb.py",
+      "input_sha256": "228723253ac0c1939522906aa3ff99e10a57117770671f27a584190f5babefdf",
+      "working_sha256": "228723253ac0c1939522906aa3ff99e10a57117770671f27a584190f5babefdf",
+      "pre_20261110_sha256": "228723253ac0c1939522906aa3ff99e10a57117770671f27a584190f5babefdf"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/nba.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\nba.py",
+      "input_sha256": "517a661e7f821a47e55423992ebf295d888531a25710c373ac72bb0c833dfa2a",
+      "working_sha256": "517a661e7f821a47e55423992ebf295d888531a25710c373ac72bb0c833dfa2a",
+      "pre_20261110_sha256": "517a661e7f821a47e55423992ebf295d888531a25710c373ac72bb0c833dfa2a"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/percba.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\percba.py",
+      "input_sha256": "fb461bcbe5e08c432ac021d7547fc5cf1aca681325d6ae9d0785a6d396a34c44",
+      "working_sha256": "fb461bcbe5e08c432ac021d7547fc5cf1aca681325d6ae9d0785a6d396a34c44",
+      "pre_20261110_sha256": "fb461bcbe5e08c432ac021d7547fc5cf1aca681325d6ae9d0785a6d396a34c44"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/sba.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\sba.py",
+      "input_sha256": "12404bc2536e3c294d4fbace3118d7e390fe57cb5d9402ce2b3e3ac123f1756c",
+      "working_sha256": "12404bc2536e3c294d4fbace3118d7e390fe57cb5d9402ce2b3e3ac123f1756c",
+      "pre_20261110_sha256": "12404bc2536e3c294d4fbace3118d7e390fe57cb5d9402ce2b3e3ac123f1756c"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/target_node_attack.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\target_node_attack.py",
+      "input_sha256": "95e407f43f7c25bdc1a6303485f675e3f02c20c96a84669daa498c2732e08738",
+      "working_sha256": "95e407f43f7c25bdc1a6303485f675e3f02c20c96a84669daa498c2732e08738",
+      "pre_20261110_sha256": "95e407f43f7c25bdc1a6303485f675e3f02c20c96a84669daa498c2732e08738"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/trap.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\trap.py",
+      "input_sha256": "a70bafb0afd4b6087df0e4046abff2c024725a72a767def7d22e36f27817b180",
+      "working_sha256": "a70bafb0afd4b6087df0e4046abff2c024725a72a767def7d22e36f27817b180",
+      "pre_20261110_sha256": "a70bafb0afd4b6087df0e4046abff2c024725a72a767def7d22e36f27817b180"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/ugba.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\ugba.py",
+      "input_sha256": "1557c84b5c5606ecea093617eeb844522d3c48a0a94de44ceb7d92805215560d",
+      "working_sha256": "1557c84b5c5606ecea093617eeb844522d3c48a0a94de44ceb7d92805215560d",
+      "pre_20261110_sha256": "1557c84b5c5606ecea093617eeb844522d3c48a0a94de44ceb7d92805215560d"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/__init__.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\attack\\__init__.py",
+      "input_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "working_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "pre_20261110_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/defense/dshield.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\defense\\dshield.py",
+      "input_sha256": "6aee5439dbcff6470443a509c23113ff606be10a5ed3380ec37637f2a5c3dbd1",
+      "working_sha256": "7e094c244e7f45f4a48eb518160baab01ec4bd066e931e188455895893bbf3f3",
+      "pre_20261110_sha256": "582065b180e83e2ceb47129db052a479f569926b1bf60fecbb762ec805c8e26f"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/defense/__init__.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\defense\\__init__.py",
+      "input_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "working_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "pre_20261110_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/construct.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\models\\construct.py",
+      "input_sha256": "1236395c93f2e04031cbf22d7736bb5c09d85bc962d29c1f576f5e1112f38f86",
+      "working_sha256": "1236395c93f2e04031cbf22d7736bb5c09d85bc962d29c1f576f5e1112f38f86",
+      "pre_20261110_sha256": "1236395c93f2e04031cbf22d7736bb5c09d85bc962d29c1f576f5e1112f38f86"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/GAT.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\models\\GAT.py",
+      "input_sha256": "36908010a2a29a014a4f9fc7f21d9d9b572c620f598a77bae6b751f031ee7891",
+      "working_sha256": "139a2423580f5f6bb12dfde3cb198e068f30f413834c000ce654f26f7acb0686",
+      "pre_20261110_sha256": "139a2423580f5f6bb12dfde3cb198e068f30f413834c000ce654f26f7acb0686"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/GCN.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\models\\GCN.py",
+      "input_sha256": "a959dae8065efcf9198fad5e709b53f54bfda6b66aa68ec88e94e523c39794f0",
+      "working_sha256": "a959dae8065efcf9198fad5e709b53f54bfda6b66aa68ec88e94e523c39794f0",
+      "pre_20261110_sha256": "a959dae8065efcf9198fad5e709b53f54bfda6b66aa68ec88e94e523c39794f0"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/GCN_Encoder.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\models\\GCN_Encoder.py",
+      "input_sha256": "19168e18acec0003a9250fc48afd4bd265f0a0fa25d88eabf5301d3e7119aa60",
+      "working_sha256": "19168e18acec0003a9250fc48afd4bd265f0a0fa25d88eabf5301d3e7119aa60",
+      "pre_20261110_sha256": "19168e18acec0003a9250fc48afd4bd265f0a0fa25d88eabf5301d3e7119aa60"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/GNNGuard.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\models\\GNNGuard.py",
+      "input_sha256": "cadc91c0dd32c6f60100ae73fa7307851dc091820d871ae9a5c0d39f2b7d436e",
+      "working_sha256": "cadc91c0dd32c6f60100ae73fa7307851dc091820d871ae9a5c0d39f2b7d436e",
+      "pre_20261110_sha256": "cadc91c0dd32c6f60100ae73fa7307851dc091820d871ae9a5c0d39f2b7d436e"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/metric.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\models\\metric.py",
+      "input_sha256": "89ab2671b08a9428ef98f6d08d2bc6eb5bee00455944a2d01f66e87cc5d8a3f4",
+      "working_sha256": "89ab2671b08a9428ef98f6d08d2bc6eb5bee00455944a2d01f66e87cc5d8a3f4",
+      "pre_20261110_sha256": "89ab2671b08a9428ef98f6d08d2bc6eb5bee00455944a2d01f66e87cc5d8a3f4"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/MLP.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\models\\MLP.py",
+      "input_sha256": "b6979fbf68930677bd334ba57ff8eaa12e387827913ebbc82cfba2539500817d",
+      "working_sha256": "b6979fbf68930677bd334ba57ff8eaa12e387827913ebbc82cfba2539500817d",
+      "pre_20261110_sha256": "b6979fbf68930677bd334ba57ff8eaa12e387827913ebbc82cfba2539500817d"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/reconstruct.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\models\\reconstruct.py",
+      "input_sha256": "0fa8aff12292d9633e44e6e1dbbe7507abddfdaed375f4d55d97876c08c855b7",
+      "working_sha256": "0fa8aff12292d9633e44e6e1dbbe7507abddfdaed375f4d55d97876c08c855b7",
+      "pre_20261110_sha256": "0fa8aff12292d9633e44e6e1dbbe7507abddfdaed375f4d55d97876c08c855b7"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/RobustGCN.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\models\\RobustGCN.py",
+      "input_sha256": "9bf9d280bcf3022546dc98becbc613d11e790d05b374d9141ffb098ee7f797cb",
+      "working_sha256": "d4e54f826f519f5dde35136eb8fa4a2904af889fc6caeeef0d4791a371d7728b",
+      "pre_20261110_sha256": "d4e54f826f519f5dde35136eb8fa4a2904af889fc6caeeef0d4791a371d7728b"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/SAGE.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\models\\SAGE.py",
+      "input_sha256": "1c8b3d3a7cc51eb303a51d07868833b7e1fe5f49262c27da2e5aaf31a54f300f",
+      "working_sha256": "1c8b3d3a7cc51eb303a51d07868833b7e1fe5f49262c27da2e5aaf31a54f300f",
+      "pre_20261110_sha256": "1c8b3d3a7cc51eb303a51d07868833b7e1fe5f49262c27da2e5aaf31a54f300f"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/__init__.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\models\\__init__.py",
+      "input_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "working_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5",
+      "pre_20261110_sha256": "818a80dbb72de4adfa0e3ee9a5568d152759e6679d50eafef00e127af13606a5"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/pretraining/GraphCL.py",
+      "copied_from": "D:\\GNNAttackReaserch\\gnn_defense_study_20261029\\upstream\\DShield\\NodeClassificationTasks\\pretraining\\GraphCL.py",
+      "input_sha256": "c0000d520cac9f663549f7fc6cb17307dd4e8afb15982aef78e1e7f2136ec4f9",
+      "working_sha256": "c0000d520cac9f663549f7fc6cb17307dd4e8afb15982aef78e1e7f2136ec4f9",
+      "pre_20261110_sha256": "c0000d520cac9f663549f7fc6cb17307dd4e8afb15982aef78e1e7f2136ec4f9"
+    },
+    {
+      "file": "upstream/ABL/README.md",
+      "working_sha256": "d6be6d2beba853d48a8ab8bbac9154f2c8dec4f154fa291138b4dbfab9cfddc3",
+      "git_blob_sha1": "01afcb89fe9657147a9810759eda12f11fa932b1",
+      "origin_commit": "3fd736ce0906f24b0672b471ae20016362eefde4"
+    },
+    {
+      "file": "upstream/ABL/backdoor_isolation.py",
+      "working_sha256": "ff70af8d2b2d775ad88a8cd7bacb1945e817613a1e9088ead7972e4a6cffd4e6",
+      "git_blob_sha1": "7d1c13087937fa083cb61c452972c5485da0609e",
+      "origin_commit": "3fd736ce0906f24b0672b471ae20016362eefde4"
+    },
+    {
+      "file": "upstream/ABL/backdoor_unlearning.py",
+      "working_sha256": "ac85d1ad92d9b595e445e2552619d706a53284274b609171dbe5046c8ae71153",
+      "git_blob_sha1": "6a6852a7b063853d1078734602975fdb728f50dd",
+      "origin_commit": "3fd736ce0906f24b0672b471ae20016362eefde4"
+    },
+    {
+      "file": "upstream/ABL/config.py",
+      "working_sha256": "a565f043ae0109df420ede0b29a8863862a9a61e29e6a76605659ecaa73fb8c7",
+      "git_blob_sha1": "76757198e7f040e0652951795c8b24e9f6a6ba52",
+      "origin_commit": "3fd736ce0906f24b0672b471ae20016362eefde4"
+    }
+  ],
+  "extra_extracted_function": {
+    "file": "upstream/RIGBD/sampling.py",
+    "origin": "upstream/RIGBD/defense.py::sample_noise_all",
+    "sha256": "9e31096c9d23b8810f7eb00e80fb9f221d7243a0866171ad335abebda9a09c9d"
+  },
+  "note": "迁移先前已记录的作者工作副本；原导入／进度修正保留来源，当前GAT使用原生PyG；公共流程重新实现。",
+  "extracted_20261110": [
+    {
+      "file": "upstream/RIGBD/prune.py",
+      "origin": "help_funcs.py::prune_unrelated_edge",
+      "sha256": "0aafdd4d8b45951b8406ef871bb89abdd1d7579b063857bde663dbac76747c25"
+    },
+    {
+      "file": "upstream/RIGBD/rs_sampling.py",
+      "origin": "models/random_smooth.py::sample_noise_all",
+      "change": "仅移除未使用的self形参",
+      "sha256": "e40a20fa868efd39e0f18d3c82751b6dad69ebc8302347deb66788636a6a62c3"
+    }
+  ],
+  "audit_20261110": "流程审查_20261110.md；本次代码修正_20261110.patch"
+}

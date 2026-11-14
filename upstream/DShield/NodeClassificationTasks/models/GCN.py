@@ -1,4 +1,3 @@
-from tqdm.auto import tqdm
 import logging
 
 import torch
@@ -26,7 +25,7 @@ class GCN(nn.Module):
                  weight_decay=5e-4, layer=2, device=None, layer_norm_first=False, use_ln=False):
         super(GCN, self).__init__()
 
-        assert device is not None, '请明确指定计算设备。'
+        assert device is not None, "Please specify 'device'!"
         self.device = device
         self.n_feat = n_feat
         self.hidden_sizes = [n_hid]
@@ -130,14 +129,14 @@ class GCN(nn.Module):
     def _train_without_val(self, features, edge_index, edge_weight, labels, idx_train, train_iters, verbose):
         self.train()
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='GCN 模型训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(train_iters):
             optimizer.zero_grad()
             output = self.forward(features, edge_index, edge_weight)
             loss_train = F.cross_entropy(output[idx_train], labels[idx_train])
             loss_train.backward()
             optimizer.step()
             if verbose and i % 10 == 0:
-                logger.info('轮数 {}，训练损失：{}'.format(i, loss_train.item()))
+                logger.info('Epoch {}, training loss: {}'.format(i, loss_train.item()))
 
         self.eval()
         output = self.forward(features, edge_index, edge_weight)
@@ -145,13 +144,13 @@ class GCN(nn.Module):
 
     def _train_with_val(self, features, edge_index, edge_weight, labels, idx_train, idx_val, train_iters, verbose):
         if verbose:
-            logger.info('开始训练图神经网络模型')
+            logger.info('=== training gcn model ===')
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
 
         best_loss_val = 100
         best_acc_val = -1.0
         weights = None
-        for i in tqdm(range(train_iters), desc='GCN 模型训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(features, edge_index, edge_weight)
@@ -165,15 +164,15 @@ class GCN(nn.Module):
             acc_val = accuracy(output[idx_val], labels[idx_val])
 
             if verbose and i % 10 == 0:
-                logger.info('轮数 {}，训练损失：{}'.format(i, loss_train.item()))
-                logger.info('验证准确率：{:.4f}'.format(acc_val))
+                logger.info('Epoch {}, training loss: {}'.format(i, loss_train.item()))
+                logger.info("acc_val: {:.4f}".format(acc_val))
             if acc_val > best_acc_val:
                 best_acc_val = acc_val
                 weights = deepcopy(self.state_dict())
-        logger.info('验证集最佳准确率：{:.4f}'.format(best_acc_val))
+        logger.info('Best Accuracy = {:.4f}'.format(best_acc_val))
 
         if verbose:
-            logger.info('根据验证集表现恢复最佳模型参数')
+            logger.info('=== picking the best model according to the performance on validation ===')
         self.load_state_dict(weights)
 
     def test(self, features, edge_index, edge_weight, labels, idx_test):

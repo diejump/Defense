@@ -1,0 +1,93 @@
+{
+  "date": "2026-11-10",
+  "training_datasets": [
+    "Cora"
+  ],
+  "non_Cora_training_executed": false,
+  "attachment_rows": 300,
+  "formal_cora_runs": 24,
+  "rigbd_ugba_reference_ASR": 0.0,
+  "controlled_cases": {
+    "dpgba_controls": 21,
+    "gta_controls": 21,
+    "sampling_controls": 9,
+    "dshield_label_controls": 2,
+    "losplit_seed13_controls": 12
+  },
+  "numeric_checks": {
+    "dataset": "Cora",
+    "GCN_own_leaf_cpu_double_max_difference": 0.0,
+    "attached_count": 27,
+    "all_below_1e_12": true,
+    "DShield_numeric_unit_check_on_Cora_labels": {
+      "constructed_large_loss": true,
+      "results": {
+        "original": {
+          "loss_finite": true,
+          "gradient_finite": false,
+          "loss": 201.79176330566406
+        },
+        "safe": {
+          "loss_finite": true,
+          "gradient_finite": true,
+          "loss": 201.79176330566406
+        }
+      }
+    },
+    "count_aliases_passed": true
+  },
+  "model_reload_verified": {
+    "corrected": 15,
+    "new_baselines": 9
+  },
+  "speed_pairing": {
+    "pairs": 60,
+    "abp_faster_count": 52,
+    "median_ratio_abp_to_losplit": 0.885735246107669,
+    "losplit_ASR_over_50_rows": [
+      {
+        "key": [
+          "Cora",
+          "GTA",
+          "GAT",
+          "13"
+        ],
+        "method": "losplit",
+        "CA": 85.93,
+        "ASR": 85.78,
+        "seconds": 4.881
+      },
+      {
+        "key": [
+          "Cora",
+          "GTA",
+          "GCN",
+          "13"
+        ],
+        "method": "losplit",
+        "CA": 84.81,
+        "ASR": 96.44,
+        "seconds": 2.876
+      },
+      {
+        "key": [
+          "Cora",
+          "GTA",
+          "GraphSAGE",
+          "13"
+        ],
+        "method": "losplit",
+        "CA": 81.48,
+        "ASR": 91.56,
+        "seconds": 2.724
+      }
+    ]
+  },
+  "known_remaining_failures": [
+    "Cora/DPGBA/GCN RIGBD candidate detection",
+    "Cora/DPGBA/GraphSAGE DShield candidate detection",
+    "Cora/GTA/seed13 LoSplit target inference"
+  ],
+  "report": "流程审查_20261110.md",
+  "integrity": "原表、旧模型和真值辅助诊断分别保留；不将诊断混入正式基线。"
+}

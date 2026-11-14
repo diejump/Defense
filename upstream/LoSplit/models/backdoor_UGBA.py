@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from src import metrics as utils
+import utils
 from models.GCN import GCN
 from models.GAT import GAT
 from models.SAGE import GraphSage

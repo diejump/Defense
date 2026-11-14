@@ -1,0 +1,43 @@
+{
+  "pairs": 60,
+  "abp_faster_count": 52,
+  "median_ratio_abp_to_losplit": 0.885735246107669,
+  "losplit_ASR_over_50_rows": [
+    {
+      "key": [
+        "Cora",
+        "GTA",
+        "GAT",
+        "13"
+      ],
+      "method": "losplit",
+      "CA": 85.93,
+      "ASR": 85.78,
+      "seconds": 4.881
+    },
+    {
+      "key": [
+        "Cora",
+        "GTA",
+        "GCN",
+        "13"
+      ],
+      "method": "losplit",
+      "CA": 84.81,
+      "ASR": 96.44,
+      "seconds": 2.876
+    },
+    {
+      "key": [
+        "Cora",
+        "GTA",
+        "GraphSAGE",
+        "13"
+      ],
+      "method": "losplit",
+      "CA": 81.48,
+      "ASR": 91.56,
+      "seconds": 2.724
+    }
+  ]
+}

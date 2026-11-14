@@ -1,60 +1,44 @@
-"""训练完成后才读取测试标签，分别计算CA和ASR。"""
-from pathlib import Path
+"""无防御和ABP的评估；作者比较方法使用各自原始评估代码。"""
 import torch
 from tqdm.auto import tqdm
 from .abp import filter_edges
 from .common import start_clock, elapsed
+from .author_support import logits_of
 
 
 @torch.no_grad()
-def predict(model, graph, training_nodes, method):
-    x, edges, weights = graph
+def predict(model, x, edges, weights, training_nodes, method):
     if method == "abp":
         edges, weights = filter_edges(edges, weights, x.size(0), training_nodes)
     model.eval()
-    output = model(x, edges, weights)
+    output = logits_of(model(x, edges, weights))
     if not torch.isfinite(output).all():
-        raise RuntimeError("模型预测含NaN或无穷值，请检查训练损失与保存权重。")
+        raise RuntimeError("模型预测含非有限值。")
     return output
 
 
-def evaluate(model, data, bundle, method, details, device):
-    evaluation = torch.load(Path(bundle) / "evaluation.pt", map_location=device)
-    graphs = [(evaluation["reference_x"], evaluation["reference_edges"], evaluation["reference_weights"])]
-    if evaluation["target"] is not None:
-        graphs.append((evaluation["changed_x"], evaluation["changed_edges"], evaluation["changed_weights"]))
+def evaluate(inputs, args, device, model, auxiliary=None, entropy_threshold=None):
+    method = args.method
+    edges = torch.cat([inputs["poison_edge_index"], inputs["mask_edge_index"]], dim=1)
+    weights = torch.cat([inputs["poison_edge_weights"], inputs["poison_x"].new_ones(inputs["mask_edge_index"].size(1))])
+    graphs = [(inputs["poison_x"], edges, weights)]
+    if inputs["trigger"] is not None:
+        graphs.append(inputs["trigger"].inject_trigger(inputs["idx_atk"], *graphs[0]))
     outputs = []
-    seconds = []
-    for graph in tqdm(graphs, desc="正常图与触发图评估", unit="张", leave=False):
-        begin = start_clock(device)
-        output = predict(model, graph, data["train"], method)
-        seconds.append(elapsed(begin, device))
-        outputs.append(output)
-    normal = evaluation["clean_nodes"]
-    affected = evaluation["attack_nodes"]
-    ca_hits = int(outputs[0][normal].argmax(-1).eq(evaluation["truth"][normal]).sum())
-    result = {"CA": ca_hits / normal.numel(), "ASR": None,
-              "CA_hits": ca_hits, "CA_denominator": normal.numel(),
-              "ASR_hits": None, "ASR_denominator": affected.numel(),
-              "CA_on_triggered_graph": None,
-              "reference_inference_seconds": seconds[0], "triggered_inference_seconds": None}
-    if evaluation["target"] is not None:
-        asr_hits = int(outputs[1][affected].argmax(-1).eq(evaluation["target"]).sum())
-        result["ASR"] = asr_hits / affected.numel()
-        result["ASR_hits"] = asr_hits
-        result["CA_on_triggered_graph"] = int(outputs[1][normal].argmax(-1).eq(evaluation["truth"][normal]).sum()) / normal.numel()
-        result["triggered_inference_seconds"] = seconds[1]
-    if method == "abp" and evaluation["target"] is not None:
-        old_count = graphs[0][0].size(0)
-        result["old_prediction_changes"] = int(outputs[0].argmax(-1).ne(outputs[1][:old_count].argmax(-1)).sum())
-        result["untriggered_target_predictions"] = int(outputs[0][affected].argmax(-1).eq(evaluation["target"]).sum())
-    if "selected_nodes" in details:
-        selected = set(details["selected_nodes"])
-        attached = set(evaluation["attached"].cpu().tolist())
-        true_positive = len(selected & attached)
-        result["selected_count"] = len(selected)
-        result["selection_TP"] = true_positive
-        result["selection_FP"] = len(selected - attached)
-        result["selection_recall"] = true_positive / len(attached)
-        result["selection_precision"] = true_positive / len(selected) if selected else None
-    return result
+    begin = start_clock(device)
+    for x, edge, weight in tqdm(graphs, desc="正常图与触发图评估", unit="张", leave=False):
+        outputs.append(predict(model, x, edge, weight, inputs["training"]["train"], method))
+    truth = inputs["data"].y
+    normal = inputs["idx_clean_test"]
+    ca_hits = int(outputs[0][normal].argmax(-1).eq(truth[normal]).sum())
+    metrics = {"CA": ca_hits / normal.numel(), "ASR": None, "CA_hits": ca_hits,
+               "CA_denominator": normal.numel(), "ASR_hits": None, "ASR_denominator": 0,
+               "CA_scope": "正常完整测试图上的正常测试节点",
+               "ASR_scope": "完整图整体注入；原标签非目标类攻击测试节点",
+               "prediction_seconds": elapsed(begin, device)}
+    if len(outputs) == 2:
+        target = inputs["evaluation"]["target"]
+        affected = inputs["idx_atk"][truth[inputs["idx_atk"]] != target]
+        hits = int(outputs[1][affected].argmax(-1).eq(target).sum())
+        metrics.update(ASR=hits / affected.numel(), ASR_hits=hits, ASR_denominator=affected.numel())
+    return metrics

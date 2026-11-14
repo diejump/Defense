@@ -1,4 +1,3 @@
-from tqdm.auto import tqdm
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -41,7 +40,7 @@ class MLPAE(nn.Module):
         self.trigger = trigger
 
     def fit(self):
-        for epoch in tqdm(range(self.epochs), desc='DPGBA 特征重建训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for epoch in range(self.epochs):
             output = self.model(self.ori_x)
             loss = self.criterion(output, self.ori_x)
 
@@ -53,7 +52,7 @@ class MLPAE(nn.Module):
         self.model.eval()
         reconstruction_errors = []
         with torch.no_grad():
-            for sample in tqdm(input, desc='DPGBA 重建误差计算', unit='节点', dynamic_ncols=True, leave=False, mininterval=0.5):
+            for sample in input:
                 reconstructed = self.model(sample)
                 loss = self.criterion(reconstructed, sample)
                 reconstruction_errors.append(loss)

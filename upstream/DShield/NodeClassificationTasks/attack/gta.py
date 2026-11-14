@@ -1,4 +1,3 @@
-from tqdm.auto import tqdm
 import copy
 import logging
 
@@ -6,7 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from upstream.DShield.NodeClassificationTasks.models.GCN import GCN
+from models.GCN import GCN
 
 try:
     if 'logger' not in globals():
@@ -218,10 +217,10 @@ class GTA:
         # update the poisoned graph's edge index
         poison_edge_index = torch.cat([edge_index, trojan_edge], dim=1)
 
-        logger.info('开始训练触发生成器及其辅助模型')
+        logger.info('Training Model to Craft Poisoned Graphs')
 
         self.shadow_model.train()
-        for i in tqdm(range(self.trojan_epochs), desc='GTA 辅助模型训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(self.trojan_epochs):
             optimizer_shadow.zero_grad()
             output = self.shadow_model(features, edge_index, edge_weight)
             loss_train_cls = F.cross_entropy(output[train_idx], labels[train_idx])
@@ -230,7 +229,7 @@ class GTA:
 
         self.trojan.train()
         self.shadow_model.eval()
-        for i in tqdm(range(self.trojan_epochs), desc='GTA 触发生成器训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(self.trojan_epochs):
             optimizer_trigger.zero_grad()
 
             # may revise the process of generate
@@ -252,7 +251,7 @@ class GTA:
             # add our adaptive loss
             loss_embedding_dist = calc_euc_dis(features[target_cls_node_idx], trojan_feat).mean()
             if i % 50 == 0:
-                logger.info('附着节点损失：{:.2f}；表示距离损失：{:.2f}'.format(loss_attach_cls.item(), loss_embedding_dist.item()))
+                logger.info('Loss on Attach Idx = {:.2f}@Loss Embedding = {:.2f}'.format(loss_attach_cls.item(), loss_embedding_dist.item()))
 
             loss = torch.abs(loss_attach_cls - loss_train_cls) + self.loss_factor * loss_embedding_dist
 

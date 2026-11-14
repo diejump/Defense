@@ -6,7 +6,7 @@ from torch.nn.parameter import Parameter
 from copy import deepcopy
 # from torch_geometric.nn import GCNConv
 from models._GNNGuard.gcn_conv import GCNConv
-from src import metrics as utils
+import utils
 
 
 class GNNGuard(nn.Module):

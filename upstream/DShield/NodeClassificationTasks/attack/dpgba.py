@@ -1,4 +1,3 @@
-from tqdm.auto import tqdm
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -9,10 +8,10 @@ from copy import deepcopy
 import logging
 import numpy as np
 
-from upstream.DShield.NodeClassificationTasks.models.GCN import GCN
-from upstream.DShield.NodeClassificationTasks.models.MLP import MLP
-from upstream.DShield.NodeClassificationTasks.models.reconstruct import MLPAE
-from upstream.DShield.NodeClassificationTasks.models.metric import accuracy
+from models.GCN import GCN
+from models.MLP import MLP
+from models.reconstruct import MLPAE
+from models.metric import accuracy
 
 try:
     if 'logger' not in globals():
@@ -290,7 +289,7 @@ class DPGBA:
 
         # begin training
         loss_best, best_state_dict = 1e8, None
-        for i in tqdm(range(self.trojan_epochs), desc='DPGBA 触发生成器训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(self.trojan_epochs):
             for j in range(self.inner_epochs):
                 # optimize surrogate model
                 optimizer_shadow.zero_grad()
@@ -315,7 +314,7 @@ class DPGBA:
                 ood_x = torch.cat([selected_features, trojan_feat]).detach()
 
                 # optimize ood detector
-                for k in tqdm(range(self.k), desc='DPGBA 辅助判别模型更新', unit='次', dynamic_ncols=True, leave=False, mininterval=0.5):
+                for k in range(self.k):
                     optimizer_detector.zero_grad()
                     output_detector = self.ood_detector(ood_x)
                     ood_labels = torch.cat([torch.ones(len(trojan_feat), device=self.device), torch.zeros(len(trojan_feat), device=self.device)])
@@ -332,10 +331,10 @@ class DPGBA:
             acc_train_clean = accuracy(output[train_idx], labels[train_idx])
             acc_train_attach = accuracy(output[attach_idx], labels[attach_idx])
             optimizer_trigger.zero_grad()
-            rs = np.random.RandomState(self.seed + i)
+            rs = np.random.RandomState()
             # select target nodes for triggers
             if self.outter_size <= len(unlabeled_idx):
-                idx_outter = torch.cat([attach_idx, unlabeled_idx[rs.choice(len(unlabeled_idx), size=self.outter_size, replace=False)]])
+                idx_outter = torch.cat([attach_idx, unlabeled_idx[rs.choice(len(unlabeled_idx), size=4096, replace=False)]])
             else:
                 idx_outter = torch.cat([attach_idx, unlabeled_idx])
             trojan_feat, trojan_weights = self.trojan(features[idx_outter], self.thrd)  # may revise the process of generate
@@ -386,10 +385,10 @@ class DPGBA:
 
             if i % 50 == 0:
                 logger.info(
-                    '轮数 {}，内层损失：{:.5f}，目标损失：{:.5f}，分布损失：{:.5f}，差异损失：{:.5f}，辅助损失：{:.5f}，类别损失：{:.5f}，分布评分：{:.5f}'\
+                    'Epoch {}, loss_inner: {:.5f}, loss_target: {:.5f},  loss_dis: {:.5f}, loss_diff: {:.5f}, loss_adv: {:.5f}, loss_target_class: {:.5f}, ood_score: {:.5f} ' \
                         .format(i, loss_inner, loss_target, loss_dis, loss_dis, loss_target, loss_target_class,
                                 torch.exp(output_detector[-len(trojan_feat):][:, -1:]).mean()))
-                logger.info('正常训练准确率：{:.4f}，附着节点训练成功率：{:.4f}，外层节点训练成功率：{:.4f}'\
+                logger.info("acc_train_clean: {:.4f}, ASR_train_attach: {:.4f}, ASR_train_outter: {:.4f}" \
                       .format(acc_train_clean, acc_train_attach, acc_train_outter))
         self.trojan.eval()
         self.trojan.load_state_dict(best_state_dict)

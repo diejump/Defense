@@ -1,10 +1,9 @@
-from tqdm.auto import tqdm
 #%%
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from src.metrics import accuracy
+import utils
 from copy import deepcopy
 from torch_geometric.nn import GCNConv
 import numpy as np
@@ -46,7 +45,7 @@ class GCN(nn.Module):
 
         super(GCN, self).__init__()
 
-        assert device is not None, '请明确指定计算设备。'
+        assert device is not None, "Please specify 'device'!"
         self.add_self_loops = add_self_loops
         self.device = device
         self.nfeat = nfeat
@@ -162,7 +161,7 @@ class GCN(nn.Module):
 
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
 
-        for i in tqdm(range(train_iters), desc='LoSplit 源码式恢复训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -183,13 +182,13 @@ class GCN(nn.Module):
         num_classes=labels.max().item() + 1
         mask = torch.zeros_like(labels, dtype=torch.bool)
         mask[idx_attach] = 1  
-        choices = torch.tensor([i for i in range(num_classes) if i != target_label], device=labels.device)
+        choices = torch.tensor([i for i in range(num_classes) if i != target_label])
         random_replacements = choices[torch.randint(0, len(choices), size=(mask.sum(),))]
         reshuffle_labels = labels
         reshuffle_labels[mask] = random_replacements        
 
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='LoSplit 源码式恢复训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -211,7 +210,7 @@ class GCN(nn.Module):
     #Discarding Target Nodes/Only use Clean nodes 
     def finetune3(self, labels, idx_train, idx_val, idx_clean, train_iters, verbose):
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='LoSplit 源码式恢复训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -270,7 +269,7 @@ class GCN(nn.Module):
     #Restore Original Label
     def finetune5(self, labels, idx_train, idx_val, idx_attach, idx_clean, train_iters, verbose, clean_labels):
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='LoSplit 源码式恢复训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5): 
+        for i in range(train_iters): 
             self.train()
             optimizer.zero_grad()
             output= self.forward(self.features, self.edge_index, self.edge_weight)
@@ -285,7 +284,7 @@ class GCN(nn.Module):
     #Feature Reinitialization
     def finetune6(self, labels, idx_train, idx_attach, idx_val, train_iters, verbose, attach_feature):
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='LoSplit 源码式恢复训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5): 
+        for i in range(train_iters): 
             self.train()
             optimizer.zero_grad()
             output= self.forward(attach_feature, self.edge_index, self.edge_weight)
@@ -302,14 +301,14 @@ class GCN(nn.Module):
     def _train_without_val(self, labels, idx_train, train_iters, verbose):
         self.train()
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='LoSplit 源码式恢复训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(train_iters):
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
             loss_train = F.nll_loss(output[idx_train], labels[idx_train])
             loss_train.backward()
             optimizer.step()
             if verbose and i % 10 == 0:
-                print('轮数 {}，训练损失：{}'.format(i, loss_train.item()))
+                print('Epoch {}, training loss: {}'.format(i, loss_train.item()))
         
         self.eval()
         output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -318,12 +317,12 @@ class GCN(nn.Module):
 
     def _train_with_val(self, labels, idx_train, idx_val, train_iters, verbose, num_attach):
         if verbose:
-            print('开始训练图神经网络模型')
+            print('=== training gcn model ===')
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
 
         best_loss_val = 100
         best_acc_val = 0
-        for i in tqdm(range(train_iters), desc='LoSplit 源码式恢复训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -342,11 +341,11 @@ class GCN(nn.Module):
             self.eval()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
             loss_val = F.nll_loss(output[idx_val], labels[idx_val])
-            acc_val = accuracy(output[idx_val], labels[idx_val])
+            acc_val = utils.accuracy(output[idx_val], labels[idx_val])
             
             if verbose and i % 10 == 0:
-                print('轮数 {}，训练损失：{}'.format(i, loss_train.item()))
-                print('验证准确率：{:.4f}'.format(acc_val))
+                print('Epoch {}, training loss: {}'.format(i, loss_train.item()))
+                print("acc_val: {:.4f}".format(acc_val))
             if acc_val > best_acc_val:
                 best_acc_val = acc_val
                 self.output = output
@@ -354,7 +353,7 @@ class GCN(nn.Module):
         # plt.show()
 
         if verbose:
-            print('根据验证集表现恢复最佳模型参数')
+            print('=== picking the best model according to the performance on validation ===')
         self.load_state_dict(weights)
         # torch.cuda.empty_cache()
 
@@ -369,7 +368,7 @@ class GCN(nn.Module):
         self.eval()
         with torch.no_grad():
             output = self.forward(features, edge_index, edge_weight)
-            acc_test = accuracy(output[idx_test], labels[idx_test])
+            acc_test = utils.accuracy(output[idx_test], labels[idx_test])
         # torch.cuda.empty_cache()
         # print("Test set results:",
         #       "loss= {:.4f}".format(loss_test.item()),
@@ -380,7 +379,7 @@ class GCN(nn.Module):
         self.eval()
         output = self.forward(features, edge_index, edge_weight)
         correct_nids = (output.argmax(dim=1)[idx_test]==labels[idx_test]).nonzero().flatten()   # return a tensor
-        acc_test = accuracy(output[idx_test], labels[idx_test])
+        acc_test = utils.accuracy(output[idx_test], labels[idx_test])
         # torch.cuda.empty_cache()
         return acc_test,correct_nids
 

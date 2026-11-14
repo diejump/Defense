@@ -1,12 +1,10 @@
-from tqdm.auto import tqdm
 import logging
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from copy import deepcopy
 import torch_geometric.nn as geo_nn
-from torch_geometric.nn import GATConv as DeterministicGATConv
-from .metric import accuracy
+from models.metric import accuracy
 
 try:
     if 'logger' not in globals():
@@ -25,13 +23,13 @@ class GAT(nn.Module):
                  lr=0.01, weight_decay=5e-4, with_relu=True, with_bias=True, self_loop=True, device=None):
         super(GAT, self).__init__()
 
-        assert device is not None, "请明确指定计算设备。"
+        assert device is not None, "Please specify 'device'!"
         self.device = device
         self.n_feat = n_feat
         self.hidden_sizes = [n_hid]
         self.n_class = n_class
-        self.gc1 = DeterministicGATConv(n_feat, n_hid, heads, dropout=dropout)
-        self.gc2 = DeterministicGATConv(heads * n_hid, n_class, concat=False, dropout=dropout)
+        self.gc1 = geo_nn.GATConv(n_feat, n_hid, heads, dropout=dropout)
+        self.gc2 = geo_nn.GATConv(heads * n_hid, n_class, concat=False, dropout=dropout)
         self.dropout = dropout
         self.lr = lr
         if not with_relu:
@@ -65,25 +63,25 @@ class GAT(nn.Module):
     def _train_without_val(self, features, edge_index, edge_weight, labels, idx_train, train_iters, verbose):
         self.train()
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='DShield GAT模型训练', unit='轮', leave=False, dynamic_ncols=True, mininterval=0.5):
+        for i in range(train_iters):
             optimizer.zero_grad()
             output = self.forward(features, edge_index, edge_weight)
             loss_train = F.cross_entropy(output[idx_train], labels[idx_train])
             loss_train.backward()
             optimizer.step()
             if verbose and i % 10 == 0:
-                logger.info('轮数 {}，训练损失：{}'.format(i, loss_train.item()))
+                logger.info('Epoch {}, training loss: {}'.format(i, loss_train.item()))
 
     def _train_with_val(self, features, edge_index, edge_weight, labels, idx_train, idx_val, train_iters, verbose):
         if verbose:
-            logger.info('开始训练GAT模型')
+            logger.info('=== training gcn model ===')
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
 
         best_loss_val = 100
         best_acc_val = 0
         weights = None
 
-        for i in tqdm(range(train_iters), desc='DShield GAT模型训练', unit='轮', leave=False, dynamic_ncols=True, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(features, edge_index, edge_weight)
@@ -97,14 +95,14 @@ class GAT(nn.Module):
             acc_val = accuracy(output[idx_val], labels[idx_val])
 
             if verbose and i % 10 == 0:
-                logger.info('轮数 {}，训练损失：{}'.format(i, loss_train.item()))
-                logger.info("验证准确率：{:.4f}".format(acc_val))
+                logger.info('Epoch {}, training loss: {}'.format(i, loss_train.item()))
+                logger.info("acc_val: {:.4f}".format(acc_val))
             if acc_val > best_acc_val:
                 best_acc_val = acc_val
                 weights = deepcopy(self.state_dict())
 
         if verbose:
-            logger.info('根据验证集表现恢复最佳模型参数')
+            logger.info('=== picking the best model according to the performance on validation ===')
         self.load_state_dict(weights)
 
     def test(self, features, edge_index, edge_weight, labels, idx_test):

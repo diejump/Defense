@@ -1,4 +1,3 @@
-from tqdm.auto import tqdm
 import logging
 from copy import deepcopy
 from typing import Any
@@ -9,8 +8,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-from upstream.DShield.NodeClassificationTasks.models.GCN import GCN
-from upstream.DShield.NodeClassificationTasks.models.metric import accuracy
+from models.GCN import GCN
+from models.metric import accuracy
 
 try:
     if 'logger' not in globals():
@@ -225,7 +224,7 @@ class UGBA:
         # future change it to bi-level optimization
         loss_best = 1e8
         best_state_dict = None
-        for i in tqdm(range(self.trojan_epochs), desc='UGBA 触发生成器训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(self.trojan_epochs):
             self.trojan.eval()
             self.shadow_model.train()
             output = None
@@ -296,10 +295,10 @@ class UGBA:
                 loss_best = float(loss_outer)
 
             if i % 10 == 0:
-                logger.info('轮数 {}，外层损失：{:.5f}，内层损失：{:.5f}，目标分类损失：{:.5f}，特征相似损失：{:.5f}'.format(
+                logger.info('Epoch {}, loss_outer: {:.5f},  loss_inner: {:.5f}, loss_target: {:.5f}, homo loss: {:.5f} '.format(
                     i, loss_outer.item(), loss_inner, loss_target, loss_homo
                 ))
-                logger.info('正常训练准确率：{:.4f}，附着节点训练成功率：{:.4f}，外层节点训练成功率：{:.4f}'.format(
+                logger.info("acc_train_clean: {:.4f}, ASR_train_attach: {:.4f}, ASR_train_outer: {:.4f}".format(
                     acc_train_clean, acc_train_attach, acc_train_outer
                 ))
 

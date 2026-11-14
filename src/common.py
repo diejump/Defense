@@ -82,4 +82,8 @@ def code_hashes():
     for folder in [root / "src", root / "upstream"]:
         for path in sorted(folder.rglob("*.py")):
             result[path.relative_to(root).as_posix()] = file_hash(path)
+    paths = list(root.glob("*.py")) + list((root / "configs").glob("*.json"))
+    paths += [root / "pyproject.toml", root / "uv.lock"]
+    for path in paths:
+        result[path.relative_to(root).as_posix()] = file_hash(path)
     return result

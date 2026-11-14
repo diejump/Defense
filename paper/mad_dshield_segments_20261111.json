@@ -1,0 +1,458 @@
+{
+  "date": "2026-11-11",
+  "MAD_commit": "f47cef85ecc70e1946a3da79c3e5fb37723594fb",
+  "algorithm_policy": "复制原始完整post-poisoned段与原函数调用；不重写数学。",
+  "full_labels_policy": "用户已确认MAD全原节点标签条件；此适配不以伪标签替代。",
+  "records": [
+    {
+      "adapter": "src/author_methods/mad_gta.py",
+      "adapter_sha256": "b3e0060161f61184219a49284295637b3033dd317428a18146a8c41bb00748bb",
+      "source": "upstream/MAD/MAD/GTA_and_UGBA/run_GTA.py",
+      "source_sha256": "84c24dec127fffea18caf6cf23d2743f6d37a716a2a254a288bf868919e7afae",
+      "source_git_blob_sha1": "ee4362177e49d80d25dd493e7948ddeec0347940",
+      "segments": [
+        {
+          "kind": "native_helper",
+          "name": "get_idx_clean_and_trigger",
+          "first_line": 172,
+          "last_line": 180,
+          "original_scope": "module",
+          "adapter_scope": "module"
+        },
+        {
+          "kind": "native_helper",
+          "name": "calculate_entropy",
+          "first_line": 185,
+          "last_line": 194,
+          "original_scope": "module",
+          "adapter_scope": "module"
+        },
+        {
+          "kind": "native_helper",
+          "name": "calculate_std",
+          "first_line": 252,
+          "last_line": 254,
+          "original_scope": "module",
+          "adapter_scope": "module"
+        },
+        {
+          "kind": "native_helper",
+          "name": "calculate_entropy_predict",
+          "first_line": 256,
+          "last_line": 257,
+          "original_scope": "module",
+          "adapter_scope": "module"
+        },
+        {
+          "kind": "complete_post_poisoned_flow",
+          "first_line": 222,
+          "last_line": 385
+        },
+        {
+          "kind": "native_single_model_evaluation",
+          "first_line": 280,
+          "last_line": 372,
+          "removed": [
+            {
+              "kind": "pure_print",
+              "first_line": 289,
+              "last_line": 289
+            },
+            {
+              "kind": "pure_print",
+              "first_line": 302,
+              "last_line": 302
+            },
+            {
+              "kind": "pure_print",
+              "first_line": 363,
+              "last_line": 363
+            },
+            {
+              "kind": "pure_print",
+              "first_line": 367,
+              "last_line": 367
+            },
+            {
+              "kind": "pure_print",
+              "first_line": 369,
+              "last_line": 369
+            },
+            {
+              "kind": "outer_five_seed_accumulation",
+              "first_line": 371,
+              "last_line": 371
+            },
+            {
+              "kind": "outer_five_seed_accumulation",
+              "first_line": 372,
+              "last_line": 372
+            }
+          ]
+        }
+      ],
+      "changes": [
+        {
+          "kind": "preserve_original_helper_scope",
+          "name": "calculate_std",
+          "first_line": 252,
+          "last_line": 254,
+          "description": "原顶层辅助函数整体保留在模块层，函数体及调用不变。"
+        },
+        {
+          "kind": "preserve_original_helper_scope",
+          "name": "calculate_entropy_predict",
+          "first_line": 256,
+          "last_line": 257,
+          "description": "原顶层辅助函数整体保留在模块层，函数体及调用不变。"
+        },
+        {
+          "line": 260,
+          "kind": "requested_final_model",
+          "original": "models = ['GAT']",
+          "replacement": "models = [requested_model]"
+        },
+        {
+          "line": 280,
+          "kind": "native_tuple_tensor_interface",
+          "original": "        output = test_model(poison_x,poison_edge_index,poison_edge_weights)",
+          "replacement": "        output = logits_of(test_model(poison_x,poison_edge_index,poison_edge_weights))"
+        },
+        {
+          "line": 361,
+          "kind": "native_tuple_tensor_interface",
+          "original": "        output = test_model(induct_x,induct_edge_index,induct_edge_weights)",
+          "replacement": "        output = logits_of(test_model(induct_x,induct_edge_index,induct_edge_weights))"
+        },
+        {
+          "kind": "fixed_bundle_input",
+          "description": "仅注入已冻结原图、污染图、索引与作者生成器接口；不运行入口前半段生成。"
+        },
+        {
+          "kind": "read_only_budget_metadata",
+          "description": "只读返回作者实际bkd_tn_nodes和idx_attach列表，不改变监督集合。"
+        },
+        {
+          "kind": "evaluation_frame_and_callback",
+          "description": "每次fit后只读记录训练模式与RNG；纯评估回调复制原预测段，仅去掉外层五种子累计与打印。"
+        },
+        {
+          "kind": "measurement_and_capture",
+          "description": "插入同步计时及原生模型对象收集，不改原运算和五种子循环。"
+        }
+      ]
+    },
+    {
+      "adapter": "src/author_methods/mad_ugba.py",
+      "adapter_sha256": "a631f11b3e2e0a9d670492fd1fae4aee6329ea379d021fb0e2c734e0df381f14",
+      "source": "upstream/MAD/MAD/GTA_and_UGBA/run_adaptive.py",
+      "source_sha256": "39d1827492ce33b277a1c295df01157f4ebc58817b13f1f70e991e7ab0c898ce",
+      "source_git_blob_sha1": "5c51612ffe5f09b194a298ebf02d6c81da527779",
+      "segments": [
+        {
+          "kind": "native_helper",
+          "name": "get_idx_clean_and_trigger",
+          "first_line": 215,
+          "last_line": 223,
+          "original_scope": "module",
+          "adapter_scope": "module"
+        },
+        {
+          "kind": "native_helper",
+          "name": "calculate_std",
+          "first_line": 229,
+          "last_line": 231,
+          "original_scope": "module",
+          "adapter_scope": "module"
+        },
+        {
+          "kind": "native_helper",
+          "name": "calculate_entropy",
+          "first_line": 233,
+          "last_line": 242,
+          "original_scope": "module",
+          "adapter_scope": "module"
+        },
+        {
+          "kind": "native_helper",
+          "name": "calculate_entropy_predict",
+          "first_line": 279,
+          "last_line": 280,
+          "original_scope": "module",
+          "adapter_scope": "module"
+        },
+        {
+          "kind": "complete_post_poisoned_flow",
+          "first_line": 247,
+          "last_line": 406
+        },
+        {
+          "kind": "native_single_model_evaluation",
+          "first_line": 302,
+          "last_line": 392,
+          "removed": [
+            {
+              "kind": "pure_print",
+              "first_line": 311,
+              "last_line": 311
+            },
+            {
+              "kind": "pure_print",
+              "first_line": 321,
+              "last_line": 321
+            },
+            {
+              "kind": "pure_print",
+              "first_line": 379,
+              "last_line": 379
+            },
+            {
+              "kind": "pure_print",
+              "first_line": 383,
+              "last_line": 383
+            },
+            {
+              "kind": "pure_print",
+              "first_line": 385,
+              "last_line": 385
+            },
+            {
+              "kind": "outer_five_seed_accumulation",
+              "first_line": 390,
+              "last_line": 390
+            },
+            {
+              "kind": "outer_five_seed_accumulation",
+              "first_line": 391,
+              "last_line": 391
+            }
+          ]
+        }
+      ],
+      "changes": [
+        {
+          "kind": "preserve_original_helper_scope",
+          "name": "calculate_entropy_predict",
+          "first_line": 279,
+          "last_line": 280,
+          "description": "原顶层辅助函数整体保留在模块层，函数体及调用不变。"
+        },
+        {
+          "line": 283,
+          "kind": "requested_final_model",
+          "original": "models = ['GCN']",
+          "replacement": "models = [requested_model]"
+        },
+        {
+          "line": 302,
+          "kind": "native_tuple_tensor_interface",
+          "original": "        output = test_model(poison_x,poison_edge_index,poison_edge_weights)",
+          "replacement": "        output = logits_of(test_model(poison_x,poison_edge_index,poison_edge_weights))"
+        },
+        {
+          "line": 376,
+          "kind": "native_tuple_tensor_interface",
+          "original": "        output = test_model(induct_x,induct_edge_index,induct_edge_weights)",
+          "replacement": "        output = logits_of(test_model(induct_x,induct_edge_index,induct_edge_weights))"
+        },
+        {
+          "kind": "fixed_bundle_input",
+          "description": "仅注入已冻结原图、污染图、索引与作者生成器接口；不运行入口前半段生成。"
+        },
+        {
+          "kind": "read_only_budget_metadata",
+          "description": "只读返回作者实际bkd_tn_nodes和idx_attach列表，不改变监督集合。"
+        },
+        {
+          "kind": "evaluation_frame_and_callback",
+          "description": "每次fit后只读记录训练模式与RNG；纯评估回调复制原预测段，仅去掉外层五种子累计与打印。"
+        },
+        {
+          "kind": "measurement_and_capture",
+          "description": "插入同步计时及原生模型对象收集，不改原运算和五种子循环。"
+        }
+      ]
+    },
+    {
+      "adapter": "src/author_methods/mad_dpgba.py",
+      "adapter_sha256": "488affba8cbe623cca6a36ae0e4f31aecf592e2e2ae7951a99380758e6fd86a3",
+      "source": "upstream/MAD/MAD/DPGBA/DPGBA/run/run_adaptive.py",
+      "source_sha256": "0d7298d1c1f7c3a7aa3696b087dc5b5aa9a6d5e88e9fecf793637675da4229d5",
+      "source_git_blob_sha1": "94e57c725cbd88fa60629d0e95e3e1895c1523aa",
+      "segments": [
+        {
+          "kind": "native_helper",
+          "name": "get_idx_clean_and_trigger",
+          "first_line": 214,
+          "last_line": 222,
+          "original_scope": "module",
+          "adapter_scope": "module"
+        },
+        {
+          "kind": "native_helper",
+          "name": "calculate_entropy",
+          "first_line": 231,
+          "last_line": 240,
+          "original_scope": "module",
+          "adapter_scope": "module"
+        },
+        {
+          "kind": "native_helper",
+          "name": "calculate_std",
+          "first_line": 284,
+          "last_line": 286,
+          "original_scope": "module",
+          "adapter_scope": "module"
+        },
+        {
+          "kind": "native_helper",
+          "name": "calculate_entropy_predict",
+          "first_line": 288,
+          "last_line": 289,
+          "original_scope": "module",
+          "adapter_scope": "module"
+        },
+        {
+          "kind": "complete_post_poisoned_flow",
+          "first_line": 244,
+          "last_line": 407
+        },
+        {
+          "kind": "native_single_model_evaluation",
+          "first_line": 310,
+          "last_line": 393,
+          "removed": [
+            {
+              "kind": "outer_five_seed_accumulation",
+              "first_line": 387,
+              "last_line": 390
+            },
+            {
+              "kind": "outer_five_seed_accumulation",
+              "first_line": 392,
+              "last_line": 392
+            },
+            {
+              "kind": "outer_five_seed_accumulation",
+              "first_line": 388,
+              "last_line": 388
+            },
+            {
+              "kind": "outer_five_seed_accumulation",
+              "first_line": 390,
+              "last_line": 390
+            }
+          ]
+        }
+      ],
+      "changes": [
+        {
+          "kind": "preserve_original_helper_scope",
+          "name": "calculate_std",
+          "first_line": 284,
+          "last_line": 286,
+          "description": "原顶层辅助函数整体保留在模块层，函数体及调用不变。"
+        },
+        {
+          "kind": "preserve_original_helper_scope",
+          "name": "calculate_entropy_predict",
+          "first_line": 288,
+          "last_line": 289,
+          "description": "原顶层辅助函数整体保留在模块层，函数体及调用不变。"
+        },
+        {
+          "line": 292,
+          "kind": "requested_final_model",
+          "original": "models = ['GCN']",
+          "replacement": "models = [requested_model]"
+        },
+        {
+          "line": 310,
+          "kind": "native_tuple_tensor_interface",
+          "original": "        output, x = test_model(poison_x,poison_edge_index,poison_edge_weights)",
+          "replacement": "        output = logits_of(test_model(poison_x,poison_edge_index,poison_edge_weights))"
+        },
+        {
+          "line": 379,
+          "kind": "native_tuple_tensor_interface",
+          "original": "        output, x = test_model(induct_x,induct_edge_index,induct_edge_weights)",
+          "replacement": "        output = logits_of(test_model(induct_x,induct_edge_index,induct_edge_weights))"
+        },
+        {
+          "kind": "fixed_bundle_input",
+          "description": "仅注入已冻结原图、污染图、索引与作者生成器接口；不运行入口前半段生成。"
+        },
+        {
+          "kind": "read_only_budget_metadata",
+          "description": "只读返回作者实际bkd_tn_nodes和idx_attach列表，不改变监督集合。"
+        },
+        {
+          "kind": "evaluation_frame_and_callback",
+          "description": "每次fit后只读记录训练模式与RNG；纯评估回调复制原预测段，仅去掉外层五种子累计与打印。"
+        },
+        {
+          "kind": "measurement_and_capture",
+          "description": "插入同步计时及原生模型对象收集，不改原运算和五种子循环。"
+        }
+      ]
+    },
+    {
+      "adapter": "src/author_methods/dshield.py",
+      "adapter_sha256": "3ac4de3885bbdc6e8385a80a5017a0208966d33b3a5f4404f194b1b82f44f541",
+      "source": "upstream/DShield/NodeClassificationTasks/main.py",
+      "source_sha256": "3ae7703443d452a3c573668d3401890bad8001b2ad943965379cd61baf906e4d",
+      "source_git_blob_sha1": "74bf946ed23f543e3310cb97d1dc41eb0d01b9f9",
+      "segments": [
+        {
+          "kind": "complete_defense_and_evaluation",
+          "first_line": 562,
+          "last_line": 690
+        },
+        {
+          "kind": "native_single_model_evaluation",
+          "first_line": 610,
+          "last_line": 690,
+          "removed": [
+            {
+              "kind": "pure_print",
+              "first_line": 619,
+              "last_line": 619
+            },
+            {
+              "kind": "pure_print",
+              "first_line": 689,
+              "last_line": 689
+            },
+            {
+              "kind": "pure_print",
+              "first_line": 690,
+              "last_line": 690
+            }
+          ]
+        }
+      ],
+      "changes": [
+        {
+          "line": 642,
+          "kind": "local_node_identity_mapping"
+        },
+        {
+          "kind": "fixed_bundle_input",
+          "description": "保留原完整标签、原fit和dshield调用，不补伪标签。"
+        },
+        {
+          "kind": "read_only_budget_metadata",
+          "description": "只读返回作者实际train_node_idx和attach_idx列表，不改变监督集合。"
+        },
+        {
+          "kind": "evaluation_frame_and_callback",
+          "description": "原Defend结束时只读记录模式与RNG；回调保留正常测试、逐节点二跳注入、原节点累计及原no_grad位置。"
+        },
+        {
+          "kind": "measurement_and_capture",
+          "description": "仅插入同步计时和逐节点命中日志。"
+        }
+      ]
+    }
+  ]
+}

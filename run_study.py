@@ -12,9 +12,14 @@ def run_backbone(folder, args, progress):
     rows = []
     for method in args.methods:
         output = args.output_root / "runs" / args.dataset / args.attack / ("seed" + str(args.seed)) / args.model / method
-        record = run_method(folder, output, method, args)
-        rows.append({"dataset": args.dataset, "attack": args.attack, "seed": args.seed,
-                     "model": args.model, "method": method, "metrics": record["metrics"]})
+        try:
+            record = run_method(folder, output, method, args)
+            rows.append({"dataset": args.dataset, "attack": args.attack, "seed": args.seed,
+                         "model": args.model, "method": method, "status": "complete", "metrics": record["metrics"]})
+        except Exception as error:
+            rows.append({"dataset": args.dataset, "attack": args.attack, "seed": args.seed,
+                         "model": args.model, "method": method, "status": "failed", "error": str(error)})
+            tqdm.write(method + "失败，详细原因已保留，继续其他组合：" + str(error))
         progress.update(1)
     return rows
 
@@ -65,8 +70,12 @@ def main():
         rows.extend(run_dataset(current, progress))
     progress.close()
     all_rows = summarize(args.output_root)
-    save_json(args.output_root / "completion.json", {"status": "complete", "batch_runs": len(rows), "runs": len(all_rows)})
-    print("全部组合完成，原始结果与汇总：" + str(args.output_root))
+    failures = [row for row in rows if row["status"] != "complete"]
+    status = "incomplete" if failures else "complete"
+    save_json(args.output_root / "completion.json", {"status": status, "batch_runs": len(rows), "runs": len(all_rows), "failures": failures})
+    print("本批处理结束，失败数：" + str(len(failures)) + "，原始结果与汇总：" + str(args.output_root))
+    if failures:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

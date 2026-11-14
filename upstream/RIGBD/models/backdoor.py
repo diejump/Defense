@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from src import metrics as utils
+import utils
 from models.MLP import MLP
 from models.GCN import GCN
 from torch.nn.functional import cosine_similarity

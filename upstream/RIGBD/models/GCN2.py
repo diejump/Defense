@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from torch_geometric.nn import GCN2Conv
 from torch_geometric.nn.conv.gcn_conv import gcn_norm
 import torch.optim as optim
-from src import metrics as utils
+import utils
 import torch.nn as nn
 from copy import deepcopy
 from torch.nn.parameter import Parameter

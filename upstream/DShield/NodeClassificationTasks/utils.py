@@ -37,7 +37,7 @@ def seed_experiment(seed=0):
     # TODO: Do we need deterministic in cudnn ? Double check
     cudnn.deterministic = True
     cudnn.benchmark = False
-    logger.info('已设置各随机过程的种子')
+    logger.info('Seeded everything')
 
 
 def get_split(data, device, node_idx=None):

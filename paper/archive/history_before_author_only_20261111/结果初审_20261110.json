@@ -1,0 +1,123 @@
+{
+  "date": "2026-11-10",
+  "source": "C:\\Users\\无所事事的牛肉\\Desktop\\summary.md",
+  "rows": 300,
+  "datasets": [
+    "Citeseer",
+    "Cora"
+  ],
+  "attacks": [
+    "DPGBA",
+    "GTA"
+  ],
+  "groups": {
+    "Citeseer/DPGBA/GCN": {
+      "n": 5,
+      "ASR_mean": 0.96912,
+      "ASR_over_50_percent": 5,
+      "ASR_over_90_percent": 5
+    },
+    "Citeseer/DPGBA/GAT": {
+      "n": 5,
+      "ASR_mean": 0.35102,
+      "ASR_over_50_percent": 2,
+      "ASR_over_90_percent": 0
+    },
+    "Citeseer/DPGBA/GraphSAGE": {
+      "n": 5,
+      "ASR_mean": 0.9584,
+      "ASR_over_50_percent": 5,
+      "ASR_over_90_percent": 5
+    },
+    "Citeseer/GTA/GCN": {
+      "n": 5,
+      "ASR_mean": 0.18524000000000002,
+      "ASR_over_50_percent": 1,
+      "ASR_over_90_percent": 1
+    },
+    "Citeseer/GTA/GAT": {
+      "n": 5,
+      "ASR_mean": 0.1255,
+      "ASR_over_50_percent": 1,
+      "ASR_over_90_percent": 0
+    },
+    "Citeseer/GTA/GraphSAGE": {
+      "n": 5,
+      "ASR_mean": 0.16577999999999998,
+      "ASR_over_50_percent": 1,
+      "ASR_over_90_percent": 0
+    },
+    "Cora/DPGBA/GCN": {
+      "n": 5,
+      "ASR_mean": 0.97422,
+      "ASR_over_50_percent": 5,
+      "ASR_over_90_percent": 5
+    },
+    "Cora/DPGBA/GAT": {
+      "n": 5,
+      "ASR_mean": 0.74046,
+      "ASR_over_50_percent": 4,
+      "ASR_over_90_percent": 3
+    },
+    "Cora/DPGBA/GraphSAGE": {
+      "n": 5,
+      "ASR_mean": 0.95378,
+      "ASR_over_50_percent": 5,
+      "ASR_over_90_percent": 5
+    },
+    "Cora/GTA/GCN": {
+      "n": 5,
+      "ASR_mean": 0.976,
+      "ASR_over_50_percent": 5,
+      "ASR_over_90_percent": 5
+    },
+    "Cora/GTA/GAT": {
+      "n": 5,
+      "ASR_mean": 0.51822,
+      "ASR_over_50_percent": 2,
+      "ASR_over_90_percent": 0
+    },
+    "Cora/GTA/GraphSAGE": {
+      "n": 5,
+      "ASR_mean": 0.95112,
+      "ASR_over_50_percent": 5,
+      "ASR_over_90_percent": 4
+    }
+  },
+  "time_outliers": [
+    {
+      "dataset": "Citeseer",
+      "attack": "GTA",
+      "model": "GAT",
+      "seed": 11,
+      "method": "dshield",
+      "CA": 0.741,
+      "ASR": 0.0,
+      "seconds": 7840.351
+    }
+  ],
+  "abp": {
+    "n": 60,
+    "time_median": 2.4370000000000003,
+    "time_max": 5.168,
+    "ASR_over_50_percent": 0
+  },
+  "rigbd": {
+    "n": 60,
+    "time_median": 8.5205,
+    "time_max": 33.854,
+    "ASR_over_50_percent": 41
+  },
+  "losplit": {
+    "n": 60,
+    "time_median": 2.8555,
+    "time_max": 5.024,
+    "ASR_over_50_percent": 3
+  },
+  "dshield": {
+    "n": 60,
+    "time_median": 138.907,
+    "time_max": 7840.351,
+    "ASR_over_50_percent": 10
+  }
+}

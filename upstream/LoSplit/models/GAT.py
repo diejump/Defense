@@ -1,13 +1,11 @@
-from tqdm.auto import tqdm
 #%%
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from src import metrics as utils
+import utils
 from copy import deepcopy
-from torch_geometric.nn import GCNConv
-from torch_geometric.nn import GATConv
+from torch_geometric.nn import GCNConv,GATConv
 import numpy as np
 import scipy.sparse as sp
 from torch_geometric.utils import from_scipy_sparse_matrix
@@ -18,7 +16,7 @@ class GAT(nn.Module):
 
         super(GAT, self).__init__()
 
-        assert device is not None, "请明确指定计算设备。"
+        assert device is not None, "Please specify 'device'!"
         self.device = device
         self.nfeat = nfeat
         self.hidden_sizes = [nhid]
@@ -91,8 +89,7 @@ class GAT(nn.Module):
                 self.finetune5(self.labels, idx_train, idx_val, attach, clean, train_iters, verbose, clean_labels)
             elif finetune6 == True:
                 self.finetune6(self.labels, idx_train, idx_val, attach, train_iters, verbose, attach_feature)
-            else:
-                self._train_with_val(self.labels, idx_train, idx_val, train_iters, verbose)
+            self._train_with_val(self.labels, idx_train, idx_val, train_iters, verbose)
 
     #RIGBD Finetune
     def finetune1(self, labels, idx_train, idx_val, idx_attach, idx_clean, train_iters, verbose):
@@ -107,7 +104,7 @@ class GAT(nn.Module):
 
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
 
-        for i in tqdm(range(train_iters), desc='LoSplit GAT模型训练', unit='轮', leave=False, dynamic_ncols=True, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -128,13 +125,13 @@ class GAT(nn.Module):
         num_classes=labels.max().item() + 1
         mask = torch.zeros_like(labels, dtype=torch.bool)
         mask[idx_attach] = 1  
-        choices = torch.tensor([i for i in range(num_classes) if i != target_label], device=labels.device)
-        random_replacements = choices[torch.randint(0, len(choices), size=(int(mask.sum()),), device=labels.device)]
+        choices = torch.tensor([i for i in range(num_classes) if i != target_label])
+        random_replacements = choices[torch.randint(0, len(choices), size=(mask.sum(),))]
         reshuffle_labels = labels
         reshuffle_labels[mask] = random_replacements        
 
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='LoSplit GAT模型训练', unit='轮', leave=False, dynamic_ncols=True, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -156,7 +153,7 @@ class GAT(nn.Module):
     #Only use Clean nodes 
     def finetune3(self, labels, idx_train, idx_val, idx_attach, idx_clean, train_iters, verbose, target_label):
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='LoSplit GAT模型训练', unit='轮', leave=False, dynamic_ncols=True, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -172,7 +169,7 @@ class GAT(nn.Module):
    #Discarding Target Nodes/Only use Clean nodes 
     def finetune3(self, labels, idx_train, idx_val, idx_clean, train_iters, verbose):
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='LoSplit GAT模型训练', unit='轮', leave=False, dynamic_ncols=True, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -231,7 +228,7 @@ class GAT(nn.Module):
     #Restore Original Label
     def finetune5(self, labels, idx_train, idx_val, idx_attach, idx_clean, train_iters, verbose, clean_labels):
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='LoSplit GAT模型训练', unit='轮', leave=False, dynamic_ncols=True, mininterval=0.5): 
+        for i in range(train_iters): 
             self.train()
             optimizer.zero_grad()
             output= self.forward(self.features, self.edge_index, self.edge_weight)
@@ -246,7 +243,7 @@ class GAT(nn.Module):
     #Feature Reinitialization
     def finetune6(self, labels, idx_train, idx_attach, idx_val, train_iters, verbose, attach_feature):
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='LoSplit GAT模型训练', unit='轮', leave=False, dynamic_ncols=True, mininterval=0.5): 
+        for i in range(train_iters): 
             self.train()
             optimizer.zero_grad()
             output= self.forward(attach_feature, self.edge_index, self.edge_weight)
@@ -262,14 +259,14 @@ class GAT(nn.Module):
     def _train_without_val(self, labels, idx_train, train_iters, verbose):
         self.train()
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='LoSplit GAT模型训练', unit='轮', leave=False, dynamic_ncols=True, mininterval=0.5):
+        for i in range(train_iters):
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
             loss_train = F.nll_loss(output[idx_train], labels[idx_train])
             loss_train.backward()
             optimizer.step()
             if verbose and i % 10 == 0:
-                print('轮数 {}，训练损失：{}'.format(i, loss_train.item()))
+                print('Epoch {}, training loss: {}'.format(i, loss_train.item()))
 
         self.eval()
         output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -277,13 +274,13 @@ class GAT(nn.Module):
 
     def _train_with_val(self, labels, idx_train, idx_val, train_iters, verbose):
         if verbose:
-            print('开始训练GAT模型')
+            print('=== training gcn model ===')
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
 
         best_loss_val = 100
         best_acc_val = 0
 
-        for i in tqdm(range(train_iters), desc='LoSplit GAT模型训练', unit='轮', leave=False, dynamic_ncols=True, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -299,15 +296,15 @@ class GAT(nn.Module):
             acc_val = utils.accuracy(output[idx_val], labels[idx_val])
             
             if verbose and i % 10 == 0:
-                print('轮数 {}，训练损失：{}'.format(i, loss_train.item()))
-                print("验证准确率：{:.4f}".format(acc_val))
+                print('Epoch {}, training loss: {}'.format(i, loss_train.item()))
+                print("acc_val: {:.4f}".format(acc_val))
             if acc_val > best_acc_val:
                 best_acc_val = acc_val
                 self.output = output
                 weights = deepcopy(self.state_dict())
 
         if verbose:
-            print('根据验证集表现恢复最佳模型参数')
+            print('=== picking the best model according to the performance on validation ===')
         self.load_state_dict(weights)
 
 

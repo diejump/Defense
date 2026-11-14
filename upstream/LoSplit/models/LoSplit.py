@@ -1,10 +1,9 @@
-from tqdm.auto import tqdm
 #%%
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from src.metrics import accuracy
+import utils
 from copy import deepcopy
 from torch_geometric.nn import GCNConv
 import numpy as np
@@ -50,7 +49,7 @@ class LoSplit(nn.Module):
 
         super(LoSplit, self).__init__()
 
-        assert device is not None, '请明确指定计算设备。'
+        assert device is not None, "Please specify 'device'!"
         self.add_self_loops = add_self_loops
         self.device = device
         self.nfeat = nfeat
@@ -124,14 +123,14 @@ class LoSplit(nn.Module):
 
     def split_node(self, idx_train, labels, num_epoch, num_attach):
         idx_losses_record, losses_np = self.compute_loss_value(idx_train, labels)
-        labels_list = labels[idx_train[idx_losses_record]].detach().cpu().numpy()
+        labels_list = labels[idx_train[idx_losses_record]]
         labels_np = np.array(labels_list)
         
 
         loss_features = np.tile(losses_np.reshape(-1, 1), (1, 5))  
         loss_features += np.random.normal(0, 0.01, size=loss_features.shape)  
 
-        classes = np.unique(labels_list)
+        classes = np.unique(labels)
 
         class_vars = [np.var(losses_np[labels_list == c]) for c in classes]
         target_label = classes[np.argmax(class_vars)]
@@ -302,7 +301,7 @@ class LoSplit(nn.Module):
         deltas = []
         target_labels = []
 
-        for i in tqdm(range(split_epoch), desc='LoSplit 早期节点划分', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(split_epoch):
             # print(f"epoch{i}")
             self.train()
     
@@ -366,7 +365,7 @@ class LoSplit(nn.Module):
         self.eval()
         with torch.no_grad():
             output = self.forward(features, edge_index, edge_weight)
-            acc_test = accuracy(output[idx_test], labels[idx_test])
+            acc_test = utils.accuracy(output[idx_test], labels[idx_test])
         # torch.cuda.empty_cache()
         # print("Test set results:",
         #       "loss= {:.4f}".format(loss_test.item()),
@@ -376,3 +375,4 @@ class LoSplit(nn.Module):
 
     
 
+    

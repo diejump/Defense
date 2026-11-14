@@ -1,4 +1,3 @@
-from tqdm.auto import tqdm
 import copy
 import logging
 from itertools import chain
@@ -17,11 +16,10 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 import torch_geometric.nn as geo_nn
-from torch_geometric.nn import GATConv as DeterministicGATConv
 from torch import autograd
 from torch_geometric.utils import index_to_mask, k_hop_subgraph
 
-from upstream.DShield.NodeClassificationTasks.models.metric import accuracy
+from models.metric import accuracy
 
 from umap import UMAP
 from sklearn.cluster import HDBSCAN
@@ -62,14 +60,14 @@ class UnsupervisedModel(nn.Module):
             ])
         elif arch == 'GAT':
             self.encoder = nn.ModuleList([
-                DeterministicGATConv(input_dim, proj_dim // 8, 8),
+                geo_nn.GATConv(input_dim, proj_dim // 8, 8),
                 nn.ReLU(),
-                DeterministicGATConv(proj_dim, hidden_dim // 8, 8)
+                geo_nn.GATConv(proj_dim, hidden_dim // 8, 8)
             ])
             self.contra_head = nn.ModuleList([
-                DeterministicGATConv(hidden_dim, proj_dim // 8, 8),
+                geo_nn.GATConv(hidden_dim, proj_dim // 8, 8),
                 nn.ReLU(),
-                DeterministicGATConv(proj_dim, input_dim, 1, concat=False)
+                geo_nn.GATConv(proj_dim, input_dim, 1, concat=False)
             ])
         elif arch == 'GraphSage':
             self.encoder = nn.ModuleList([
@@ -131,9 +129,9 @@ class SupervisedModel(nn.Module):
             ])
         elif arch == 'GAT':
             self.encoder = nn.ModuleList([
-                DeterministicGATConv(input_dim, proj_dim // 8, 8),
+                geo_nn.GATConv(input_dim, proj_dim // 8, 8),
                 nn.ReLU(),
-                DeterministicGATConv(proj_dim, hidden_dim // 8, 8)
+                geo_nn.GATConv(proj_dim, hidden_dim // 8, 8)
             ])
         elif arch == 'GraphSage':
             self.encoder = nn.ModuleList([
@@ -193,7 +191,7 @@ class Augmentor(ABC):
 
     @abstractmethod
     def augment(self, g: Graph) -> Graph:
-        raise NotImplementedError(f"图增强操作需要提供具体实现。")
+        raise NotImplementedError(f"GraphAug.augment should be implemented.")
 
     def __call__(
         self, x: torch.FloatTensor, feat_import: torch.FloatTensor,
@@ -249,7 +247,7 @@ def dropout_edge(edge_index: torch.LongTensor,
         return np.exp(x) / np.sum(np.exp(x))
 
     if p < 0. or p > 1.:
-        raise ValueError(f'随机丢弃概率须在 0 到 1 之间，当前值：{p}')
+        raise ValueError(f'Dropout probability has to be between 0 and 1 (got {p}')
 
     if not training or p == 0.0:
         edge_mask = edge_index.new_ones(edge_index.size(1), dtype=torch.bool)
@@ -371,7 +369,7 @@ def pretrain(model: UnsupervisedModel, optimizer, augmentor,
     num_nodes, num_feat = feat.shape
     aug1, aug2 = augmentor
 
-    for epoch in tqdm(range(1, epochs + 1), desc='DShield 自监督预训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+    for epoch in range(1, epochs + 1):
         optimizer.zero_grad()
 
         # Sample positive and negative samples according to labels
@@ -409,7 +407,7 @@ def pretrain(model: UnsupervisedModel, optimizer, augmentor,
         reshaped_feat = feat.reshape(num_nodes, 1, num_feat)
         reshaped_rx1 = rx1.reshape(num_nodes, num_feat, 1)
         reshaped_rx2 = rx2.reshape(num_nodes, num_feat, 1)
-        loss_r = 0.5 * (1 - calc_similarity(reshaped_feat[cur_node_idx], reshaped_rx1[cur_node_idx])) ** kappa2 +\
+        loss_r = 0.5 * (1 - calc_similarity(reshaped_feat[cur_node_idx], reshaped_rx1[cur_node_idx])) ** kappa2 + \
             0.5 * (1 - calc_similarity(reshaped_feat[cur_node_idx], reshaped_rx2[cur_node_idx])) ** kappa2
         loss_r = loss_r.mean()
 
@@ -419,7 +417,7 @@ def pretrain(model: UnsupervisedModel, optimizer, augmentor,
         optimizer.step()
 
         if epoch == 1 or epoch % 50 == 0:
-            logger.info('预训练轮数：{}；总损失：{:.4f}；对比损失：{:.4f}；重建损失：{:.4f}'.format(
+            logger.info('Pretrain@Epoch = {}@Loss = {:.4f}@Loss Contra = {:.4f}@Loss Recon = {:.4f}'.format(
                 epoch, loss.item(), loss_c.item(), loss_r.item()
             ))
 
@@ -438,14 +436,14 @@ def classify(model, optimizer,
     neg_edge_weight = edge_weight[edge_mask]
     clf_loss_fn = nn.CrossEntropyLoss(reduction='mean')
     best_acc_val, best_asr, best_balance_metric, best_round, best_state_dict = 0., 0., 0., 0, copy.deepcopy(model.state_dict())
-    for epoch in tqdm(range(1, epochs + 1), desc='DShield 分类恢复训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+    for epoch in range(1, epochs + 1):
         model.train()
         optimizer.zero_grad()
 
         # Classification
         pos_logits = model(feat, edge_index, edge_weight)
         neg_logits = model(feat, neg_edge_index, neg_edge_weight)
-        loss_pos, loss_neg = torch.tensor(0, dtype=torch.float32, device=device),\
+        loss_pos, loss_neg = torch.tensor(0, dtype=torch.float32, device=device), \
             torch.tensor(0, dtype=torch.float32, device=device)
         loss_clf_pos, loss_clf_neg = loss_pos, loss_neg
         if pos_node_idx.shape[0] > 0:
@@ -474,10 +472,10 @@ def classify(model, optimizer,
 
         if epoch == 1 or epoch % 50 == 0:
             logger.info(
-                '分类恢复轮数：{}；总损失：{:.4f}；保留组分类损失：{:.4f}；候选组分类损失：{:.4f}'.format(
+                'Classify@Epoch = {}@Loss = {:.4f}@Loss Clf[P] = {:.4f}@Loss Clf[N] = {:.4f}'.format(
                     epoch, loss.item(), loss_clf_pos.mean().item(), loss_clf_neg.mean().item()
             ))
-    logger.info('最佳轮数：{}；验证准确率：{:.4f}；候选节点训练置信指标：{:4f}'.format(best_round, best_acc_val, best_asr))
+    logger.info('Best Round = {}@Best ACC = {:.4f}@Best ASR = {:4f}'.format(best_round, best_acc_val, best_asr))
     model.load_state_dict(best_state_dict)
     return model
 
@@ -553,7 +551,7 @@ def plot_scatter(embeds, labels, num_classes, dataset_name='Cora', attack_name='
     all_colors = ['#7fc97f', '#beaed4', '#fdc086', '#ffff99', '#386cb0', '#f0027f', '#bf5b16', '#000000']
     for label in range(0, num_classes):
         points = plot_points[labels == label]
-        logger.info('类别：{}；样本数量：{}'.format(label + 1, len(points)))
+        logger.info('Label = {}@Number of Samples = {}'.format(label + 1, len(points)))
         ax.scatter(
             points[:, 0], points[:, 1],
             s=30, c=all_colors[label % len(all_colors)], label='{}'.format(label + 1), alpha=1.0, edgecolors='face'
@@ -582,7 +580,7 @@ def attribute_importance(model, feat, edge_index, edge_weight, labels) -> Tuple[
     if feat.shape[0] < 20000:
         # Too slow if the graph is too large
         list_node_idx = np.arange(labels.shape[0], dtype=np.int32).tolist()
-        for node_idx in tqdm(list_node_idx, desc='DShield 属性重要性计算', unit='节点', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for node_idx in list_node_idx:
             node_logits = poisoned_logits[node_idx]
             feat_grad = autograd.grad(outputs=node_logits[labels[node_idx]], inputs=n_feat, retain_graph=True)[0]
             node_feat_grad = feat_grad[node_idx]
@@ -627,13 +625,13 @@ def obtain_sample_inter_relationship(refer_model: nn.Module, feat, poisoned_feat
 
     model.train()
     best_state_dict = copy.deepcopy(model.state_dict())
-    for idx in tqdm(range(1, epochs + 1), desc='DShield 类别关系训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+    for idx in range(1, epochs + 1):
         optimizer.zero_grad()
 
         pos_logits = model(feat, pos_reserved_edge_index, pos_reserved_edge_weight)
         neg_logits = model(poisoned_feat, neg_reserved_edge_index, neg_reserved_edge_weight)
 
-        loss_pos, loss_neg = torch.tensor(0, dtype=torch.float32, device=device),\
+        loss_pos, loss_neg = torch.tensor(0, dtype=torch.float32, device=device), \
             torch.tensor(0, dtype=torch.float32, device=device)
         loss_clf_pos, loss_clf_neg = loss_pos, loss_neg
         if len(train_idx) > 0:
@@ -651,7 +649,7 @@ def obtain_sample_inter_relationship(refer_model: nn.Module, feat, poisoned_feat
             break
         if idx == 1 or idx % 50 == 0:
             logger.info(
-                '关系验证类别：{}；轮数：{}；总分类损失：{:.4f}；保留组损失：{:.4f}；候选组损失：{:.4f}'.format(
+                'Inter relationship@Label = {}@Idx = {}@Clf Loss = {:.4f}@Clf Loss [Pos] = {:.4f}@Clf Loss [Neg] = {:.4f}'.format(
                     c_id, idx, loss.item(), loss_clf_pos.mean().item(), loss_clf_neg.mean().item()
                 )
             )
@@ -664,7 +662,7 @@ def obtain_sample_inter_relationship(refer_model: nn.Module, feat, poisoned_feat
     neg_embedding = obtain_mid_embeddings(model, poisoned_feat, neg_reserved_edge_index)[neg_idx]
     mean2neg_dists = calc_euc_dis(pos_embedding, neg_embedding)
 
-    logger.info('类别编号：{}；保留组与候选组之间的距离：[{}]'.format(
+    logger.info('Label ID = {}@Distance Between Pos And Neg Nodes = [{}]'.format(
         c_id, ', '.join(['{:.4f}'.format(v) for v in mean2neg_dists[0].cpu().tolist()])
     ))
     return mean2neg_dists[0].cpu().numpy()
@@ -736,9 +734,8 @@ def dshield(poisoned_model, feat, edge_index, edge_weight, labels,
     optimizer = optim.Adam(classify_model.parameters(), lr=lr, weight_decay=weight_decay)
 
     list_attach_node_idx = attach_idx.cpu().tolist()
-    logger.info('评估用真实附着节点记录：[{}]'.format(', '.join('{}'.format(n) for n in list_attach_node_idx)))
+    logger.info('Malicious Nodes = [{}]'.format(', '.join('{}'.format(n) for n in list_attach_node_idx)))
 
-    round_progress = tqdm(total=classify_rounds, desc='DShield 防御轮次', unit='轮', dynamic_ncols=True)
     n_round = 0
     while n_round < classify_rounds:
         n_round += 1
@@ -751,7 +748,7 @@ def dshield(poisoned_model, feat, edge_index, edge_weight, labels,
         poisoned_import_attribute = attribute_import * feat
         class2list_pos_nodes, class2list_neg_nodes, class2sample_relation = {}, {}, {}
         dist_diff_gain_list, feat_diff_gain_list = [], []
-        for c_id in tqdm(range(num_classes), desc='DShield 类别筛选与验证', unit='类', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for c_id in range(num_classes):
             # Pick up nodes with `c_id` class
             cls_node_idx = train_node_idx[train_labels == c_id]
             num_cls_nodes = cls_node_idx.shape[0]
@@ -791,7 +788,7 @@ def dshield(poisoned_model, feat, edge_index, edge_weight, labels,
             dist_diff_gain_list.append(dist_diff_info_gain.item())
             feat_diff_gain_list.append(feat_diff_info_gain.item())
 
-            dist_matrix = balance_factor * dist_diff_info_gain / (dist_diff_info_gain + feat_diff_info_gain) * dist_diff_matrix +\
+            dist_matrix = balance_factor * dist_diff_info_gain / (dist_diff_info_gain + feat_diff_info_gain) * dist_diff_matrix + \
                 (1 - balance_factor) * feat_diff_info_gain / (dist_diff_info_gain + feat_diff_info_gain) * feat_diff_matrix
 
             # HDBSCAN for clustering two clusters
@@ -810,7 +807,7 @@ def dshield(poisoned_model, feat, edge_index, edge_weight, labels,
                 clu2cls_node_idx[clu_id] = cls_clu_node_idx.cpu().tolist()
 
             for clu_id in range(num_clu_labels):
-                logger.info('类别：{}；分组编号：{}；组内节点：[{}]'.format(
+                logger.info('Label = {}@Cluster ID = {}@Clu Node Idx = [{}]'.format(
                     c_id, clu_id, ', '.join('{}'.format(n) for n in clu2cls_node_idx[clu_id])
                 ))
 
@@ -825,7 +822,7 @@ def dshield(poisoned_model, feat, edge_index, edge_weight, labels,
                 class2list_neg_nodes[c_id].extend(clu2cls_node_idx[clu_id])
 
         list_candidate_neg_nodes, list_malicious_dist = [], []
-        for c_id in tqdm(range(num_classes), desc='DShield 类别筛选与验证', unit='类', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for c_id in range(num_classes):
             all_pos_nodes = []
             for i in range(num_classes):
                 all_pos_nodes.extend(class2list_pos_nodes[i])
@@ -852,12 +849,12 @@ def dshield(poisoned_model, feat, edge_index, edge_weight, labels,
         malicious_node_mask = mad_based_outlier(malicious_dist, thresh=thresh)
         malicious_nodes = np.array(list_candidate_neg_nodes)[malicious_node_mask]
 
-        for c_id in tqdm(range(num_classes), desc='DShield 类别筛选与验证', unit='类', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for c_id in range(num_classes):
             cur_list_pos_nodes = class2list_pos_nodes[c_id]
             cur_list_pos_nodes.extend(list(set(class2list_neg_nodes[c_id]) - set(malicious_nodes)))
             cur_list_neg_nodes = list(set(class2list_neg_nodes[c_id]) & set(malicious_nodes))
 
-            logger.info('类别：{}；保留节点数：{}；候选剔除节点数：{}；候选节点编号：[{}]'.format(
+            logger.info('Label = {}@Number of Nodes = {}@Number of Malicious Nodes = {}@Number of Malicious Nodes = [{}]'.format(
                 c_id, len(cur_list_pos_nodes), len(cur_list_neg_nodes), ', '.join([str(i) for i in cur_list_neg_nodes])
             ))
             list_pos_nodes.extend(cur_list_pos_nodes)
@@ -867,7 +864,7 @@ def dshield(poisoned_model, feat, edge_index, edge_weight, labels,
         neg_node_idx = torch.tensor(list_neg_nodes, dtype=torch.long, device=device)
 
         logger.info(
-            '监督节点总数：{}；保留节点：{}；候选剔除节点：{}；保留组中的评估附着节点：{}；候选组中的评估附着节点：{}'.format(
+            'Number of Total Nodes = {}@Number of Reserved Nodes = {}@Number of Abandoned Nodes = {}@Number of Reserved Poisoned Nodes = {}@Number of Obtained Poisoned Nodes = {}'.format(
                 train_node_idx.shape[0],
                 pos_node_idx.shape[0],
                 neg_node_idx.shape[0],
@@ -880,9 +877,7 @@ def dshield(poisoned_model, feat, edge_index, edge_weight, labels,
             classify_model, optimizer,
             feat, edge_index, edge_weight, labels, kappa3, train_idx, neg_node_idx, val_idx, neg_node_idx, classify_epochs
         )
-        round_progress.update(1)
 
-    round_progress.close()
     if rtn_node_idx is True:
         return classify_model, neg_node_idx
     return classify_model

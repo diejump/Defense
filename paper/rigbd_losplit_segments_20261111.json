@@ -1,0 +1,382 @@
+{
+  "date": "2026-11-11",
+  "approach": "原作者入口片段提取，未重新实现算法",
+  "files": {
+    "src/author_methods/rigbd.py": {
+      "source": "upstream/RIGBD/defense.py",
+      "source_sha256": "e8dca79dbf15c6cdf77f5b6b09e717dc3defe6cea444333940240f0d0b446588",
+      "segments": [
+        [
+          184,
+          220
+        ],
+        [
+          221,
+          328
+        ],
+        [
+          329,
+          349
+        ]
+      ],
+      "lifted_functions": [
+        [
+          "sample_noise_all",
+          232,
+          263
+        ],
+        [
+          "find_index",
+          294,
+          304
+        ]
+      ],
+      "adaptations": [
+        "输入变量绑定",
+        "模块级提升原函数",
+        "K/drop常量参数化",
+        "外层Tensor/Tuple读取",
+        "阶段计时与结果封装",
+        "不复制片段内未使用的help_funcs导入；保留原models.construct工厂导入"
+      ],
+      "internal_seed_note": "抽取开始点位于原入口初始化和生成器准备之后；片段内没有重新播种。",
+      "evaluation": {
+        "segments": [
+          [
+            329,
+            345
+          ]
+        ],
+        "omitted_diagnostic_prints": [
+          [
+            342,
+            342
+          ],
+          [
+            343,
+            343
+          ]
+        ],
+        "scalar_policy": "保留原CA/ASR标量类型；不新增eval或no_grad，不重设随机种子。",
+        "statement_check": {
+          "original_top_level_statements": 10,
+          "ordered_author_statements_preserved": true,
+          "normalization": "仅外层logits_of、未使用的Tuple附加值读取、K/drop与模型列表参数化。"
+        },
+        "segment_details": [
+          {
+            "first_line": 329,
+            "last_line": 345,
+            "text_sha256": "3a1d4d47ebbb1137945da8c5a06f540a0c412293b40c58def7596ac2093dbd35"
+          }
+        ]
+      },
+      "evaluation_frame_note": "最终fit之后、原最终预测之前只读捕获model.training及CPU/CUDA随机状态。",
+      "segment_details": [
+        {
+          "first_line": 184,
+          "last_line": 220,
+          "text_sha256": "ee57253aa47379e78995a620246a202b7ed2d03ded74b587890522d064cbff66"
+        },
+        {
+          "first_line": 221,
+          "last_line": 328,
+          "text_sha256": "dd1ffc3fe82f1531692a1cdf7f2f693d3904fcb16121815ab6756c3d23a20aa6"
+        },
+        {
+          "first_line": 329,
+          "last_line": 349,
+          "text_sha256": "72169f7f7baf3f2f2d639105120bc2d778e80e917cab555818709104589024c1"
+        }
+      ],
+      "statement_check": {
+        "original_top_level_statements": 64,
+        "ordered_author_statements_preserved": true,
+        "normalization": "仅外层logits_of、未使用的Tuple附加值读取、K/drop与模型列表参数化。"
+      },
+      "lifted_function_checks": {
+        "sample_noise_all": {
+          "ast_identical": true,
+          "text_sha256": "a9b4cb67883a2a2ca2ab5862174122f7293eb5930f12375eefedee168b5a0689"
+        },
+        "find_index": {
+          "ast_identical": true,
+          "text_sha256": "e86b94b691c0b85a7e619d3d9f4390cfe29a22c349afebe1ebd3d6f31cbab6d0"
+        }
+      },
+      "generated_sha256": "d18bf49e3d820aa818cca532070507d47af8c2259037874c0bc09724fcc14203"
+    },
+    "src/author_methods/losplit_gta.py": {
+      "source": "upstream/LoSplit/GTA_LoSplit.py",
+      "source_sha256": "b66b5b23c040f8c5a5ad1a70b285916c8d5025fea28bb9df5d798e0e987bc23f",
+      "segments": [
+        [
+          228,
+          286
+        ],
+        [
+          287,
+          294
+        ],
+        [
+          295,
+          309
+        ],
+        [
+          310,
+          312
+        ],
+        [
+          313,
+          365
+        ]
+      ],
+      "adaptations": [
+        "输入变量绑定",
+        "原已有标签目标过滤",
+        "外层Tensor/Tuple读取",
+        "阶段计时与结果封装"
+      ],
+      "model_namespace": "upstream/LoSplit",
+      "internal_seed_note": "原抽取片段内无重新播种；参考训练与全部原模型构造顺序保留。",
+      "evaluation": {
+        "segments": [
+          [
+            313,
+            345
+          ]
+        ],
+        "omitted_diagnostic_prints": [],
+        "scalar_policy": "保留原CA/ASR标量类型；不新增eval或no_grad，不重设随机种子。",
+        "statement_check": {
+          "original_top_level_statements": 8,
+          "ordered_author_statements_preserved": true,
+          "normalization": "仅外层logits_of、未使用的Tuple附加值读取、K/drop与模型列表参数化。"
+        },
+        "segment_details": [
+          {
+            "first_line": 313,
+            "last_line": 345,
+            "text_sha256": "a15ca83324f8a7c408ca1d69eaa8dcd501283ed994626e825750b4625cdf65f1"
+          }
+        ]
+      },
+      "evaluation_frame_note": "最终fit之后、原最终预测之前只读捕获model.training及CPU/CUDA随机状态。",
+      "segment_details": [
+        {
+          "first_line": 228,
+          "last_line": 286,
+          "text_sha256": "d866bf91b3f8a976c3140f8449ab13e43d851c6aa250d9e90bbf7c97533fb8bc"
+        },
+        {
+          "first_line": 287,
+          "last_line": 294,
+          "text_sha256": "92e9986e17d80e8f59e2b7dd56254c19233b9d58b20b0d1b05f23f412f6d77a8"
+        },
+        {
+          "first_line": 295,
+          "last_line": 309,
+          "text_sha256": "4a0965ed30937deb49183c40c39dcc92d2f8f2fcfabcc443585179cd9f16e023"
+        },
+        {
+          "first_line": 310,
+          "last_line": 312,
+          "text_sha256": "506cb489412972330440296d0ac320ce1d21849481e30534db2d31bf491ecbb6"
+        },
+        {
+          "first_line": 313,
+          "last_line": 365,
+          "text_sha256": "27ba619646d2669043f973d9dc5e1f530d357e4a1cd6f4af769f5a3951b18ea0"
+        }
+      ],
+      "statement_check": {
+        "original_top_level_statements": 59,
+        "ordered_author_statements_preserved": true,
+        "normalization": "仅外层logits_of、未使用的Tuple附加值读取、K/drop与模型列表参数化。"
+      },
+      "generated_sha256": "c4f82567aeac7e70ba1429f30ee029f43de93dd05f2cafbda836da23665b3e8e"
+    },
+    "src/author_methods/losplit_ugba.py": {
+      "source": "upstream/LoSplit/UGBA_LoSplit.py",
+      "source_sha256": "bf455cf05c2f205702f8612bbee46013792664c9ee47bd2c22eeb79a004cd085",
+      "segments": [
+        [
+          240,
+          316
+        ],
+        [
+          317,
+          324
+        ],
+        [
+          325,
+          339
+        ],
+        [
+          340,
+          342
+        ],
+        [
+          343,
+          395
+        ]
+      ],
+      "adaptations": [
+        "输入变量绑定",
+        "原已有标签目标过滤",
+        "外层Tensor/Tuple读取",
+        "阶段计时与结果封装"
+      ],
+      "model_namespace": "upstream/LoSplit",
+      "internal_seed_note": "原抽取片段内无重新播种；参考训练与全部原模型构造顺序保留。",
+      "evaluation": {
+        "segments": [
+          [
+            343,
+            375
+          ]
+        ],
+        "omitted_diagnostic_prints": [],
+        "scalar_policy": "保留原CA/ASR标量类型；不新增eval或no_grad，不重设随机种子。",
+        "statement_check": {
+          "original_top_level_statements": 8,
+          "ordered_author_statements_preserved": true,
+          "normalization": "仅外层logits_of、未使用的Tuple附加值读取、K/drop与模型列表参数化。"
+        },
+        "segment_details": [
+          {
+            "first_line": 343,
+            "last_line": 375,
+            "text_sha256": "a15ca83324f8a7c408ca1d69eaa8dcd501283ed994626e825750b4625cdf65f1"
+          }
+        ]
+      },
+      "evaluation_frame_note": "最终fit之后、原最终预测之前只读捕获model.training及CPU/CUDA随机状态。",
+      "segment_details": [
+        {
+          "first_line": 240,
+          "last_line": 316,
+          "text_sha256": "ddaa3e9d3641b2de237b73edcc68ed666155d9980e38a75820f36817d1fe35a5"
+        },
+        {
+          "first_line": 317,
+          "last_line": 324,
+          "text_sha256": "92e9986e17d80e8f59e2b7dd56254c19233b9d58b20b0d1b05f23f412f6d77a8"
+        },
+        {
+          "first_line": 325,
+          "last_line": 339,
+          "text_sha256": "4a0965ed30937deb49183c40c39dcc92d2f8f2fcfabcc443585179cd9f16e023"
+        },
+        {
+          "first_line": 340,
+          "last_line": 342,
+          "text_sha256": "506cb489412972330440296d0ac320ce1d21849481e30534db2d31bf491ecbb6"
+        },
+        {
+          "first_line": 343,
+          "last_line": 395,
+          "text_sha256": "27ba619646d2669043f973d9dc5e1f530d357e4a1cd6f4af769f5a3951b18ea0"
+        }
+      ],
+      "statement_check": {
+        "original_top_level_statements": 63,
+        "ordered_author_statements_preserved": true,
+        "normalization": "仅外层logits_of、未使用的Tuple附加值读取、K/drop与模型列表参数化。"
+      },
+      "generated_sha256": "f7d6f82b6d8cd88f6076319ae90812f81377ff0f6b14ad174f014bf262926a0e"
+    },
+    "src/author_methods/losplit_dpgba.py": {
+      "source": "upstream/LoSplit/DPGBA/DPGBA_LoSplit.py",
+      "source_sha256": "eb2d7ea00adcf031b2cd05b480c7b3de3ddcc8d84f426ced54e907e2e8a4b5a4",
+      "segments": [
+        [
+          231,
+          291
+        ],
+        [
+          292,
+          300
+        ],
+        [
+          301,
+          314
+        ],
+        [
+          315,
+          317
+        ],
+        [
+          318,
+          364
+        ]
+      ],
+      "adaptations": [
+        "输入变量绑定",
+        "原已有标签目标过滤",
+        "外层Tensor/Tuple读取",
+        "阶段计时与结果封装",
+        "原models=['GCN']仅参数化为[requested_model]；保留原for循环，原模型内部问题不修复",
+        "仅将Prune辅助导入指向LoSplit根目录原函数；两个分支对应函数AST相同，避免未使用的faiss依赖"
+      ],
+      "model_namespace": "upstream/LoSplit/DPGBA",
+      "internal_seed_note": "原抽取片段内无重新播种；参考训练与全部原模型构造顺序保留。",
+      "evaluation": {
+        "segments": [
+          [
+            318,
+            344
+          ]
+        ],
+        "omitted_diagnostic_prints": [],
+        "scalar_policy": "保留原CA/ASR标量类型；不新增eval或no_grad，不重设随机种子。",
+        "statement_check": {
+          "original_top_level_statements": 8,
+          "ordered_author_statements_preserved": true,
+          "normalization": "仅外层logits_of、未使用的Tuple附加值读取、K/drop与模型列表参数化。"
+        },
+        "segment_details": [
+          {
+            "first_line": 318,
+            "last_line": 344,
+            "text_sha256": "3fc728033446d215bbbb987137dce0951bcda33ea82b3d3d0b2872494b14531e"
+          }
+        ]
+      },
+      "evaluation_frame_note": "最终fit之后、原最终预测之前只读捕获model.training及CPU/CUDA随机状态。",
+      "segment_details": [
+        {
+          "first_line": 231,
+          "last_line": 291,
+          "text_sha256": "a949d8c3899063693c23617adf082843e9f8647f141ef47fc323324626fa1da6"
+        },
+        {
+          "first_line": 292,
+          "last_line": 300,
+          "text_sha256": "a08e022ff24ca7f74c33df09af3e47e834cc452327022949f5ac39e75ae495a7"
+        },
+        {
+          "first_line": 301,
+          "last_line": 314,
+          "text_sha256": "dd565ae0a84a174db46ca5afeab0d9304e84ccd68b1f43b8698fb92025303d96"
+        },
+        {
+          "first_line": 315,
+          "last_line": 317,
+          "text_sha256": "506cb489412972330440296d0ac320ce1d21849481e30534db2d31bf491ecbb6"
+        },
+        {
+          "first_line": 318,
+          "last_line": 364,
+          "text_sha256": "91ab7c4fbf51431324fd111cbc64a19c5e81a006a54f4c2803e6a1dccefc40c6"
+        }
+      ],
+      "statement_check": {
+        "original_top_level_statements": 39,
+        "ordered_author_statements_preserved": true,
+        "normalization": "仅外层logits_of、未使用的Tuple附加值读取、K/drop与模型列表参数化。"
+      },
+      "generated_sha256": "876c6e5e04cd2d75bd6b1158a54c48ae8c6750770849b74aeae5cf3151d61a3f"
+    }
+  }
+}

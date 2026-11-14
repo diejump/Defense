@@ -1,4 +1,3 @@
-from tqdm.auto import tqdm
 # #%%
 # import torch
 # import torch.nn as nn
@@ -286,7 +285,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from src.metrics import accuracy
+import utils
 from copy import deepcopy
 from torch_geometric.nn import GCNConv
 import numpy as np
@@ -300,7 +299,7 @@ class GCN(nn.Module):
 
         super(GCN, self).__init__()
 
-        assert device is not None, '请明确指定计算设备。'
+        assert device is not None, "Please specify 'device'!"
         self.add_self_loops = add_self_loops
         self.device = device
         self.nfeat = nfeat
@@ -402,7 +401,7 @@ class GCN(nn.Module):
 
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
 
-        for i in tqdm(range(train_iters), desc='RIGBD 模型训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -483,7 +482,7 @@ class GCN(nn.Module):
     def _train_without_val(self, labels, idx_train, train_iters, verbose):
         self.train()
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='RIGBD 模型训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(train_iters):
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
             loss_train = F.nll_loss(output[idx_train], labels[idx_train])
@@ -491,7 +490,7 @@ class GCN(nn.Module):
             loss_train.backward()
             optimizer.step()
             if verbose and i % 10 == 0:
-                print('轮数 {}，训练损失：{}'.format(i, loss_train.item()))
+                print('Epoch {}, training loss: {}'.format(i, loss_train.item()))
 
         self.eval()
         output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -500,13 +499,13 @@ class GCN(nn.Module):
 
     def _train_with_val(self, labels, idx_train, idx_val, train_iters, verbose):
         if verbose:
-            print('开始训练图神经网络模型')
+            print('=== training gcn model ===')
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
 
         best_loss_val = 100
         best_acc_val = 0
 
-        for i in tqdm(range(train_iters), desc='RIGBD 模型训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
@@ -520,7 +519,7 @@ class GCN(nn.Module):
             self.eval()
             output = self.forward(self.features, self.edge_index, self.edge_weight)
             loss_val = F.nll_loss(output[idx_val], labels[idx_val])
-            acc_val = accuracy(output[idx_val], labels[idx_val])
+            acc_val = utils.accuracy(output[idx_val], labels[idx_val])
             
             # if verbose and i % 10 == 0:
             # print('Epoch {}, training loss: {}'.format(i, loss_train.item()))
@@ -531,7 +530,7 @@ class GCN(nn.Module):
                 # weights = deepcopy(self.state_dict())
 
         if verbose:
-            print('根据验证集表现恢复最佳模型参数')
+            print('=== picking the best model according to the performance on validation ===')
         # self.load_state_dict(weights)
         # torch.cuda.empty_cache()
 
@@ -549,7 +548,7 @@ class GCN(nn.Module):
             output = self.forward(features, edge_index, edge_weight)
             # print(torch.exp(output[idx_test]))
             # print(output[idx_test].max(1)[1])
-            acc_test = accuracy(output[idx_test], labels[idx_test])
+            acc_test = utils.accuracy(output[idx_test], labels[idx_test])
         # torch.cuda.empty_cache()
         # print("Test set results:",
         #       "loss= {:.4f}".format(loss_test.item()),
@@ -560,7 +559,7 @@ class GCN(nn.Module):
         self.eval()
         output = self.forward(features, edge_index, edge_weight)
         correct_nids = (output.argmax(dim=1)[idx_test]==labels[idx_test]).nonzero().flatten()   # return a tensor
-        acc_test = accuracy(output[idx_test], labels[idx_test])
+        acc_test = utils.accuracy(output[idx_test], labels[idx_test])
         # torch.cuda.empty_cache()
         return acc_test,correct_nids
 

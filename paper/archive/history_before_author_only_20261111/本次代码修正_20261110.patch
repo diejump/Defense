@@ -1,0 +1,753 @@
+--- before/src/config.py
++++ after/src/config.py
+@@ -6,7 +6,8 @@
+ DATASETS = ["Cora", "Citeseer", "Pubmed", "Physics", "Flickr"]
+ MODELS = ["GCN", "GAT", "GraphSAGE"]
+ ATTACKS = ["GTA", "UGBA", "DPGBA"]
+-METHODS = ["none", "abp", "rigbd", "losplit", "dshield"]
++METHODS = ["none", "abp", "rigbd", "losplit", "dshield", "rs", "abl", "prune"]
++DEFAULT_METHODS = ["none", "abp", "rigbd", "losplit", "dshield"]
+ 
+ 
+ def parser(description):
+@@ -14,7 +15,7 @@
+     p.add_argument("--dataset", choices=DATASETS, default="Cora", help="数据集")
+     p.add_argument("--model", choices=MODELS, default="GCN", help="最终分类骨架")
+     p.add_argument("--attack", choices=ATTACKS, default="UGBA", help="生成方法")
+-    p.add_argument("--methods", nargs="+", choices=METHODS, default=METHODS, help="需要执行的方法")
++    p.add_argument("--methods", nargs="+", choices=METHODS, default=DEFAULT_METHODS, help="需要执行的方法；RS、ABL、Prune按需加入")
+     p.add_argument("--seed", type=int, default=10, help="生成与模型训练种子；没有隐含偏移")
+     p.add_argument("--split-seed", type=int, default=10, help="固定节点划分种子")
+     p.add_argument("--device", default="cuda:0", help="设备，例如cuda:0或cpu")
+@@ -28,7 +29,7 @@
+     p.add_argument("--weight-decay", type=float, default=0.0005, help="分类权重衰减")
+     p.add_argument("--dropout", type=float, default=0.5, help="分类随机丢弃比例")
+     p.add_argument("--poison-fraction", type=float, default=0.01, help="训练附着数量占原节点总数的比例")
+-    p.add_argument("--poison-count", type=int, default=None, help="显式附着数量；设置后优先于比例")
++    p.add_argument("--poison-count", "--vs-number", "--vs_number", dest="poison_count", type=int, default=None, help="附着的原节点数量；三个名称等价，设置后优先于比例")
+     p.add_argument("--target", type=int, default=0, help="生成目标类别，防御不使用该参数")
+     p.add_argument("--trigger-size", type=int, default=3, help="每组新增节点数")
+     p.add_argument("--attack-epochs", type=int, default=400, help="生成器训练轮数")
+@@ -48,6 +49,9 @@
+     p.add_argument("--class-weight", type=float, default=1.0, help="DPGBA目标类项权重")
+     p.add_argument("--rigbd-probe-epochs", type=int, default=1000, help="RIGBD同骨架评分模型训练轮数")
+     p.add_argument("--rigbd-repeats", type=int, default=20, help="RIGBD随机丢边次数")
++    p.add_argument("--rigbd-probe-checkpoint", choices=["author", "best_validation", "last"], default="author", help="评分模型检查点；author为GCN末轮、GAT和GraphSAGE最佳验证轮")
++    p.add_argument("--rigbd-drop-ratio", type=float, default=0.5, help="RIGBD评分丢边率；固定参数或仅按验证集选择")
++    p.add_argument("--rigbd-sampling", choices=["author", "incoming", "paired"], default="incoming", help="默认按消息接收邻域恢复；author保留作者出度实现，paired为无向配对变体")
+     p.add_argument("--rigbd-loss", choices=["source", "paper"], default="source", help="源码式概率恢复目标或论文式对数目标")
+     p.add_argument("--losplit-epochs", type=int, default=None, help="早期GCN轮数；默认采用作者数据集配置")
+     p.add_argument("--losplit-lr", type=float, default=None, help="早期GCN学习率；默认采用作者配置")
+@@ -64,4 +68,12 @@
+     p.add_argument("--dshield-feature-drop", type=float, default=0.2, help="DShield特征丢弃比例")
+     p.add_argument("--dshield-temperature", type=float, default=0.9, help="DShield温度")
+     p.add_argument("--dshield-balance", type=float, default=0.5, help="DShield验证选择权重")
++    p.add_argument("--prune-threshold", type=float, default=0.5, help="Prune保留余弦相似度严格大于此值的连接")
++    p.add_argument("--rs-drop-ratio", type=float, default=0.7, help="结构RS训练与推理的丢边率")
++    p.add_argument("--rs-samples", type=int, default=20, help="结构RS每张测试图的投票次数")
++    p.add_argument("--abl-isolation-ratio", type=float, default=0.01, help="ABL隔离比例，分母为训练节点数")
++    p.add_argument("--abl-warmup-epochs", type=int, default=50, help="ABL逐节点LGA训练轮数")
++    p.add_argument("--abl-loss-threshold", type=float, default=0.5, help="ABL局部梯度上升阈值")
++    p.add_argument("--abl-unlearn-epochs", type=int, default=5, help="ABL微调后的GGA轮数")
++    p.add_argument("--abl-unlearn-lr", type=float, default=0.0005, help="ABL遗忘学习率")
+     return p
+--- before/src/training.py
++++ after/src/training.py
+@@ -5,9 +5,15 @@
+ from tqdm.auto import tqdm
+ 
+ 
+-def fit_classifier(model, data, epochs, lr, weight_decay, title):
++def fit_classifier(model, data, epochs, lr, weight_decay, title,
++                   checkpoint_rule="best_validation", snapshots=None):
++    if checkpoint_rule not in ["best_validation", "last"]:
++        raise ValueError("分类模型检查点请选择best_validation或last。")
++    if epochs < 1:
++        raise ValueError("训练轮数必须大于零。")
+     optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
+     best_accuracy = -1.0
++    best_epoch = None
+     best_state = deepcopy(model.state_dict())
+     history = []
+     for epoch in tqdm(range(epochs), desc=title, unit="轮", leave=False):
+@@ -23,11 +29,20 @@
+         model.eval()
+         with torch.no_grad():
+             output = model(data["x"], data["edges"], data["weights"])
++            if not torch.isfinite(output).all():
++                raise RuntimeError(title + "的验证预测出现非有限值。")
+             accuracy = output[data["val"]].argmax(-1).eq(data["labels"][data["val"]]).float().mean().item()
+         if accuracy > best_accuracy:
+             best_accuracy = accuracy
++            best_epoch = epoch + 1
+             best_state = deepcopy(model.state_dict())
+         history.append({"epoch": epoch + 1, "loss": loss.item(), "val_accuracy": accuracy})
+-    model.load_state_dict(best_state)
++    if snapshots is not None:
++        snapshots["best_validation"] = deepcopy(best_state)
++        snapshots["last"] = deepcopy(model.state_dict())
++    if checkpoint_rule == "best_validation":
++        model.load_state_dict(best_state)
++    model.training_selection = {"rule": checkpoint_rule, "best_validation_epoch": best_epoch,
++                                "selected_epoch": best_epoch if checkpoint_rule == "best_validation" else epochs}
+     model.eval()
+     return history
+--- before/src/rigbd.py
++++ after/src/rigbd.py
+@@ -10,16 +10,63 @@
+ 
+ 
+ @torch.no_grad()
+-def score_nodes(model, data, repeats):
++def score_nodes(model, data, repeats, drop_ratio=0.5, sampling="incoming"):
++    if repeats < 1 or not 0 <= drop_ratio < 1:
++        raise ValueError("RIGBD重复次数须为正，丢边率须在[0,1)内。")
+     model.eval()
+     reference = F.log_softmax(model(data["x"], data["edges"], data["weights"]), dim=-1)
+     probabilities = reference.exp()
+     scores = torch.zeros(data["x"].size(0), device=data["x"].device)
+     for _ in tqdm(range(repeats), desc="RIGBD随机丢边评分", unit="次", leave=False):
+-        edges, weights = sample_noise_all(data["edges"], data["weights"], data["x"].device)
++        # 0.5时直接使用作者逐字采样函数；其他显式概率使用同一规则。
++        if sampling == "paired":
++            edges, weights = sample_paired(data, drop_ratio)
++        elif sampling == "incoming":
++            edges, weights = sample_at_ratio(data, drop_ratio, restore_axis=1)
++        elif sampling == "author" and drop_ratio == 0.5:
++            edges, weights = sample_noise_all(data["edges"], data["weights"], data["x"].device)
++        elif sampling == "author":
++            edges, weights = sample_at_ratio(data, drop_ratio, restore_axis=0)
++        else:
++            raise ValueError("未知RIGBD丢边协议。")
+         changed = F.log_softmax(model(data["x"], edges, weights), dim=-1)
+         scores += (probabilities * (reference - changed)).sum(dim=-1)
+     return scores / repeats
++
++
++def sample_at_ratio(data, drop_ratio, restore_axis=0):
++    from torch.distributions import Bernoulli
++    edges, weights = data["edges"], data["weights"]
++    keep = Bernoulli(1 - drop_ratio).sample(weights.size()).bool()
++    sampled = edges[:, keep]
++    sampled_weights = weights[keep]
++    degree = torch.zeros(data["x"].size(0), device=edges.device)
++    degree.index_add_(0, sampled[restore_axis], torch.ones(sampled.size(1), device=edges.device))
++    restore = degree[edges[restore_axis]] == 0
++    return torch.cat([sampled, edges[:, restore]], dim=1), torch.cat([sampled_weights, weights.new_ones(int(restore.sum()))])
++
++
++def sample_paired(data, drop_ratio):
++    # 无向配对作为独立变体，丢弃和孤立恢复都以整条无向连接为单位。
++    edges, weights = data["edges"], data["weights"]
++    count = data["x"].size(0)
++    lower = torch.minimum(edges[0], edges[1])
++    upper = torch.maximum(edges[0], edges[1])
++    keys, inverse = torch.unique(lower * count + upper, return_inverse=True)
++    choices = torch.rand(keys.numel(), device=edges.device) >= drop_ratio
++    keep = choices[inverse]
++    degree = torch.bincount(edges[1, keep], minlength=count)
++    restore = (degree[edges[0]] == 0) | (degree[edges[1]] == 0)
++    choices[inverse[restore]] = True
++    keep = choices[inverse]
++    return edges[:, keep], weights[keep]
++
++
++def probe_checkpoint(args):
++    rule = getattr(args, "rigbd_probe_checkpoint", "author")
++    if rule == "author":
++        rule = "last" if args.model == "GCN" else "best_validation"
++    return rule
+ 
+ 
+ def select_nodes(scores, data):
+@@ -63,7 +110,11 @@
+             raise RuntimeError("RIGBD恢复训练出现非有限损失。")
+         loss.backward()
+         optimizer.step()
+-        history.append({"epoch": epoch + 1, "loss": loss.item()})
++        item = {"epoch": epoch + 1, "loss": loss.item()}
++        if epoch == 0 or epoch + 1 == args.epochs or (epoch + 1) % 50 == 0:
++            item["normal_group_loss"] = normal_loss.item()
++            item["selected_group_term"] = penalty.item() if args.rigbd_loss == "source" else log_target.sum().item()
++        history.append(item)
+     model.eval()
+     return history
+ 
+@@ -73,10 +124,12 @@
+     probe = make_model(data, args, device, "rigbd", scoring=True)
+     probe_description = describe(probe)
+     fit_classifier(probe, data, args.rigbd_probe_epochs, args.lr, args.weight_decay,
+-                   "RIGBD评分模型（" + args.model + "）")
++                   "RIGBD评分模型（" + args.model + "）", checkpoint_rule=probe_checkpoint(args))
++    probe_description["training_selection"] = probe.training_selection
+     prepare_seconds = elapsed(begin, device)
+     begin = start_clock(device)
+-    scores = score_nodes(probe, data, args.rigbd_repeats)
++    scores = score_nodes(probe, data, args.rigbd_repeats, getattr(args, "rigbd_drop_ratio", 0.5),
++                         getattr(args, "rigbd_sampling", "incoming"))
+     selected, target = select_nodes(scores, data)
+     score_seconds = elapsed(begin, device)
+     del probe
+@@ -90,6 +143,10 @@
+     details = {"family": "rigbd", "scoring_model": probe_description, "final_model": describe(model),
+                "selected_nodes": selected.cpu().tolist(), "inferred_target": target,
+                "loss": args.rigbd_loss, "checkpoint_rule": "last" if selected.numel() else "best_validation",
++               "probe_checkpoint": probe_checkpoint(args), "drop_ratio": getattr(args, "rigbd_drop_ratio", 0.5),
++               "sampling": getattr(args, "rigbd_sampling", "incoming"),
++               "selection_protocol": "论文自动目标与严格阈值；不读取真实目标、真实数量或真实名单",
++               "initialization_protocol": "各阶段独立重置种子，构造器初始化；与作者连续随机流分开记录",
+                "phases": {"preparation": prepare_seconds, "score_and_selection": score_seconds,
+                           "final_training": elapsed(begin, device)}, "history": history}
+     return model, details
+--- before/src/losplit.py
++++ after/src/losplit.py
+@@ -13,7 +13,9 @@
+     table = {
+         "Cora": {"UGBA": (15, 0.01, 0.2), "GTA": (10, 0.01, 0.3), "DPGBA": (15, 0.01, 1.0)},
+         "Citeseer": {"UGBA": (10, 0.01, 0.45), "GTA": (10, 0.05, 0.45), "DPGBA": (10, 0.01, 0.85)},
+-        "Pubmed": {"UGBA": (15, 0.03, 0.0), "GTA": (15, 0.005, 0.55), "DPGBA": (40, 0.01, 1.0)}}
++        "Pubmed": {"UGBA": (15, 0.03, 0.0), "GTA": (15, 0.005, 0.55), "DPGBA": (40, 0.01, 1.0)},
++        "Physics": {"UGBA": (10, 0.001, 0.0), "GTA": (20, 0.00001, 0.55), "DPGBA": (20, 0.0001, 0.4)},
++        "Flickr": {"UGBA": (15, 0.01, 0.0), "GTA": (10, 0.03, 0.05), "DPGBA": (15, 0.01, 1.0)}}
+     if args.dataset in table:
+         epochs, lr, gamma = table[args.dataset][args.attack]
+         origin = "作者defense.sh"
+@@ -30,6 +32,8 @@
+ 
+ 
+ def recover(model, data, normal, selected, target, gamma, args):
++    # 作者布尔mask按节点编号升序赋替代标签，保持同一种子与节点对应顺序。
++    selected = selected.sort().values
+     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+     choices = []
+     for label in range(data["classes"]):
+@@ -75,7 +79,8 @@
+     bad, good, gaps, targets = splitter.fit(data["x"], data["edges"], data["weights"],
+         data["labels"].clone(), data["train"], data["val"], split_epoch=epochs, num_attach=0)
+     best = None
+-    for index in range(len(gaps)):
++    # 作者入口排除第一轮，避免尚未形成分组时的初始损失差主导选择。
++    for index in range(1, len(gaps)):
+         if math.isfinite(float(gaps[index])) and len(bad[index]) > 0 and len(good[index]) > 0:
+             if best is None or float(gaps[index]) > float(gaps[best]):
+                 best = index
+--- before/src/dshield.py
++++ after/src/dshield.py
+@@ -15,11 +15,13 @@
+     prepare_seconds = elapsed(begin, device)
+     # 作者接口对全图标签做属性梯度分析；未知位置由准备模型预测补齐。
+     # 训练和验证标签照常保留，测试真值始终留在evaluation.pt中。
++    begin = start_clock(device)
+     with torch.no_grad():
+         output = probe(data["x"], data["edges"], data["weights"])
+         labels = output[:data["labels"].numel()].argmax(-1)
+     known = data["labels"] >= 0
+     labels[known] = data["labels"][known]
++    label_completion_seconds = elapsed(begin, device)
+     arch = args.model
+     if arch == "GraphSAGE":
+         arch = "GraphSage"
+@@ -37,5 +39,8 @@
+     details = {"family": "dshield", "scoring_model": probe_description, "final_model": describe(model),
+                "internal_arch": arch, "selected_nodes": selected.cpu().tolist(),
+                "unknown_labels": "补齐原节点未知标签；长度保持作者原节点数；新增节点没有标签槽位",
+-               "phases": {"preparation": prepare_seconds, "dshield": elapsed(begin, device)}}
++               "phases": {"preparation": prepare_seconds, "label_completion": label_completion_seconds,
++                          "dshield": elapsed(begin, device)},
++               "internal_phases": getattr(model, "dshield_phase_seconds", {}),
++               "recovery_checkpoint": getattr(model, "dshield_recovery_info", {})}
+     return model, details
+--- before/src/evaluation.py
++++ after/src/evaluation.py
+@@ -7,27 +7,35 @@
+ 
+ 
+ @torch.no_grad()
+-def predict(model, graph, training_nodes, method):
++def predict(model, graph, training_nodes, method, args=None, graph_number=0):
+     x, edges, weights = graph
+     if method == "abp":
+         edges, weights = filter_edges(edges, weights, x.size(0), training_nodes)
++    if method == "prune":
++        from .prune import filter_graph
++        edges, weights = filter_graph(x, edges, weights, getattr(args, "prune_threshold", 0.5))
+     model.eval()
+-    output = model(x, edges, weights)
++    if method == "rs":
++        from .rs import smooth_predict
++        output = smooth_predict(model, (x, edges, weights), getattr(args, "rs_drop_ratio", 0.7),
++                                getattr(args, "rs_samples", 20), getattr(args, "seed", 10) + 10000 + graph_number)
++    else:
++        output = model(x, edges, weights)
+     if not torch.isfinite(output).all():
+         raise RuntimeError("模型预测含NaN或无穷值，请检查训练损失与保存权重。")
+     return output
+ 
+ 
+-def evaluate(model, data, bundle, method, details, device):
++def evaluate(model, data, bundle, method, details, device, args=None):
+     evaluation = torch.load(Path(bundle) / "evaluation.pt", map_location=device)
+     graphs = [(evaluation["reference_x"], evaluation["reference_edges"], evaluation["reference_weights"])]
+     if evaluation["target"] is not None:
+         graphs.append((evaluation["changed_x"], evaluation["changed_edges"], evaluation["changed_weights"]))
+     outputs = []
+     seconds = []
+-    for graph in tqdm(graphs, desc="正常图与触发图评估", unit="张", leave=False):
++    for number, graph in enumerate(tqdm(graphs, desc="正常图与触发图评估", unit="张", leave=False)):
+         begin = start_clock(device)
+-        output = predict(model, graph, data["train"], method)
++        output = predict(model, graph, data["train"], method, args, number)
+         seconds.append(elapsed(begin, device))
+         outputs.append(output)
+     normal = evaluation["clean_nodes"]
+@@ -57,4 +65,6 @@
+         result["selection_FP"] = len(selected - attached)
+         result["selection_recall"] = true_positive / len(attached)
+         result["selection_precision"] = true_positive / len(selected) if selected else None
++        if "inferred_target" in details:
++            result["inferred_target_matches"] = int(details["inferred_target"]) == evaluation["target"]
+     return result
+--- before/src/workflow.py
++++ after/src/workflow.py
+@@ -25,6 +25,15 @@
+         return train(data, args, device)
+     if method == "dshield":
+         from .dshield import train
++        return train(data, args, device)
++    if method == "rs":
++        from .rs import train
++        return train(data, args, device)
++    if method == "abl":
++        from .abl import train
++        return train(data, args, device)
++    if method == "prune":
++        from .prune import train
+         return train(data, args, device)
+     working = copy(data)
+     processing_seconds = 0.0
+@@ -67,6 +76,8 @@
+     record = {"status": "running", "method": method, "dataset": args.dataset, "model": args.model,
+               "attack": args.attack, "seed": args.seed, "arguments": saved_arguments,
+               "bundle_id": bundle_info["bundle_id"], "bundle": str(bundle),
++              "bundle_counts": bundle_info.get("counts"),
++              "generator_parameters": bundle_info.get("actual_generator_parameters"),
+               "code_sha256": code_hashes(),
+               "environment": {"torch": torch.__version__, "pyg": torch_geometric.__version__,
+                               "python": sys.version, "platform": platform.platform(),
+@@ -84,8 +95,9 @@
+         torch.save({"state_dict": cpu_state(model), "family": details["family"], "method": method,
+                     "arguments": saved_arguments, "bundle_id": bundle_info["bundle_id"]}, output / "model.pt")
+         # 至此训练已完成，下面才打开包含测试标签的文件。
+-        metrics = evaluate(model, data, bundle, method, details, device)
++        metrics = evaluate(model, data, bundle, method, details, device, args)
+         metrics["model_build_seconds"] = build_seconds
++        metrics["build_plus_inference_seconds"] = build_seconds + metrics["reference_inference_seconds"] + (metrics["triggered_inference_seconds"] or 0)
+         metrics["peak_cuda_mb"] = torch.cuda.max_memory_allocated(device) / 1024**2 if device.type == "cuda" else None
+         record.update(status="complete", metrics=metrics, details=details,
+                       checkpoint_sha256=file_hash(output / "model.pt"),
+@@ -113,6 +125,6 @@
+         raise ValueError("模型与样本包不匹配。")
+     model = make_model(data, args, device, saved["family"])
+     model.load_state_dict(saved["state_dict"])
+-    metrics = evaluate(model, data, bundle, saved["method"], {}, device)
++    metrics = evaluate(model, data, bundle, saved["method"], {}, device, args)
+     save_json(output, metrics)
+     return metrics
+--- before/upstream/DShield/NodeClassificationTasks/defense/dshield.py
++++ after/upstream/DShield/NodeClassificationTasks/defense/dshield.py
+@@ -25,6 +25,7 @@
+ 
+ from umap import UMAP
+ from sklearn.cluster import HDBSCAN
++from src.common import start_clock as phase_start, elapsed as phase_elapsed
+ 
+ 
+ try:
+@@ -450,17 +451,25 @@
+         loss_clf_pos, loss_clf_neg = loss_pos, loss_neg
+         if pos_node_idx.shape[0] > 0:
+             loss_clf_pos = clf_loss_fn(pos_logits[pos_node_idx], labels[pos_node_idx])
+-            loss_pos = torch.where(loss_clf_pos < 5, torch.exp(loss_clf_pos) - 1., loss_clf_pos)
++            # 只计算实际分支，避免未选中的exp(大损失)溢出污染梯度。
++            if float(loss_clf_pos.detach()) < 5:
++                loss_pos = torch.exp(loss_clf_pos) - 1.
++            else:
++                loss_pos = loss_clf_pos
+         if neg_node_idx.shape[0] > 0:
+             loss_clf_neg = clf_loss_fn(neg_logits[neg_node_idx], labels[neg_node_idx]) + 1.0
+             loss_neg = torch.where(loss_clf_neg < 1e27, torch.log(loss_clf_neg), loss_clf_neg)
+         loss = loss_pos - kappa3 * loss_neg
++        if not torch.isfinite(loss):
++            raise RuntimeError('DShield恢复损失出现非有限值，停止并保留失败记录。')
+ 
+         loss.backward()
+         optimizer.step()
+ 
+         model.eval()
+         output = model(feat, edge_index, edge_weight)
++        if not torch.isfinite(output).all():
++            raise RuntimeError('DShield恢复训练输出出现非有限值，不能使用初始模型充当恢复结果。')
+         acc_val = accuracy(output[val_idx], labels[val_idx])
+         asr = accuracy(output[attach_idx], labels[attach_idx])
+         balance_metric = 2 * (acc_val * (1 - asr)) / (acc_val + (1 - asr) + 1e-6)
+@@ -478,7 +487,11 @@
+                     epoch, loss.item(), loss_clf_pos.mean().item(), loss_clf_neg.mean().item()
+             ))
+     logger.info('最佳轮数：{}；验证准确率：{:.4f}；候选节点训练置信指标：{:4f}'.format(best_round, best_acc_val, best_asr))
++    if best_round == 0:
++        raise RuntimeError('DShield没有选出有效恢复检查点，请检查候选分组与验证指标。')
+     model.load_state_dict(best_state_dict)
++    model.dshield_recovery_info = {"selected_epoch": best_round, "validation_accuracy": float(best_acc_val),
++                                  "candidate_training_accuracy": float(best_asr)}
+     return model
+ 
+ 
+@@ -697,6 +710,7 @@
+             balance_factor, classify_rounds, dataset, arch, attack_name, rtn_node_idx=False):
+     input_dim = feat.shape[1]
+     num_classes = torch.max(labels).item() + 1
++    internal_seconds = {"rounds": []}
+ 
+     if edge_weight is None:
+         edge_weight = torch.ones([edge_index.shape[1]], device=device, dtype=torch.float32)
+@@ -712,10 +726,12 @@
+     ])
+ 
+     # Get attribute importance
++    phase_begin = phase_start(device)
+     _, attribute_import = attribute_importance(poisoned_model, feat, edge_index, edge_weight, labels)
+ 
+     # Get edge similarities
+     edge_sims = calc_edge_sims(poisoned_model, feat, edge_index)
++    internal_seconds["attribute_and_edge_analysis"] = phase_elapsed(phase_begin, device)
+ 
+     # Initialize pretrain model
+     pretrain_model = UnsupervisedModel(input_dim=input_dim,  hidden_dim=hidden_dim,
+@@ -723,9 +739,11 @@
+ 
+     # SSL Training
+     optimizer = optim.Adam(chain(pretrain_model.rtn_encoder_param(), pretrain_model.rtn_contra_param()), lr=lr, weight_decay=weight_decay)
++    phase_begin = phase_start(device)
+     pretrain_model = pretrain(pretrain_model, optimizer,
+                               (aug1, aug2), feat, edge_index, edge_weight,
+                               train_node_idx, attribute_import, edge_sims, feature_drop_ratio, kappa1, kappa2, tau, pretrain_epochs, dataset)
++    internal_seconds["self_supervised_training"] = phase_elapsed(phase_begin, device)
+ 
+     # Pick up the consistency of similarities among nodes with the same label
+     poisoned_embeddings = obtain_mid_embeddings(poisoned_model, feat, edge_index)
+@@ -742,6 +760,7 @@
+     n_round = 0
+     while n_round < classify_rounds:
+         n_round += 1
++        phase_begin = phase_start(device)
+ 
+         pretrain_model.eval()
+         with torch.no_grad():
+@@ -876,13 +895,18 @@
+         )
+ 
+         train_idx = pos_node_idx
++        relation_seconds = phase_elapsed(phase_begin, device)
++        phase_begin = phase_start(device)
+         classify_model = classify(
+             classify_model, optimizer,
+             feat, edge_index, edge_weight, labels, kappa3, train_idx, neg_node_idx, val_idx, neg_node_idx, classify_epochs
+         )
++        internal_seconds["rounds"].append({"round": n_round, "grouping_and_relation_validation": relation_seconds,
++                                           "classification_recovery": phase_elapsed(phase_begin, device)})
+         round_progress.update(1)
+ 
+     round_progress.close()
++    classify_model.dshield_phase_seconds = internal_seconds
+     if rtn_node_idx is True:
+         return classify_model, neg_node_idx
+     return classify_model
+--- before/src/models.py
++++ after/src/models.py
+@@ -46,6 +46,10 @@
+         name = module.__class__.__name__
+         if name in ["GCNConv", "GATConv", "SAGEConv"]:
+             item = {"type": name}
++            if hasattr(module, "flow"):
++                item["flow"] = module.flow
++            if hasattr(module, "root_weight"):
++                item["root_weight"] = module.root_weight
+             if hasattr(module, "add_self_loops"):
+                 item["add_self_loops"] = module.add_self_loops
+             if hasattr(module, "heads"):
+--- before/src/summary.py
++++ after/src/summary.py
+@@ -2,8 +2,21 @@
+ import csv
+ import json
+ import statistics
++import hashlib
+ from pathlib import Path
+ from .common import save_json
++
++
++def protocol_signature(record):
++    # 只去掉种子与调度信息，数学参数、源码和环境不同的运行分开统计。
++    values = record["arguments"].copy()
++    ignored = ["seed", "seeds", "datasets", "models", "attacks", "methods", "output_root", "data_root",
++               "bundle", "resume", "checkpoint", "evaluate"]
++    for name in ignored:
++        values.pop(name, None)
++    payload = {"parameters": values, "code": record.get("code_sha256"), "environment": record.get("environment")}
++    text = json.dumps(payload, sort_keys=True, default=str)
++    return hashlib.sha256(text.encode()).hexdigest()[:12]
+ 
+ 
+ def summarize(folder):
+@@ -19,7 +32,7 @@
+         rows.append({"dataset": record["dataset"], "attack": record["attack"], "model": record["model"],
+                      "seed": record["seed"], "method": record["method"], "CA": metrics["CA"],
+                      "ASR": metrics["ASR"], "model_build_seconds": metrics["model_build_seconds"],
+-                     "result": str(path)})
++                     "protocol_id": protocol_signature(record), "result": str(path)})
+     if not rows:
+         raise ValueError("此目录没有完成的实验记录。")
+     with (folder / "summary.csv").open("w", encoding="utf-8-sig", newline="") as handle:
+@@ -35,6 +48,7 @@
+         lines.append("| " + " | ".join([str(row["dataset"]), str(row["attack"]), row["model"],
+             str(row["seed"]), row["method"], ca, asr, format(row["model_build_seconds"], ".3f")]) + " |")
+         key = str(row["dataset"]) + "/" + str(row["attack"]) + "/" + row["model"] + "/" + row["method"]
++        key += "/" + row["protocol_id"]
+         if key not in groups:
+             groups[key] = []
+         groups[key].append(row)
+@@ -53,6 +67,7 @@
+                 result[field + "_sample_std"] = statistics.stdev(numbers) if len(numbers) > 1 else None
+         statistics_result[key] = result
+     lines.extend(["", "CA、ASR按0—1保存。单种子不计算标准差，秒数为本次完整方法训练时间。",
++                  "统计按数学参数、源码和环境分组；CSV中的protocol_id不同则不合并均值。",
+                   "失败或未完成记录数：" + str(len(failures))])
+     (folder / "summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+     save_json(folder / "summary_statistics.json", statistics_result)
+--- /dev/null
++++ src/rs.py
+@@ -0,0 +1,65 @@
++"""结构RS适配：随机丢边训练，独立多次预测后多数投票。"""
++from copy import deepcopy
++import torch
++import torch.nn.functional as F
++from tqdm.auto import tqdm
++from upstream.RIGBD.rs_sampling import sample_noise_all
++from .models import make_model, describe
++
++
++def train(data, args, device):
++    if not 0 < args.rs_drop_ratio < 1 or args.rs_samples < 1:
++        raise ValueError("RS丢边率须在(0,1)内，投票次数须为正数。")
++    model = make_model(data, args, device, "rigbd")
++    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
++    best_accuracy = -1.0
++    best_state = deepcopy(model.state_dict())
++    history = []
++    for epoch in tqdm(range(args.epochs), desc="结构RS随机丢边训练", unit="轮", leave=False):
++        model.train()
++        optimizer.zero_grad()
++        edges, weights = sample_noise_all(args.rs_drop_ratio, data["edges"], data["weights"], device)
++        output = model(data["x"], edges, weights)
++        loss = F.cross_entropy(output[data["train"]], data["labels"][data["train"]])
++        if not torch.isfinite(loss):
++            raise RuntimeError("RS出现非有限训练损失。")
++        loss.backward()
++        optimizer.step()
++        model.eval()
++        with torch.no_grad():
++            edges, weights = sample_noise_all(args.rs_drop_ratio, data["edges"], data["weights"], device)
++            output = model(data["x"], edges, weights)
++            accuracy = output[data["val"]].argmax(-1).eq(data["labels"][data["val"]]).float().mean().item()
++        if accuracy > best_accuracy:
++            best_accuracy = accuracy
++            best_state = deepcopy(model.state_dict())
++        history.append({"epoch": epoch + 1, "loss": loss.item(), "val_accuracy": accuracy})
++    model.load_state_dict(best_state)
++    model.eval()
++    return model, {"family": "rigbd", "final_model": describe(model), "history": history,
++                   "protocol": "RIGBD论文结构丢边RS适配；不等同于DShield节点采样RS",
++                   "source": "upstream/RIGBD/models/random_smooth.py，训练与采样；论文多次预测聚合",
++                   "drop_ratio": args.rs_drop_ratio, "prediction_samples": args.rs_samples,
++                   "aggregation": "多数投票，平票取类别编号最小者", "checkpoint_rule": "best_validation"}
++
++
++@torch.no_grad()
++def smooth_predict(model, graph, drop_ratio, samples, seed):
++    x, edges, weights = graph
++    if samples < 1:
++        raise ValueError("RS投票次数必须为正数。")
++    devices = [x.device.index] if x.device.type == "cuda" else []
++    # 保存并恢复随机状态；每张图的固定采样种子使权重重载可复核。
++    with torch.random.fork_rng(devices=devices):
++        torch.manual_seed(seed)
++        votes = None
++        for _ in tqdm(range(samples), desc="结构RS独立丢边投票", unit="次", leave=False):
++            sampled_edges, sampled_weights = sample_noise_all(drop_ratio, edges, weights, x.device)
++            output = model(x, sampled_edges, sampled_weights)
++            if not torch.isfinite(output).all():
++                raise RuntimeError("RS预测出现非有限分数。")
++            if votes is None:
++                votes = torch.zeros_like(output)
++            predictions = output.argmax(-1, keepdim=True)
++            votes.scatter_add_(1, predictions, torch.ones_like(predictions, dtype=output.dtype))
++    return votes / samples
+--- /dev/null
++++ src/abl.py
+@@ -0,0 +1,67 @@
++"""ABL图适配：逐节点LGA、低损失隔离、普通微调和GGA。"""
++from copy import copy
++import torch
++import torch.nn.functional as F
++from tqdm.auto import tqdm
++from .models import make_model, describe
++from .training import fit_classifier
++from .common import start_clock, elapsed
++
++
++def train(data, args, device):
++    if not 0 < args.abl_isolation_ratio < 1:
++        raise ValueError("ABL隔离比例须在(0,1)内。")
++    if args.abl_warmup_epochs < 1 or args.abl_unlearn_epochs < 1:
++        raise ValueError("ABL预训练与遗忘轮数须为正。")
++    model = make_model(data, args, device, "rigbd")
++    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
++    history = []
++    begin = start_clock(device)
++    for epoch in tqdm(range(args.abl_warmup_epochs), desc="ABL局部梯度上升", unit="轮", leave=False):
++        model.train()
++        optimizer.zero_grad()
++        output = model(data["x"], data["edges"], data["weights"])
++        losses = F.cross_entropy(output[data["train"]], data["labels"][data["train"]], reduction="none")
++        # 采用论文逐样本公式，图中的一个训练节点对应一个样本。
++        loss = (torch.sign(losses.detach() - args.abl_loss_threshold) * losses).mean()
++        if not torch.isfinite(loss):
++            raise RuntimeError("ABL预训练出现非有限损失。")
++        loss.backward()
++        optimizer.step()
++        history.append({"stage": "LGA", "epoch": epoch + 1, "loss": loss.item()})
++    model.eval()
++    with torch.no_grad():
++        output = model(data["x"], data["edges"], data["weights"])
++        losses = F.cross_entropy(output[data["train"]], data["labels"][data["train"]], reduction="none")
++    count = max(1, int(data["train"].numel() * args.abl_isolation_ratio))
++    order = data["train"][losses.argsort()]
++    selected, normal = order[:count], order[count:]
++    if not normal.numel():
++        raise RuntimeError("ABL没有保留普通训练节点。")
++    warmup_seconds = elapsed(begin, device)
++    working = copy(data)
++    working["train"] = normal
++    begin = start_clock(device)
++    finetune_history = fit_classifier(model, working, args.epochs, args.lr, args.weight_decay,
++                                      "ABL普通组微调", checkpoint_rule="last")
++    finetune_seconds = elapsed(begin, device)
++    optimizer = torch.optim.Adam(model.parameters(), lr=args.abl_unlearn_lr, weight_decay=args.weight_decay)
++    begin = start_clock(device)
++    for epoch in tqdm(range(args.abl_unlearn_epochs), desc="ABL全局梯度上升遗忘", unit="轮", leave=False):
++        model.train()
++        optimizer.zero_grad()
++        output = model(data["x"], data["edges"], data["weights"])
++        loss = -F.cross_entropy(output[selected], data["labels"][selected])
++        if not torch.isfinite(loss):
++            raise RuntimeError("ABL遗忘出现非有限损失。")
++        loss.backward()
++        optimizer.step()
++        history.append({"stage": "GGA", "epoch": epoch + 1, "loss": loss.item()})
++    model.eval()
++    return model, {"family": "rigbd", "final_model": describe(model), "selected_nodes": selected.cpu().tolist(),
++        "protocol": "ABL论文LGA与GGA图适配；逐节点LGA、Adam、保持图连接；不同于遗忘被截零的旧图源码",
++        "source": "upstream/ABL/backdoor_isolation.py与backdoor_unlearning.py；图模型复用RIGBD",
++        "isolation_ratio": args.abl_isolation_ratio, "loss_threshold": args.abl_loss_threshold,
++        "checkpoint_rule": "last", "history": history, "finetuning_history": finetune_history,
++        "phases": {"LGA_and_selection": warmup_seconds, "clean_finetuning": finetune_seconds,
++                   "GGA": elapsed(begin, device)}}
+--- /dev/null
++++ src/prune.py
+@@ -0,0 +1,27 @@
++"""Prune：调用作者余弦相似度筛边，在训练和每张评估图上分别处理。"""
++from copy import copy
++from types import SimpleNamespace
++from upstream.RIGBD.prune import prune_unrelated_edge
++from .models import make_model, describe
++from .training import fit_classifier
++from .common import start_clock, elapsed
++
++
++def filter_graph(x, edges, weights, threshold):
++    settings = SimpleNamespace(prune_thr=threshold)
++    return prune_unrelated_edge(settings, edges, weights, x, x.device, large_graph=edges.size(1) > 20000)
++
++
++def train(data, args, device):
++    begin = start_clock(device)
++    working = copy(data)
++    working["edges"], working["weights"] = filter_graph(data["x"], data["edges"], data["weights"], args.prune_threshold)
++    processing = elapsed(begin, device)
++    model = make_model(data, args, device, "rigbd")
++    begin = start_clock(device)
++    history = fit_classifier(model, working, args.epochs, args.lr, args.weight_decay, "Prune分类训练")
++    return model, {"family": "rigbd", "final_model": describe(model), "threshold": args.prune_threshold,
++                   "training_edges_before": data["edges"].size(1), "training_edges_after": working["edges"].size(1),
++                   "source": "upstream/RIGBD/help_funcs.py::prune_unrelated_edge",
++                   "checkpoint_rule": "best_validation", "history": history,
++                   "phases": {"graph_processing": processing, "training": elapsed(begin, device)}}
+--- /dev/null
++++ upstream/RIGBD/prune.py
+@@ -0,0 +1,30 @@
++"""从作者help_funcs.py逐字提取的Prune函数。"""
++import torch
++import torch.nn.functional as F
++
++def prune_unrelated_edge(args,edge_index,edge_weights,x,device,large_graph=True):
++    edge_index = edge_index[:,edge_weights>0.0].to(device)
++    edge_weights = edge_weights[edge_weights>0.0].to(device)
++    x = x.to(device)
++    # calculate edge simlarity
++    if(large_graph):
++        edge_sims = torch.tensor([],dtype=float).cpu()
++        N = edge_index.shape[1]
++        num_split = 100
++        N_split = int(N/num_split)
++        for i in range(num_split):
++            if(i == num_split-1):
++                edge_sim1 = F.cosine_similarity(x[edge_index[0][N_split * i:]],x[edge_index[1][N_split * i:]]).cpu()
++            else:
++                edge_sim1 = F.cosine_similarity(x[edge_index[0][N_split * i:N_split*(i+1)]],x[edge_index[1][N_split * i:N_split*(i+1)]]).cpu()
++            # print(edge_sim1)
++            edge_sim1 = edge_sim1.cpu()
++            edge_sims = torch.cat([edge_sims,edge_sim1])
++        # edge_sims = edge_sims.to(device)
++    else:
++        edge_sims = F.cosine_similarity(x[edge_index[0]],x[edge_index[1]])
++    # find dissimilar edges and remote them
++    # update structure
++    updated_edge_index = edge_index[:,edge_sims>args.prune_thr]
++    updated_edge_weights = edge_weights[edge_sims>args.prune_thr]
++    return updated_edge_index,updated_edge_weights
+--- /dev/null
++++ upstream/RIGBD/rs_sampling.py
+@@ -0,0 +1,23 @@
++"""提取作者RS采样函数，仅移除未使用的self形参。"""
++import torch
++from torch.distributions.bernoulli import Bernoulli
++
++def sample_noise_all( prob_drop, edge_index, edge_weight,device):
++        prob_retain = 1 - prob_drop
++        noisy_edge_index = edge_index.clone().detach()
++        if(edge_weight == None):
++            noisy_edge_weight = torch.ones([noisy_edge_index.shape[1],]).to(device)
++        else:
++            noisy_edge_weight = edge_weight.clone().detach()
++        # # rand_noise_data = copy.deepcopy(data)
++        # rand_noise_data.edge_weight = torch.ones([rand_noise_data.edge_index.shape[1],]).to(device)
++        m = Bernoulli(torch.tensor([prob_retain]).to(device))
++        mask = m.sample(noisy_edge_weight.shape).squeeze(-1).int()
++        rand_inputs = torch.randint_like(noisy_edge_weight, low=0, high=2).squeeze().int().to(device)
++        # print(rand_noise_data.edge_weight.shape,mask.shape)
++        noisy_edge_weight = noisy_edge_weight * mask #+ rand_inputs * (1-mask)
++
++        if(noisy_edge_weight!=None):
++            noisy_edge_index = noisy_edge_index[:,noisy_edge_weight.nonzero().flatten().long()]
++            noisy_edge_weight = torch.ones([noisy_edge_index.shape[1],]).to(device)
++        return noisy_edge_index, noisy_edge_weight

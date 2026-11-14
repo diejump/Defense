@@ -1,13 +1,12 @@
-from tqdm.auto import tqdm
 import logging
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from upstream.DShield.NodeClassificationTasks import utils
+import utils
 from copy import deepcopy
-from upstream.DShield.NodeClassificationTasks.models.metric import accuracy
+from models.metric import accuracy
 
 try:
     if 'logger' not in globals():
@@ -27,7 +26,7 @@ class MLP(nn.Module):
 
         super(MLP, self).__init__()
 
-        assert device is not None, '请明确指定计算设备。'
+        assert device is not None, "Please specify 'device'!"
         self.device = device
         self.n_feat = n_feat
         self.hidden_sizes = [n_hid]
@@ -57,14 +56,14 @@ class MLP(nn.Module):
     def _train_without_val(self, features, labels, idx_train, train_iters, verbose):
         self.train()
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
-        for i in tqdm(range(train_iters), desc='辅助感知机模型训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(train_iters):
             optimizer.zero_grad()
             output = self.forward(features)
             loss_train = F.cross_entropy(output[idx_train], labels[idx_train])
             loss_train.backward()
             optimizer.step()
             if verbose and i % 10 == 0:
-                print('轮数 {}，训练损失：{}'.format(i, loss_train.item()))
+                print('Epoch {}, training loss: {}'.format(i, loss_train.item()))
 
         self.eval()
         output = self.forward(features)
@@ -72,13 +71,13 @@ class MLP(nn.Module):
 
     def _train_with_val(self, features, labels, idx_train, idx_val, train_iters, verbose):
         if verbose:
-            print('开始训练多层感知机模型')
+            print('=== training MLP model ===')
         optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
 
         best_loss_val = 100
         best_acc_val = 0
 
-        for i in tqdm(range(train_iters), desc='辅助感知机模型训练', unit='轮', dynamic_ncols=True, leave=False, mininterval=0.5):
+        for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
             output = self.forward(features)
@@ -92,15 +91,15 @@ class MLP(nn.Module):
             acc_val = accuracy(output[idx_val], labels[idx_val])
 
             if verbose and i % 10 == 0:
-                print('轮数 {}，训练损失：{}'.format(i, loss_train.item()))
-                logger.info('验证准确率：{:.4f}'.format(acc_val))
+                print('Epoch {}, training loss: {}'.format(i, loss_train.item()))
+                logger.info("acc_val: {:.4f}".format(acc_val))
 
             if acc_val > best_acc_val:
                 best_acc_val = acc_val
                 weights = deepcopy(self.state_dict())
 
         if verbose:
-            print('根据验证集表现恢复最佳模型参数')
+            print('=== picking the best model according to the performance on validation ===')
         self.load_state_dict(weights)
 
     @torch.no_grad()

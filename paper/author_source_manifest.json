@@ -1,0 +1,1243 @@
+{
+  "date": "2026-11-11",
+  "sources": {
+    "RIGBD": {
+      "commit": "32415022d1becebd76296b0abc1b63853093697b",
+      "git_tree_url": "https://api.github.com/repos/zzwjames/RIGBD/git/trees/32415022d1becebd76296b0abc1b63853093697b"
+    },
+    "LoSplit": {
+      "commit": "171874c7e1dd4db4286ad5ab3423cd23871bc98e",
+      "git_tree_url": "https://api.github.com/repos/zyx924768045/LoSplit/git/trees/171874c7e1dd4db4286ad5ab3423cd23871bc98e"
+    },
+    "DShield": {
+      "commit": "a1fab6a0ce52ea0c99ae5591a930a11e2da611a1",
+      "git_tree_url": "https://api.github.com/repos/csyuhao/DShield-Official/git/trees/a1fab6a0ce52ea0c99ae5591a930a11e2da611a1"
+    },
+    "MAD": {
+      "commit": "f47cef85ecc70e1946a3da79c3e5fb37723594fb",
+      "git_tree_url": "https://api.github.com/repos/zhaorong229-art/MAD/git/trees/f47cef85ecc70e1946a3da79c3e5fb37723594fb"
+    }
+  },
+  "files": [
+    {
+      "file": "upstream/RIGBD/defense.py",
+      "git_blob_sha1": "b0b7ad49941c97ccb06ecfa0e7338c9f686d5b67",
+      "sha256": "e8dca79dbf15c6cdf77f5b6b09e717dc3defe6cea444333940240f0d0b446588"
+    },
+    {
+      "file": "upstream/RIGBD/help_funcs.py",
+      "git_blob_sha1": "2c528365852c2c70b39953a9bf12cf7305d439c4",
+      "sha256": "100bac93050abd4a11e3aca9631435acc3d4f05eb332c65826f7f94f3d285e80"
+    },
+    {
+      "file": "upstream/RIGBD/install.sh",
+      "git_blob_sha1": "6fda9877c97275b76283a0b80d9d0fa150369cb2",
+      "sha256": "3b5c3ecaedab458cb6b6a603c39247ab97d13f88564e9749a256531c246b9e6f"
+    },
+    {
+      "file": "upstream/RIGBD/models/_GNNGuard/gat_conv.py",
+      "git_blob_sha1": "e3eec4b11debd30057e56ff3fc8560107df06fbc",
+      "sha256": "940131e51554c5b9ce5e8b136c757e2e9547ecd3b1add728315c32d6df297980"
+    },
+    {
+      "file": "upstream/RIGBD/models/_GNNGuard/GCN.py",
+      "git_blob_sha1": "7d09f2a7d54d13e716dedd42c04df71f7f292e24",
+      "sha256": "f397798bf936652cbaec4ace68e671b9350946e370885c3c5bd798c60c6e3e19"
+    },
+    {
+      "file": "upstream/RIGBD/models/_GNNGuard/gcn_conv.py",
+      "git_blob_sha1": "89a872c385bd545c3a2bedc89f72006013e16f56",
+      "sha256": "c26b5ee6dd8e95b5607289a215b55dc32e4751ff81a64ad641d608ba006bf812"
+    },
+    {
+      "file": "upstream/RIGBD/models/_GNNGuard/gin_conv.py",
+      "git_blob_sha1": "475bf0b9d447da7ea3f9f17bd1455fb5b7814d5d",
+      "sha256": "fe5ea37a9142aff88a9795ad5d0549ae70e43d14a656a357f8c9242af491651d"
+    },
+    {
+      "file": "upstream/RIGBD/models/_GNNGuard/inits.py",
+      "git_blob_sha1": "7cfb9d265a8b0fa80accd03533b063f18f339a4d",
+      "sha256": "ffc16a69c08b3f3e45b76cc1e6ce9db4a193296b5facbc822cbbafd50bf22a39"
+    },
+    {
+      "file": "upstream/RIGBD/models/ABL.py",
+      "git_blob_sha1": "9a16c23018aae80673cbb2338bea94863d2e0fb5",
+      "sha256": "3abcb96094ff29d06dc226528f544908d050dcaecfdf7d2de48bdc9c65796fca"
+    },
+    {
+      "file": "upstream/RIGBD/models/backdoor.py",
+      "git_blob_sha1": "3ec1915e37165b52a8a21e8bf243eb13a9a0715c",
+      "sha256": "95087299bd1dd5a84505d3824f8bf71f57f97179a8d7e21491f51589f2fa8b77"
+    },
+    {
+      "file": "upstream/RIGBD/models/baseline.py",
+      "git_blob_sha1": "f199db9b3fe6986f2624071b14f48bca8e056f5a",
+      "sha256": "5f370dc051f318a542b826cb48d5c864ef262ae7d881f26ddaa432e471845c21"
+    },
+    {
+      "file": "upstream/RIGBD/models/construct.py",
+      "git_blob_sha1": "d20dd2a4d485de257614613863432af76e31a940",
+      "sha256": "0ad056b9bf09392436cb1c3c09045ba58214476aad5b91895fb874ea6a879228"
+    },
+    {
+      "file": "upstream/RIGBD/models/GAT.py",
+      "git_blob_sha1": "d7a5daf9416a8f39d807c7d600c03e77f5b03869",
+      "sha256": "6974298c19e9fd6ed11c6ae2550670de92a95de5ed58a05772c783bd636f20f6"
+    },
+    {
+      "file": "upstream/RIGBD/models/GCN.py",
+      "git_blob_sha1": "fd002a49da910fc435f862cabe88ec9d3cdb2eed",
+      "sha256": "29728ef3b80a361ae1ce9aafed8c0e10df43e79bb73006c03e91cb1d7e0b624a"
+    },
+    {
+      "file": "upstream/RIGBD/models/GCN2.py",
+      "git_blob_sha1": "babf4c45bc3347ef6422d7250dc6d5d552ac90b2",
+      "sha256": "183cc5a091b2706938cb1c18af493d95deaa11dabfbdd8b1f02cb4190a4175fc"
+    },
+    {
+      "file": "upstream/RIGBD/models/GCN_Encoder.py",
+      "git_blob_sha1": "5cf3db65209beafe52212e48f45994fdfd9fb510",
+      "sha256": "1f80ac4dc189f9b84d5a292a8a46bca4207d752f6ba362dd80891c925d25f64c"
+    },
+    {
+      "file": "upstream/RIGBD/models/GIN.py",
+      "git_blob_sha1": "728a825a9833a7a451b2e38a7f2685d832db22a0",
+      "sha256": "7679c076a8c6c3ecc9f15468d548c766a01645a20e3aed017a6356e5819f2d5b"
+    },
+    {
+      "file": "upstream/RIGBD/models/GNNGuard.py",
+      "git_blob_sha1": "6814406656c50b2d0a5d0c010cd96aed01bd16c2",
+      "sha256": "79e5afd4d087d01ef0dd6112a75b9d5265f2612577e99a67d01fb620c60b0f31"
+    },
+    {
+      "file": "upstream/RIGBD/models/GTA.py",
+      "git_blob_sha1": "1f311c45217b032fb8ecd6479cfd42b34274b164",
+      "sha256": "ccd992aa31864e767ef981fbd1d0a83d3891ce4e2d7032b1bf555b7e2547674b"
+    },
+    {
+      "file": "upstream/RIGBD/models/MLP.py",
+      "git_blob_sha1": "c3b15faa0f163ce011e52dd6ef5c7f2b26905fed",
+      "sha256": "69098f43b90f9282a5206ee87defb4a3e5c39ba514ea74265c17f13fc8a5bd6f"
+    },
+    {
+      "file": "upstream/RIGBD/models/random_smooth.py",
+      "git_blob_sha1": "87165769acfe0bf8c9a7ac3abf5eaccc8eb053ea",
+      "sha256": "d70dd4ab552c6ff8b72d7bb686d7fb6c206305aca11d6a168f1391266bfe82e7"
+    },
+    {
+      "file": "upstream/RIGBD/models/reconstruct.py",
+      "git_blob_sha1": "ba4186069956c5f3ff644115c934a1b60fd84d0e",
+      "sha256": "7990524112e7ef849e5fc841e549bec7dea55587f9021963c9ba76575fe92e02"
+    },
+    {
+      "file": "upstream/RIGBD/models/RobustGCN.py",
+      "git_blob_sha1": "12677a048420e54df495e62490b737018c0663d6",
+      "sha256": "0d7b6ce5ad90021318b7d66761983fb07602e4a7a6bc7117a90584eff25ab5b4"
+    },
+    {
+      "file": "upstream/RIGBD/models/SAGE.py",
+      "git_blob_sha1": "360cd4e15d7762633b28036b2cec021af610c6b4",
+      "sha256": "d42a461a8c8b33ca4f4d3dd55fd76473b41ffb0a98885683a41d0f3fb12115d1"
+    },
+    {
+      "file": "upstream/RIGBD/models/str_reconstruct.py",
+      "git_blob_sha1": "93415d1384d6554e20491b80ca3c867689ba0bf0",
+      "sha256": "4fd309503b2c0ff625cb294da03f52fc11f4e216329b6dbfd828d68fa8f42835"
+    },
+    {
+      "file": "upstream/RIGBD/README.md",
+      "git_blob_sha1": "a8759094a850ab6ce9605dd9cdf4f1e15bafa0e8",
+      "sha256": "9248bbde1cb39c3075de27dcdf4340a2779fff0f90040cae47bf8bac5b04c855"
+    },
+    {
+      "file": "upstream/RIGBD/script/train_defense.sh",
+      "git_blob_sha1": "00eec674359bca713f86e95cad7df6074c9a7ebd",
+      "sha256": "cc82eb47b894126d94279aef88ff1f5dfda315572124bd822ae8f3b086fc40aa"
+    },
+    {
+      "file": "upstream/RIGBD/train_model.py",
+      "git_blob_sha1": "02b3917f20ac57efa79fd6446ab99b02f6fde005",
+      "sha256": "2b47cb116be62f7d6dc21b907f7263146ba04075f7007f42397ebae4387ccc65"
+    },
+    {
+      "file": "upstream/RIGBD/utils.py",
+      "git_blob_sha1": "b17aa577ff4110b4079df71debb35c7fe9b72de2",
+      "sha256": "ef5af295f88e3d4e9b20b5e9ba99b1a583450619c97b08cff9352bbaeb7629c9"
+    },
+    {
+      "file": "upstream/LoSplit/Clean.py",
+      "git_blob_sha1": "cb1d66340aaeeafffd8038be2097a0337e49b93e",
+      "sha256": "10dc27fe18e711be300c4167313801d78cacb7e7aa0c97762650740a2e5e48fe"
+    },
+    {
+      "file": "upstream/LoSplit/defense.sh",
+      "git_blob_sha1": "a2a03393190be297982442443e9295835623f55f",
+      "sha256": "6311f0d74f7b38705368dbd15199fac62d93cda11b6d0fa2cc571b42f9e22029"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/DPGBA_LoSplit.py",
+      "git_blob_sha1": "528e63ec0e04a76f7c07b5444f7dea43fe4a490c",
+      "sha256": "eb2d7ea00adcf031b2cd05b480c7b3de3ddcc8d84f426ced54e907e2e8a4b5a4"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/DPGBA_RIGBD.py",
+      "git_blob_sha1": "02c9d92c4d06868a61e269c9dd48ba202fe38ec0",
+      "sha256": "a30f1805ec3419350f7ce24a88d06eb9f464fad66b65e81acf16a51cde42481f"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/help_funcs.py",
+      "git_blob_sha1": "46a925b29f7be99ece001b91c75128f36414dbed",
+      "sha256": "dcd72a6a65f1b605e986b4861ae92a04c7f1c7e2ac9639accc98d85284df3320"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/heuristic_selection.py",
+      "git_blob_sha1": "67dcc9f9592bcb343014ea4329cd380f14244f3e",
+      "sha256": "413ca54ee779b49c540b787c0c3f78e4500ea2f93c8964efbf44674a944c7803"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/install.sh",
+      "git_blob_sha1": "6fda9877c97275b76283a0b80d9d0fa150369cb2",
+      "sha256": "3b5c3ecaedab458cb6b6a603c39247ab97d13f88564e9749a256531c246b9e6f"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/_GNNGuard/gat_conv.py",
+      "git_blob_sha1": "e3eec4b11debd30057e56ff3fc8560107df06fbc",
+      "sha256": "940131e51554c5b9ce5e8b136c757e2e9547ecd3b1add728315c32d6df297980"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/_GNNGuard/GCN.py",
+      "git_blob_sha1": "7d09f2a7d54d13e716dedd42c04df71f7f292e24",
+      "sha256": "f397798bf936652cbaec4ace68e671b9350946e370885c3c5bd798c60c6e3e19"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/_GNNGuard/gcn_conv.py",
+      "git_blob_sha1": "89a872c385bd545c3a2bedc89f72006013e16f56",
+      "sha256": "c26b5ee6dd8e95b5607289a215b55dc32e4751ff81a64ad641d608ba006bf812"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/_GNNGuard/gin_conv.py",
+      "git_blob_sha1": "475bf0b9d447da7ea3f9f17bd1455fb5b7814d5d",
+      "sha256": "fe5ea37a9142aff88a9795ad5d0549ae70e43d14a656a357f8c9242af491651d"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/_GNNGuard/inits.py",
+      "git_blob_sha1": "7cfb9d265a8b0fa80accd03533b063f18f339a4d",
+      "sha256": "ffc16a69c08b3f3e45b76cc1e6ce9db4a193296b5facbc822cbbafd50bf22a39"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/ABL.py",
+      "git_blob_sha1": "87e0ceac131fd95f98be4ca2ba76e0a5cfa2c836",
+      "sha256": "fc1e57b9ee78a871e9a9e14a492e9e1eafe42554c7c9b76746291ee8350c55e8"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/backdoor.py",
+      "git_blob_sha1": "118580c778115c315e876d7bc826871dc9f4774f",
+      "sha256": "4dda9c0cdf1a9808cb24c484a58b73f1112c7e3b99aa8eb89f99614d60bf316e"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/baseline.py",
+      "git_blob_sha1": "f199db9b3fe6986f2624071b14f48bca8e056f5a",
+      "sha256": "5f370dc051f318a542b826cb48d5c864ef262ae7d881f26ddaa432e471845c21"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/construct.py",
+      "git_blob_sha1": "ca06ebae10ec69dace4da6e8a1daf284e75b8a19",
+      "sha256": "18e2bae9c94e0cfccac6b70173e8ace0218bff891c6a585f9c2dd6813f78d603"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/GAT.py",
+      "git_blob_sha1": "76f97180e0c419881e83b0cbcc3e07d4e91978d1",
+      "sha256": "2474f02db7664c2bf7a9eb47291e286d043adf485686b335e68da8060aa7a5f8"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/GCN.py",
+      "git_blob_sha1": "0b8ba11d4b887ea3e7b250a87bd34d775465bb76",
+      "sha256": "be2f24fcb7f412b9e53f768ee6fb3db5646460fc4bd20e65ba668d256438e3bc"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/GCN_Encoder.py",
+      "git_blob_sha1": "5cf3db65209beafe52212e48f45994fdfd9fb510",
+      "sha256": "1f80ac4dc189f9b84d5a292a8a46bca4207d752f6ba362dd80891c925d25f64c"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/GIN.py",
+      "git_blob_sha1": "728a825a9833a7a451b2e38a7f2685d832db22a0",
+      "sha256": "7679c076a8c6c3ecc9f15468d548c766a01645a20e3aed017a6356e5819f2d5b"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/GNNGuard.py",
+      "git_blob_sha1": "6814406656c50b2d0a5d0c010cd96aed01bd16c2",
+      "sha256": "79e5afd4d087d01ef0dd6112a75b9d5265f2612577e99a67d01fb620c60b0f31"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/GTA.py",
+      "git_blob_sha1": "1f311c45217b032fb8ecd6479cfd42b34274b164",
+      "sha256": "ccd992aa31864e767ef981fbd1d0a83d3891ce4e2d7032b1bf555b7e2547674b"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/LoSplit.py",
+      "git_blob_sha1": "347b0fd8f8d2855d82159cede5c20142cbb4203c",
+      "sha256": "ad0d48fd017ce7a15027b2fea3cfbab62eb6a3dad4756fa38ac0e2cd84678ef1"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/MLP.py",
+      "git_blob_sha1": "6dd679de9f1dd7a0952327dbf85fef2c6208872f",
+      "sha256": "db04f35c8efcdd5db7d9115b4c26bbb459937c80510e2e4f2cf5a8b6c01312dd"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/reconstruct.py",
+      "git_blob_sha1": "8388f127ba944894af078caa1f5c2c264f3b09b5",
+      "sha256": "f3b63dd1fd06fd72ca7199a45e6010fa915a3fbf2cf90115ebe63c75170f9698"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/RobustGCN.py",
+      "git_blob_sha1": "12677a048420e54df495e62490b737018c0663d6",
+      "sha256": "0d7b6ce5ad90021318b7d66761983fb07602e4a7a6bc7117a90584eff25ab5b4"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/SAGE.py",
+      "git_blob_sha1": "8204598c8666cd3c1e059aee87b11dc7919b95bb",
+      "sha256": "c387ee0603b23f526328491923e68ca8cb50c1e49e00ded1cd427988ecb5b44f"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/models/str_reconstruct.py",
+      "git_blob_sha1": "f9d617303aa17a8efb25d9d2f5dde5dd7eca9b1b",
+      "sha256": "0c862ec59c84aae6482164cb14a2324a79bddb74454bc4655f1f4ba29cf06e7f"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA/utils.py",
+      "git_blob_sha1": "b17aa577ff4110b4079df71debb35c7fe9b72de2",
+      "sha256": "ef5af295f88e3d4e9b20b5e9ba99b1a583450619c97b08cff9352bbaeb7629c9"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/DPGBA_LoSplit.py",
+      "git_blob_sha1": "90cc1f5bf5fed33f16cbb4b1cd4905a3a0397500",
+      "sha256": "0d351df5b559266f30953c464b7bb8f84844dc248924e4bb400e1b047989b4f2"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/DPGBA_RIGBD.py",
+      "git_blob_sha1": "02c9d92c4d06868a61e269c9dd48ba202fe38ec0",
+      "sha256": "a30f1805ec3419350f7ce24a88d06eb9f464fad66b65e81acf16a51cde42481f"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/help_funcs.py",
+      "git_blob_sha1": "46a925b29f7be99ece001b91c75128f36414dbed",
+      "sha256": "dcd72a6a65f1b605e986b4861ae92a04c7f1c7e2ac9639accc98d85284df3320"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/heuristic_selection.py",
+      "git_blob_sha1": "67dcc9f9592bcb343014ea4329cd380f14244f3e",
+      "sha256": "413ca54ee779b49c540b787c0c3f78e4500ea2f93c8964efbf44674a944c7803"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/install.sh",
+      "git_blob_sha1": "6fda9877c97275b76283a0b80d9d0fa150369cb2",
+      "sha256": "3b5c3ecaedab458cb6b6a603c39247ab97d13f88564e9749a256531c246b9e6f"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/_GNNGuard/gat_conv.py",
+      "git_blob_sha1": "e3eec4b11debd30057e56ff3fc8560107df06fbc",
+      "sha256": "940131e51554c5b9ce5e8b136c757e2e9547ecd3b1add728315c32d6df297980"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/_GNNGuard/GCN.py",
+      "git_blob_sha1": "7d09f2a7d54d13e716dedd42c04df71f7f292e24",
+      "sha256": "f397798bf936652cbaec4ace68e671b9350946e370885c3c5bd798c60c6e3e19"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/_GNNGuard/gcn_conv.py",
+      "git_blob_sha1": "89a872c385bd545c3a2bedc89f72006013e16f56",
+      "sha256": "c26b5ee6dd8e95b5607289a215b55dc32e4751ff81a64ad641d608ba006bf812"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/_GNNGuard/gin_conv.py",
+      "git_blob_sha1": "475bf0b9d447da7ea3f9f17bd1455fb5b7814d5d",
+      "sha256": "fe5ea37a9142aff88a9795ad5d0549ae70e43d14a656a357f8c9242af491651d"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/_GNNGuard/inits.py",
+      "git_blob_sha1": "7cfb9d265a8b0fa80accd03533b063f18f339a4d",
+      "sha256": "ffc16a69c08b3f3e45b76cc1e6ce9db4a193296b5facbc822cbbafd50bf22a39"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/ABL.py",
+      "git_blob_sha1": "87e0ceac131fd95f98be4ca2ba76e0a5cfa2c836",
+      "sha256": "fc1e57b9ee78a871e9a9e14a492e9e1eafe42554c7c9b76746291ee8350c55e8"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/backdoor.py",
+      "git_blob_sha1": "b19b5b72504ed54e1b9f1f519d3daf41289b2cc4",
+      "sha256": "ba363b5570d227aadffc6e45d6f815dfb67c976030c232376ca4156b220924b1"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/baseline.py",
+      "git_blob_sha1": "f199db9b3fe6986f2624071b14f48bca8e056f5a",
+      "sha256": "5f370dc051f318a542b826cb48d5c864ef262ae7d881f26ddaa432e471845c21"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/construct.py",
+      "git_blob_sha1": "ca06ebae10ec69dace4da6e8a1daf284e75b8a19",
+      "sha256": "18e2bae9c94e0cfccac6b70173e8ace0218bff891c6a585f9c2dd6813f78d603"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/GAT.py",
+      "git_blob_sha1": "94e704d5c7c7022effc9e129d1ad0f199ad345ea",
+      "sha256": "4989bde1270d65559edd8af0b0cfc6a7e8f22b301bcb530365d2babfb0dfdb0a"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/GCN.py",
+      "git_blob_sha1": "acba72bf81e19c096822f67284c4ef4e90de17a2",
+      "sha256": "456a141ab734b1fca77ae6699f86e3f086a209274025f340b3bcc08efc790613"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/GCN_Encoder.py",
+      "git_blob_sha1": "5cf3db65209beafe52212e48f45994fdfd9fb510",
+      "sha256": "1f80ac4dc189f9b84d5a292a8a46bca4207d752f6ba362dd80891c925d25f64c"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/GIN.py",
+      "git_blob_sha1": "728a825a9833a7a451b2e38a7f2685d832db22a0",
+      "sha256": "7679c076a8c6c3ecc9f15468d548c766a01645a20e3aed017a6356e5819f2d5b"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/GNNGuard.py",
+      "git_blob_sha1": "6814406656c50b2d0a5d0c010cd96aed01bd16c2",
+      "sha256": "79e5afd4d087d01ef0dd6112a75b9d5265f2612577e99a67d01fb620c60b0f31"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/GTA.py",
+      "git_blob_sha1": "1f311c45217b032fb8ecd6479cfd42b34274b164",
+      "sha256": "ccd992aa31864e767ef981fbd1d0a83d3891ce4e2d7032b1bf555b7e2547674b"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/LoSplit.py",
+      "git_blob_sha1": "347b0fd8f8d2855d82159cede5c20142cbb4203c",
+      "sha256": "ad0d48fd017ce7a15027b2fea3cfbab62eb6a3dad4756fa38ac0e2cd84678ef1"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/MLP.py",
+      "git_blob_sha1": "c3b15faa0f163ce011e52dd6ef5c7f2b26905fed",
+      "sha256": "69098f43b90f9282a5206ee87defb4a3e5c39ba514ea74265c17f13fc8a5bd6f"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/reconstruct.py",
+      "git_blob_sha1": "37c0e4ba4680a58ea5d2b2f43c1af3a13e9bf71c",
+      "sha256": "2001b68273223d527fe67e928310b83e9138dc74579cebb11c81f92219dcdc34"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/RobustGCN.py",
+      "git_blob_sha1": "12677a048420e54df495e62490b737018c0663d6",
+      "sha256": "0d7b6ce5ad90021318b7d66761983fb07602e4a7a6bc7117a90584eff25ab5b4"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/SAGE.py",
+      "git_blob_sha1": "9da648e15385d370af4d3556573b4369de76f29f",
+      "sha256": "cafb1d4488ff19bbe6a570ce243f2335ad419e4875694cbcf0035a98e65fdd81"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/models/str_reconstruct.py",
+      "git_blob_sha1": "93415d1384d6554e20491b80ca3c867689ba0bf0",
+      "sha256": "4fd309503b2c0ff625cb294da03f52fc11f4e216329b6dbfd828d68fa8f42835"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/train_model.py",
+      "git_blob_sha1": "02b3917f20ac57efa79fd6446ab99b02f6fde005",
+      "sha256": "2b47cb116be62f7d6dc21b907f7263146ba04075f7007f42397ebae4387ccc65"
+    },
+    {
+      "file": "upstream/LoSplit/DPGBA_arxiv/utils.py",
+      "git_blob_sha1": "b17aa577ff4110b4079df71debb35c7fe9b72de2",
+      "sha256": "ef5af295f88e3d4e9b20b5e9ba99b1a583450619c97b08cff9352bbaeb7629c9"
+    },
+    {
+      "file": "upstream/LoSplit/GTA_LoSplit.py",
+      "git_blob_sha1": "4a8ddae48055c9baafd984a190bf6ec705d9ac95",
+      "sha256": "b66b5b23c040f8c5a5ad1a70b285916c8d5025fea28bb9df5d798e0e987bc23f"
+    },
+    {
+      "file": "upstream/LoSplit/GTA_RIGBD.py",
+      "git_blob_sha1": "8276bb7780efb082aede003726b02306cb0e05bd",
+      "sha256": "f7dae967d29ab78ea5b705e18734052a8eff70694ef0e9153681e8745b4cd4ec"
+    },
+    {
+      "file": "upstream/LoSplit/help_funcs.py",
+      "git_blob_sha1": "4142ad7ed937d469728bffaeae4ad140efdece8c",
+      "sha256": "299ec3ba293a3ee46633ecebc8b13412695b4094be12705db282689872cd7023"
+    },
+    {
+      "file": "upstream/LoSplit/heuristic_selection.py",
+      "git_blob_sha1": "67dcc9f9592bcb343014ea4329cd380f14244f3e",
+      "sha256": "413ca54ee779b49c540b787c0c3f78e4500ea2f93c8964efbf44674a944c7803"
+    },
+    {
+      "file": "upstream/LoSplit/install.sh",
+      "git_blob_sha1": "5376af7f02822697a4cf0208019828480f620804",
+      "sha256": "a060fe6197987260d1e3165820947dca59fd17eb62713bc37988fcef87704a78"
+    },
+    {
+      "file": "upstream/LoSplit/models/_GNNGuard/gat_conv.py",
+      "git_blob_sha1": "e3eec4b11debd30057e56ff3fc8560107df06fbc",
+      "sha256": "940131e51554c5b9ce5e8b136c757e2e9547ecd3b1add728315c32d6df297980"
+    },
+    {
+      "file": "upstream/LoSplit/models/_GNNGuard/GCN.py",
+      "git_blob_sha1": "7d09f2a7d54d13e716dedd42c04df71f7f292e24",
+      "sha256": "f397798bf936652cbaec4ace68e671b9350946e370885c3c5bd798c60c6e3e19"
+    },
+    {
+      "file": "upstream/LoSplit/models/_GNNGuard/gcn_conv.py",
+      "git_blob_sha1": "89a872c385bd545c3a2bedc89f72006013e16f56",
+      "sha256": "c26b5ee6dd8e95b5607289a215b55dc32e4751ff81a64ad641d608ba006bf812"
+    },
+    {
+      "file": "upstream/LoSplit/models/_GNNGuard/gin_conv.py",
+      "git_blob_sha1": "475bf0b9d447da7ea3f9f17bd1455fb5b7814d5d",
+      "sha256": "fe5ea37a9142aff88a9795ad5d0549ae70e43d14a656a357f8c9242af491651d"
+    },
+    {
+      "file": "upstream/LoSplit/models/_GNNGuard/inits.py",
+      "git_blob_sha1": "7cfb9d265a8b0fa80accd03533b063f18f339a4d",
+      "sha256": "ffc16a69c08b3f3e45b76cc1e6ce9db4a193296b5facbc822cbbafd50bf22a39"
+    },
+    {
+      "file": "upstream/LoSplit/models/ABL.py",
+      "git_blob_sha1": "762d73181fa30f8cd99dfaecfdc063f3440625ac",
+      "sha256": "f889bb8b7bd767108fb46e6ec08dd9e3165326c03b984c2585b6db2e97b86e25"
+    },
+    {
+      "file": "upstream/LoSplit/models/backdoor_SPEAR.py",
+      "git_blob_sha1": "191b119760292bd00b3ee8b779b92ca2cefb50de",
+      "sha256": "2b88acb3ed4408cc3464fdc5dcf04eec9e7e5f71993a7253402ffeb69b197925"
+    },
+    {
+      "file": "upstream/LoSplit/models/backdoor_UGBA.py",
+      "git_blob_sha1": "a11e86bee96652313d2afaeda07bd7a9a283b5a2",
+      "sha256": "45464767cf57202593039ee827693ef733ff35cac10c6834c43699084f9ffc26"
+    },
+    {
+      "file": "upstream/LoSplit/models/construct.py",
+      "git_blob_sha1": "6132812adba17cd56a801d90cc86fa3ef5d4ad4c",
+      "sha256": "10adf68db91a93dc1ec703cad1811ed873101bdbaa066d95595ccef4df036e4c"
+    },
+    {
+      "file": "upstream/LoSplit/models/GAT.py",
+      "git_blob_sha1": "95ce1cb306f6367b193cb977e99611cff7cb5a3f",
+      "sha256": "ff38f1253353ff418ede3d5fc314e412c19dd3135a2a4320a39480b5cb0833a4"
+    },
+    {
+      "file": "upstream/LoSplit/models/GCN.py",
+      "git_blob_sha1": "2679e89712404bcbea194839c94606da895b5b8a",
+      "sha256": "ef90923527562698fcdd30ca8e0b9f4199f7654119788766335dae23ac82cc11"
+    },
+    {
+      "file": "upstream/LoSplit/models/GCN_Encoder.py",
+      "git_blob_sha1": "5cf3db65209beafe52212e48f45994fdfd9fb510",
+      "sha256": "1f80ac4dc189f9b84d5a292a8a46bca4207d752f6ba362dd80891c925d25f64c"
+    },
+    {
+      "file": "upstream/LoSplit/models/GCN_SPEAR.py",
+      "git_blob_sha1": "81a66bde32cf9ec61b84315a6a992ddd943d6829",
+      "sha256": "adfc6adb03134fb6e3d51697c03ab165becd5cec21775e6c1176b9a1d5b686bc"
+    },
+    {
+      "file": "upstream/LoSplit/models/GIN.py",
+      "git_blob_sha1": "728a825a9833a7a451b2e38a7f2685d832db22a0",
+      "sha256": "7679c076a8c6c3ecc9f15468d548c766a01645a20e3aed017a6356e5819f2d5b"
+    },
+    {
+      "file": "upstream/LoSplit/models/GNNGuard.py",
+      "git_blob_sha1": "6814406656c50b2d0a5d0c010cd96aed01bd16c2",
+      "sha256": "79e5afd4d087d01ef0dd6112a75b9d5265f2612577e99a67d01fb620c60b0f31"
+    },
+    {
+      "file": "upstream/LoSplit/models/GTA.py",
+      "git_blob_sha1": "360b6ffa7fa46eb2bc18e1728ddeec183fe61e8e",
+      "sha256": "5a3a57bd5231d36dc1c67c706941a0b58cb09cbc2761a3d012945987bace0787"
+    },
+    {
+      "file": "upstream/LoSplit/models/LogReg.py",
+      "git_blob_sha1": "bb223815d9eadd9372a461af99ab8a43adcc9b89",
+      "sha256": "c5730206975c853f3b1725b8d6d2fd4adc83dae7e1dbd88cef30353b12d7a783"
+    },
+    {
+      "file": "upstream/LoSplit/models/LoSplit.py",
+      "git_blob_sha1": "704be87ff14eb44ee8fd012c4be6015c4ca71a1c",
+      "sha256": "99a77e591c648cc148a48d06d1a56cd0f39c1a0647d9ca99b5a253002fda20da"
+    },
+    {
+      "file": "upstream/LoSplit/models/MLP.py",
+      "git_blob_sha1": "4753349ad65a599b4642ec80ef62769347139d0c",
+      "sha256": "84dbfa5d99e9258f603463a9a52850b6069a633fd1edd7a60e9bc1c4f3633cc6"
+    },
+    {
+      "file": "upstream/LoSplit/models/reconstruct.py",
+      "git_blob_sha1": "8388f127ba944894af078caa1f5c2c264f3b09b5",
+      "sha256": "f3b63dd1fd06fd72ca7199a45e6010fa915a3fbf2cf90115ebe63c75170f9698"
+    },
+    {
+      "file": "upstream/LoSplit/models/RobustGCN.py",
+      "git_blob_sha1": "6eda49180cf89ef9a89050f9d9cabc1c7b3df382",
+      "sha256": "4d510765ae895320180038ad27e54a24c6610a74fbe0accebb98ac63017031fe"
+    },
+    {
+      "file": "upstream/LoSplit/models/SAGE.py",
+      "git_blob_sha1": "6e61047e94d1d98c7e94b2c8dfeccefa09c4be02",
+      "sha256": "24a819de4d718f15559d10301a6a5bff87936dec634eec5457e5511695a9c2b4"
+    },
+    {
+      "file": "upstream/LoSplit/README.md",
+      "git_blob_sha1": "9e55267d34577c22efbd106d68c9a10f2bd7cff1",
+      "sha256": "4810f24ca6916f8c305c5fa0d720ea05140c776abcdfc6afcd879e7ce0c1360b"
+    },
+    {
+      "file": "upstream/LoSplit/run_clean.py",
+      "git_blob_sha1": "f2d69f30f36c4045eb217e84e888ba6ff6b44cc9",
+      "sha256": "2a02b3926c8891969f71919d811dd9d4185cc3f5041908ed918583e7a653fea2"
+    },
+    {
+      "file": "upstream/LoSplit/sage_modified/__init__.py",
+      "git_blob_sha1": "a992b93d002c01a28995369380902ddd2baa9a2c",
+      "sha256": "f9132729ae3043021736471844e9cf9b71563b423b3bd91adf7b08d26cfe244c"
+    },
+    {
+      "file": "upstream/LoSplit/sage_modified/core.py",
+      "git_blob_sha1": "c217348c9f36467bc045b98abc7b11b9aa56ae69",
+      "sha256": "b2fc290742abea9bd99e311798c2472f8302e3d16d20ac662eb7486f285423ce"
+    },
+    {
+      "file": "upstream/LoSplit/sage_modified/datasets.py",
+      "git_blob_sha1": "3bc31d83c649ea2b351016a1674faf3c171d53a1",
+      "sha256": "a09f1883bb043b1017c95f1f88a5f1e636d62c673d924628ca3aeffb5fdde32a"
+    },
+    {
+      "file": "upstream/LoSplit/sage_modified/grouped_imputers.py",
+      "git_blob_sha1": "98357d19f03cff90df7f16362ac2b97f26b61433",
+      "sha256": "bcf27d6113f22d303cc598aa8a9159fe2218ed7addab80ecd69b464fdc326a87"
+    },
+    {
+      "file": "upstream/LoSplit/sage_modified/imputers.py",
+      "git_blob_sha1": "3b224d86a09c8f4d5630607e026e8c1e59f9c748",
+      "sha256": "5eb616422d8698f35c8cc2539c64eb852253167abeefe7ec771eeea9e9a752fb"
+    },
+    {
+      "file": "upstream/LoSplit/sage_modified/iterated_estimator.py",
+      "git_blob_sha1": "6dc8847eff676ed3903a2087902fea03953382c1",
+      "sha256": "683d37a4dbaabd01aa12e88017a44090571bcbc50517d1d5261349164292ea0c"
+    },
+    {
+      "file": "upstream/LoSplit/sage_modified/kernel_estimator.py",
+      "git_blob_sha1": "0a5228e881c94db58673a8817404dd521dc25e98",
+      "sha256": "2c1655c50a53094f74092fce7934dc2533784dfb0b5f01fa86de27785474ddd4"
+    },
+    {
+      "file": "upstream/LoSplit/sage_modified/permutation_estimator.py",
+      "git_blob_sha1": "9cfa4c29aeac95b11b06f5dadec61a61ab9de81a",
+      "sha256": "556a28eb187d48ea340bd22f39a700c20ec02d8ca0b2931f0bb5f254dcd7d2ac"
+    },
+    {
+      "file": "upstream/LoSplit/sage_modified/plotting.py",
+      "git_blob_sha1": "6f183ee01eebd71714d04d4c243a864873d125c8",
+      "sha256": "c03a0c796b729a88c04ff7be7e5aea210d72d4bd1de5257bcc31c5047e297c7d"
+    },
+    {
+      "file": "upstream/LoSplit/sage_modified/sign_estimator.py",
+      "git_blob_sha1": "feee8e952e85df3ea6ba2f4c1df13f51abb95509",
+      "sha256": "cc57d4ce3f6b60208621446b9e4f58066aa5fd78487548b5fd0d42fd1411d7d6"
+    },
+    {
+      "file": "upstream/LoSplit/sage_modified/utils.py",
+      "git_blob_sha1": "60716006db9abd40418d278c5dcf1313da043fd8",
+      "sha256": "8dc6ef4c5eda61054d3e1a9af93d5939bff06c75a8f55dee33ec0762a88ee25f"
+    },
+    {
+      "file": "upstream/LoSplit/save_selected_feature/check.py",
+      "git_blob_sha1": "8d4bfef4d831e7d60385933f06046315b1e8209b",
+      "sha256": "9ae632abefe911fc415ae2c656c3f47e7e52ec6df7bcbb035696622ad1a34c1b"
+    },
+    {
+      "file": "upstream/LoSplit/select_feature.py",
+      "git_blob_sha1": "905c6f94cae91b2fca8d6cd47cd01d80d69a7f10",
+      "sha256": "5d8498d1aa92c4e5a3dad4bb006f8390ea0ac9b93033b87d07a17d716fd0834c"
+    },
+    {
+      "file": "upstream/LoSplit/select_sample.py",
+      "git_blob_sha1": "8dd8ee7f6c117e2e8adec2312e3af67e4e589c4d",
+      "sha256": "112f27553a7958084c7780ed4a0559b16c2c27682f1771914a0a7c53e2c8e30a"
+    },
+    {
+      "file": "upstream/LoSplit/SPEAR_LoSplit.py",
+      "git_blob_sha1": "f568b7e6895894258a6df772f2fcb094125d9580",
+      "sha256": "cbcf5758c9b1c2c4fc4be2681373c993a9a436c8023524043006bdf9f2260574"
+    },
+    {
+      "file": "upstream/LoSplit/SPEAR_RIGBD.py",
+      "git_blob_sha1": "bf130645af0b585f4652ff41febcc680d1cc8d02",
+      "sha256": "a5a06e215c6531bceb2f371e3baa83901ad56856ebd24f9ea67907f9e64bf30d"
+    },
+    {
+      "file": "upstream/LoSplit/UGBA_LoSplit.py",
+      "git_blob_sha1": "288f1a087306a2ac7f85b30fe576dafc6f17c49a",
+      "sha256": "bf455cf05c2f205702f8612bbee46013792664c9ee47bd2c22eeb79a004cd085"
+    },
+    {
+      "file": "upstream/LoSplit/UGBA_RIGBD.py",
+      "git_blob_sha1": "4332d840680c384a0388c2a85f17de6c48a1629c",
+      "sha256": "470723b9385b2e4c6ecebe57eec7c5c9325f4d155494853cc4484af49a7b51ba"
+    },
+    {
+      "file": "upstream/LoSplit/utils.py",
+      "git_blob_sha1": "d0f5067f8b6c60ff0689ea1add6047e375b3d5ce",
+      "sha256": "984f7036b9da399dc54ad1b7e61ddb739b090f606a952c22d28b482303e87273"
+    },
+    {
+      "file": "upstream/DShield/LICENSE",
+      "git_blob_sha1": "a739a431d0299e030859f290c1082524ac8f4287",
+      "sha256": "88c9f36395e2b45a21aff90129d31c27ea20f0ccd9cb575c86454c0bcc151c50"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/analysis/study.py",
+      "git_blob_sha1": "581178038919b83432b90b8ad0327acc84042a31",
+      "sha256": "fbb09610c42b23b13a2f600398ef3128f4087d5364a773b5caa6d613d640a709"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/adaca.py",
+      "git_blob_sha1": "ad10c2a47d6ebd30a03faea4ac49cba2b5904939",
+      "sha256": "6e28b5fefe83075d696bd8bf05ac5b8be5c6ccdaba4043c57921e2eb332d6859"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/adada.py",
+      "git_blob_sha1": "939c631c1af87a940f7d087bcbd0ca22926cd7cd",
+      "sha256": "a154f9663bfc28723b0c72869dee2951e8956c31950ffe985954706a9385de8e"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/dpgba.py",
+      "git_blob_sha1": "4adeb8039a719f7a1cc417dcc8848dffb8878fdc",
+      "sha256": "53a722fae11aa0e1092d02352ffbcf0003cc48b6ab7700210597ff7c913f41c6"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/explain_backdoor.py",
+      "git_blob_sha1": "707bee9a46824139c6c3f2d9d6f6899434683b08",
+      "sha256": "93c125bb3762afa088767cc3116d76cd5aa445765a292b75c093da1437790608"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/gcba.py",
+      "git_blob_sha1": "17fe3b4e78a8f67341f6e9dab8dbd379d5c61d05",
+      "sha256": "ced4d79afe815b0a3e3efd720403c6b6410d0ddec824f82d416f62565a98889f"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/gta.py",
+      "git_blob_sha1": "f9f8208b6525a8facf0e524c1be4b73d9d2474e9",
+      "sha256": "67f295511f67cf433fd30231266b0dccecfbd4f24213358756d1c0e887075eaf"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/mlgb.py",
+      "git_blob_sha1": "42a6238e1c1a3d652d1f8c9da48207e2ef03977c",
+      "sha256": "f63903a000c3f446ccb331e23b86967925a12f64fe00bcc9399728a98ac7502f"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/nba.py",
+      "git_blob_sha1": "70623fd5ea426dff0ec09615cf71edd764cbd8db",
+      "sha256": "e94752324a5b6ead975ac5b9e8486b63942043b6fb05f406ab2ab85b65a655dd"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/percba.py",
+      "git_blob_sha1": "3ccb6d968c2a85d25cdd5511de331d3501c7430f",
+      "sha256": "7eaa63d84eb0677653a7861a0850d19618974e1dc9946b86a9234173c7154d53"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/sba.py",
+      "git_blob_sha1": "54e747b60649fcde83766a91346a87c6ea0c3eaa",
+      "sha256": "6b3d5100d9de139a7b01692eee81fcf5ecd3131fe6136871dabb5e54a85b5d6d"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/target_node_attack.py",
+      "git_blob_sha1": "47de54107ea04ee8aa666cb17535b5a38b62b85a",
+      "sha256": "21a1a5a2237363922c3cc0ca707d2f045b5a2afc2b1f83db5a6303ae46ec2ad2"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/trap.py",
+      "git_blob_sha1": "d2605bd6e1022df8cee929e9a5696dbc1869bff2",
+      "sha256": "ca8b4fde206a094fc121ac63e97f4faa4a53055af1eef2556355d5f8b10d85d9"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/attack/ugba.py",
+      "git_blob_sha1": "1f9797871c073d1559ee569c7a6449dd9b56d0c2",
+      "sha256": "ee27b81c0e61d3046189fbe5769124e35f0723b5c7d91ac1ad5a15c6e88ba92a"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/defense/dshield.py",
+      "git_blob_sha1": "8e8d273833ecbedc46ab9a77d29ab6e394c30b63",
+      "sha256": "9f783b85d9920548467b22b3be4b7569830e9026b2a5c5101bd73736913d94a3"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/heuristic_selection.py",
+      "git_blob_sha1": "f388f177d5917b7becfeea6b6ea80f625ac6d275",
+      "sha256": "d79a029cb9c76ca2e4930bd28f15b3f77ca8f59953ef0f0401507e269c3fa503"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/main.py",
+      "git_blob_sha1": "74bf946ed23f543e3310cb97d1dc41eb0d01b9f9",
+      "sha256": "3ae7703443d452a3c573668d3401890bad8001b2ad943965379cd61baf906e4d"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/construct.py",
+      "git_blob_sha1": "ea1ae38f12410df4e837f0ab811b4d8050fae8e6",
+      "sha256": "929110a6d52b984275fe2fb89a881da7e3027431182a36acd36cdef70d3bda20"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/GAT.py",
+      "git_blob_sha1": "0a23437de230b667f39904364cc998baa843aad6",
+      "sha256": "fe73fdd14bc5682fabe282ea13ec2e5cb59d8febcf136d33841aab2d9ba97996"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/GCN.py",
+      "git_blob_sha1": "e97cef626c802fc7bc090991f86e9d36cd1b74a2",
+      "sha256": "0b3ef2031f2f11d5d2c88493ecea97996d0e7615d6c7fbc5668a504b3cec7aae"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/GCN_Encoder.py",
+      "git_blob_sha1": "22c6aefa31c1855b9863b5ce820243b1725f82ee",
+      "sha256": "8b3eb492f88c2726e1b692199b3c0b7414a9fe922af92067ed53272c718099ef"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/GNNGuard.py",
+      "git_blob_sha1": "8263207457c984df26c3c0241d0d1a36805604e0",
+      "sha256": "eca5e116ee5e70df36924896a938205e4ffaafc342ee5b95e3aba760338d95f9"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/metric.py",
+      "git_blob_sha1": "689ec0d10435b9af90ccfe7438f2738ed734403b",
+      "sha256": "89ab2671b08a9428ef98f6d08d2bc6eb5bee00455944a2d01f66e87cc5d8a3f4"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/MLP.py",
+      "git_blob_sha1": "772148f2a92083c187268e1165a0ec1bdd9a2dbd",
+      "sha256": "4511686f071583604bfcee08a5c5204e2b82619102c54615f3d98e632793ae2a"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/reconstruct.py",
+      "git_blob_sha1": "db776386452951816a9c21b4d6fa987bf1ea6360",
+      "sha256": "3691a8b30a1e7c16c179881ed42ce8f272175539a2410d32f1f7a01fd9ccb0c0"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/RobustGCN.py",
+      "git_blob_sha1": "8403958e2c47deefc8112315930628a14309c9ea",
+      "sha256": "414bf41f5f778ad065d26d79ccc71ccd634db4f6d5ade62855f9abb6907b3e08"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/models/SAGE.py",
+      "git_blob_sha1": "89f8914ca9a5b57bd1bce3c35c0fddfb13106d53",
+      "sha256": "89e37208df71b6a2c69bed10390e2ac9af11815be66e95540f3a7e4cfd01aed6"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/pretraining/GraphCL.py",
+      "git_blob_sha1": "2e878589f09e59fe1a89d76ccd8ba63d0b69044e",
+      "sha256": "e8a4d38ff3e38c2c60719272855f1c1d15254f1e7577e2274e2add9546263a9b"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/utils.py",
+      "git_blob_sha1": "e9712f07f4c5a6f7cb009841a0591c5603fa312a",
+      "sha256": "db447c47fc39ff1ef4936d92c7f25e2196eb8f0a9d34e43ebf5a03580b523ca0"
+    },
+    {
+      "file": "upstream/DShield/NodeClassificationTasks/viz_main.py",
+      "git_blob_sha1": "bee6b90cf47bcbdeac3ddd618c5e67b96ee033a5",
+      "sha256": "1f0677a92088301db2cf2d3442cf6978b82de139527342c5a23595d92e4ef46d"
+    },
+    {
+      "file": "upstream/DShield/README.md",
+      "git_blob_sha1": "9186f37f5e74d3dbce8c9b42ac211fba778a37ba",
+      "sha256": "3bf89f796ee46bdc11beec93922c56344a95b61792600cb3532eab8d8916cd23"
+    },
+    {
+      "file": "upstream/DShield/requirements.txt",
+      "git_blob_sha1": "41174182fa2b76767c8ed15d56298b01434042ea",
+      "sha256": "9942bd43a63a11166384c774077bef4d95ba2e199f8048524a5ef0681b835989"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/anomaly_detect.py",
+      "git_blob_sha1": "8836b534a2e252194eb02aa537f3133f71ffaf4d",
+      "sha256": "b5e41930f98d344fc34a172ffece22911076950b8b35ba982b71a66a70a70d74"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/Detect_encoder.py",
+      "git_blob_sha1": "a1146623615bbf2d4f74406d276c9a01d5f2c54a",
+      "sha256": "4817ec01ffc6be648144dacc14bcbdf18db45c945e04df21493d04a9997b6786"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/help_funcs.py",
+      "git_blob_sha1": "ec2cf4eb31a53a1efa2f65fdc2f92bae300850c5",
+      "sha256": "e324a305bf3c06e2b3f33722902b43ece0f12755bb0f606131ea8343abd4f18f"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/heuristic_selection.py",
+      "git_blob_sha1": "67dcc9f9592bcb343014ea4329cd380f14244f3e",
+      "sha256": "413ca54ee779b49c540b787c0c3f78e4500ea2f93c8964efbf44674a944c7803"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/_GNNGuard/gat_conv.py",
+      "git_blob_sha1": "e3eec4b11debd30057e56ff3fc8560107df06fbc",
+      "sha256": "940131e51554c5b9ce5e8b136c757e2e9547ecd3b1add728315c32d6df297980"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/_GNNGuard/GCN.py",
+      "git_blob_sha1": "7d09f2a7d54d13e716dedd42c04df71f7f292e24",
+      "sha256": "f397798bf936652cbaec4ace68e671b9350946e370885c3c5bd798c60c6e3e19"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/_GNNGuard/gcn_conv.py",
+      "git_blob_sha1": "89a872c385bd545c3a2bedc89f72006013e16f56",
+      "sha256": "c26b5ee6dd8e95b5607289a215b55dc32e4751ff81a64ad641d608ba006bf812"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/_GNNGuard/gin_conv.py",
+      "git_blob_sha1": "475bf0b9d447da7ea3f9f17bd1455fb5b7814d5d",
+      "sha256": "fe5ea37a9142aff88a9795ad5d0549ae70e43d14a656a357f8c9242af491651d"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/_GNNGuard/inits.py",
+      "git_blob_sha1": "7cfb9d265a8b0fa80accd03533b063f18f339a4d",
+      "sha256": "ffc16a69c08b3f3e45b76cc1e6ce9db4a193296b5facbc822cbbafd50bf22a39"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/backdoor.py",
+      "git_blob_sha1": "a7d7caf2401d41a6fbd58606fb5fd752239dd698",
+      "sha256": "a15283036d9be4965b26eb9c47a0cb03c45f595b27c31d705d6749e991929cb5"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/baseline.py",
+      "git_blob_sha1": "f199db9b3fe6986f2624071b14f48bca8e056f5a",
+      "sha256": "5f370dc051f318a542b826cb48d5c864ef262ae7d881f26ddaa432e471845c21"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/construct.py",
+      "git_blob_sha1": "30aa813bd104e029bddcc8014d2433b8c4ecbd47",
+      "sha256": "ab2dcb26518678e86e0a84ac4cad4a586c4aa4cfba9d79328171b6c3de171596"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/GAT.py",
+      "git_blob_sha1": "c41a053a0a6867516e3fe51d9c8ac62dd1720ae9",
+      "sha256": "58083f6ec3575be08192d62f333740aab3904af3a4f250881024256d879d75b5"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/GAT0.py",
+      "git_blob_sha1": "f6bbc4103e30fb98b49e4cc4c43acf70d9a4ea23",
+      "sha256": "f0494dc4faa7c706ce7d41fd972535c5957efb40e3a9c62bdac3cfe8aef5c01b"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/GCN.py",
+      "git_blob_sha1": "8ae5c7e2568797c79ee2c40b47c78b0c8cd328ea",
+      "sha256": "b74dc9827631f73613b8a0fe14e58b660983cfffbae9f95c2e98847a528c7b04"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/GCN2.py",
+      "git_blob_sha1": "faec6d1f2c97df82ccc6cb6d988c3a85a75cdbb2",
+      "sha256": "2dc63f64234630707ac94543455b77eba49bcaa9766db632121c1086e8b6c440"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/GCN_Encoder.py",
+      "git_blob_sha1": "5cf3db65209beafe52212e48f45994fdfd9fb510",
+      "sha256": "1f80ac4dc189f9b84d5a292a8a46bca4207d752f6ba362dd80891c925d25f64c"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/GIN.py",
+      "git_blob_sha1": "728a825a9833a7a451b2e38a7f2685d832db22a0",
+      "sha256": "7679c076a8c6c3ecc9f15468d548c766a01645a20e3aed017a6356e5819f2d5b"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/GNNGuard.py",
+      "git_blob_sha1": "6814406656c50b2d0a5d0c010cd96aed01bd16c2",
+      "sha256": "79e5afd4d087d01ef0dd6112a75b9d5265f2612577e99a67d01fb620c60b0f31"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/GTA.py",
+      "git_blob_sha1": "1f311c45217b032fb8ecd6479cfd42b34274b164",
+      "sha256": "ccd992aa31864e767ef981fbd1d0a83d3891ce4e2d7032b1bf555b7e2547674b"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/MLP.py",
+      "git_blob_sha1": "6dd679de9f1dd7a0952327dbf85fef2c6208872f",
+      "sha256": "db04f35c8efcdd5db7d9115b4c26bbb459937c80510e2e4f2cf5a8b6c01312dd"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/reconstruct.py",
+      "git_blob_sha1": "8388f127ba944894af078caa1f5c2c264f3b09b5",
+      "sha256": "f3b63dd1fd06fd72ca7199a45e6010fa915a3fbf2cf90115ebe63c75170f9698"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/RobustGCN.py",
+      "git_blob_sha1": "12677a048420e54df495e62490b737018c0663d6",
+      "sha256": "0d7b6ce5ad90021318b7d66761983fb07602e4a7a6bc7117a90584eff25ab5b4"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/SAGE.py",
+      "git_blob_sha1": "63dd9242da621ef01545f51c3f03b97c5f5036de",
+      "sha256": "df3a05b8f1897160fbef6e0d0b0980a1cf7f3cc44329c7751513a47f600925c9"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/SAGE0.py",
+      "git_blob_sha1": "8f1e44c16f782723a336f4d25e54f8246a52e7f0",
+      "sha256": "570489c576bc4d1182e0c9f78a1dc0b1091945a172e2001ac5ebbf29e415c60b"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/models/str_reconstruct.py",
+      "git_blob_sha1": "f9d617303aa17a8efb25d9d2f5dde5dd7eca9b1b",
+      "sha256": "0c862ec59c84aae6482164cb14a2324a79bddb74454bc4655f1f4ba29cf06e7f"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/run_adaptive.py",
+      "git_blob_sha1": "94e57c725cbd88fa60629d0e95e3e1895c1523aa",
+      "sha256": "0d7298d1c1f7c3a7aa3696b087dc5b5aa9a6d5e88e9fecf793637675da4229d5"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/script/Defend_DPGBA.sh",
+      "git_blob_sha1": "ee751936f0ae702079933b52ae003ba4f0b5dd8c",
+      "sha256": "7549aace61f7ca175a256b21438aee2a05ebf2c45b0c75db0b8f3f012cb8d3cf"
+    },
+    {
+      "file": "upstream/MAD/MAD/DPGBA/DPGBA/run/utils.py",
+      "git_blob_sha1": "b17aa577ff4110b4079df71debb35c7fe9b72de2",
+      "sha256": "ef5af295f88e3d4e9b20b5e9ba99b1a583450619c97b08cff9352bbaeb7629c9"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/anomaly_detect.py",
+      "git_blob_sha1": "18f0f119c980a67089fc1465c2360dc41d0d4e4a",
+      "sha256": "42916398fa91141ba097df95ae14e3e34958f3dae1ed8a9a2ad485a46fdc01f0"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/baseline_atk.py",
+      "git_blob_sha1": "503fa85b4b3e6bcf2b6ef7e116203af847759436",
+      "sha256": "3961da1e04764dde805b812140c791b7ffbc97b78a0cd5c48c99481a246d35e8"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/attacks/agia.py",
+      "git_blob_sha1": "5d0d2a13a152b1b60a3c34dd9d31e5047d3e66e3",
+      "sha256": "9d5e93baee5eee9ffa4c7e9a8fe252fd4f51095e189fa0ccb0cc4b26411ec939"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/attacks/attack.py",
+      "git_blob_sha1": "7a5fbc141a9682b7ef49711f3faa3d72ec40f176",
+      "sha256": "6ca7a6cc5689a2ec8bbd42d8a3caf5bf6982c1eb10d7d2b181c4b092e5168dac"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/attacks/flag.py",
+      "git_blob_sha1": "0d2eed68347b64aede7a0d963e35a6ade14a1193",
+      "sha256": "d4201d21dc5717010db21af46743628b87da5a9344bd3c90b1b865ec94af9b41"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/attacks/gia.py",
+      "git_blob_sha1": "67a284d7d13e50a5282c256d5d132dc82acbe815",
+      "sha256": "92568c1688e49071b67e58a7eb95c7bcb092e684096afce6f421659115fcb187"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/attacks/injection.py",
+      "git_blob_sha1": "d2beb8a8051ef90d8aa1277678f18fd570ba090d",
+      "sha256": "a5a82dee30cd6c58e2216a831a47b6d8839134a20e83010d7e93422785e97caf"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/attacks/metric.py",
+      "git_blob_sha1": "b588d58010084541d65346ae9c560026c26a94bb",
+      "sha256": "81213c3b81675ed51046b57fd53e4bffc2965ec20b0a6709691bb2a461bfd479"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/attacks/pgd.py",
+      "git_blob_sha1": "f1f246cb81c7167cae12ed04a6bb75340b00b7ad",
+      "sha256": "05232006be356b2bab43d5d81686c480eee7af371c898e80e95aa7471d9299e0"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/attacks/rnd.py",
+      "git_blob_sha1": "4cfe3d6e4481594ffa93c490d711dff0dbf3d5d6",
+      "sha256": "404b29b1006baee18878eec33fb83e3ac0940fa2c97275e0e6a64022adf677e8"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/attacks/seqgia.py",
+      "git_blob_sha1": "4f881e097f6694d192edb206b124924b75d5d1f6",
+      "sha256": "67355a5eb93904b4a5a7a0996398928436248c5e86923c76fd930d591b7d4880"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/attacks/speit.py",
+      "git_blob_sha1": "45d153aaee73dd83ce04ddb2f99727a8fddee57f",
+      "sha256": "38dec31bc4ae659f725058998be17715e085fc398de22f637b843c150cf6a854"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/attacks/utils.py",
+      "git_blob_sha1": "9407758ba2aa4213b783e55686cb470e5216df5c",
+      "sha256": "ef45a7e94da31c3ffb27ccde917dc529d131a9473ab6b4cd53c2d1f03dae3a4f"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/attacks/vanilla.py",
+      "git_blob_sha1": "3aac90456a15d9a5d2e591d89b5c4c8959bdb9af",
+      "sha256": "70fbd2324d520ee14fe4dae529d9ffb0f9256e3b0fcb07721d3970afb33ad1a3"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/model_pyg.py",
+      "git_blob_sha1": "0d2cdbc805d5084006d00113ea1941743611229d",
+      "sha256": "60007193017c79086ffae1afe692359930dfc1f655c962de1af1e14ddf93e171"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Baseline_Attack/utils.py",
+      "git_blob_sha1": "4f09f3e9fca690992b1f3725dc6ba251fd6d7f01",
+      "sha256": "6dc07882137b9324a9a133d0fe267e83ca7a003b072e6c3c1aa462ed46da91a6"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/Detect_encoder.py",
+      "git_blob_sha1": "4600f354ed897e975eb407c0e15e0e1e73f54bb8",
+      "sha256": "f700dad0e0f30e97021700106a638faab5da7c4b5fa71630a625c2cb797ae4d9"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/help_funcs.py",
+      "git_blob_sha1": "e00ca57a521925193c340d00fc9892d293672737",
+      "sha256": "4a83d4a6def1a9c3fb21df41c094fd45409373b8eff42b8be5eb51cfb095dc99"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/heuristic_selection.py",
+      "git_blob_sha1": "3c2f6dc7a8f82509bb991e5d6cd7dc3c4639e13b",
+      "sha256": "719e538216f9761966090193058c0c0e1c3d04289eafb20044e30111c6a195c1"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/_GNNGuard/gat_conv.py",
+      "git_blob_sha1": "e3eec4b11debd30057e56ff3fc8560107df06fbc",
+      "sha256": "940131e51554c5b9ce5e8b136c757e2e9547ecd3b1add728315c32d6df297980"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/_GNNGuard/GCN.py",
+      "git_blob_sha1": "7d09f2a7d54d13e716dedd42c04df71f7f292e24",
+      "sha256": "f397798bf936652cbaec4ace68e671b9350946e370885c3c5bd798c60c6e3e19"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/_GNNGuard/gcn_conv.py",
+      "git_blob_sha1": "89a872c385bd545c3a2bedc89f72006013e16f56",
+      "sha256": "c26b5ee6dd8e95b5607289a215b55dc32e4751ff81a64ad641d608ba006bf812"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/_GNNGuard/gin_conv.py",
+      "git_blob_sha1": "475bf0b9d447da7ea3f9f17bd1455fb5b7814d5d",
+      "sha256": "fe5ea37a9142aff88a9795ad5d0549ae70e43d14a656a357f8c9242af491651d"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/_GNNGuard/inits.py",
+      "git_blob_sha1": "7cfb9d265a8b0fa80accd03533b063f18f339a4d",
+      "sha256": "ffc16a69c08b3f3e45b76cc1e6ce9db4a193296b5facbc822cbbafd50bf22a39"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/backdoor.py",
+      "git_blob_sha1": "33cd4b52841db07dc957d676f780ac7fb7624e05",
+      "sha256": "564ccd01be0743f5aa96730ee90644ed1070226144ab301223f07cdab9d0e636"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/baseline.py",
+      "git_blob_sha1": "f199db9b3fe6986f2624071b14f48bca8e056f5a",
+      "sha256": "5f370dc051f318a542b826cb48d5c864ef262ae7d881f26ddaa432e471845c21"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/construct.py",
+      "git_blob_sha1": "3c3be6afb7a6d600e659c62fdb2adcaf28f44454",
+      "sha256": "1ed1023bb2d77d357a6dd89ca9977d4c40691ade2ae74f6b02e437ec10411eec"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/GAT.py",
+      "git_blob_sha1": "f6bbc4103e30fb98b49e4cc4c43acf70d9a4ea23",
+      "sha256": "f0494dc4faa7c706ce7d41fd972535c5957efb40e3a9c62bdac3cfe8aef5c01b"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/GCN.py",
+      "git_blob_sha1": "b7bad0ab074a96c857f00bb5133594adc3aded9a",
+      "sha256": "d37b87f78b544655a2a8e50794c4b9978fab892c8f5985b6cec024e9d71402ca"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/GCN2.py",
+      "git_blob_sha1": "faec6d1f2c97df82ccc6cb6d988c3a85a75cdbb2",
+      "sha256": "2dc63f64234630707ac94543455b77eba49bcaa9766db632121c1086e8b6c440"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/GCN_Encoder.py",
+      "git_blob_sha1": "5cf3db65209beafe52212e48f45994fdfd9fb510",
+      "sha256": "1f80ac4dc189f9b84d5a292a8a46bca4207d752f6ba362dd80891c925d25f64c"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/GIN.py",
+      "git_blob_sha1": "728a825a9833a7a451b2e38a7f2685d832db22a0",
+      "sha256": "7679c076a8c6c3ecc9f15468d548c766a01645a20e3aed017a6356e5819f2d5b"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/GNNGuard.py",
+      "git_blob_sha1": "6814406656c50b2d0a5d0c010cd96aed01bd16c2",
+      "sha256": "79e5afd4d087d01ef0dd6112a75b9d5265f2612577e99a67d01fb620c60b0f31"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/GTA.py",
+      "git_blob_sha1": "1f311c45217b032fb8ecd6479cfd42b34274b164",
+      "sha256": "ccd992aa31864e767ef981fbd1d0a83d3891ce4e2d7032b1bf555b7e2547674b"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/MLP.py",
+      "git_blob_sha1": "c5fb0c3b1f20f33e248537c361dedf8f45c2d6d1",
+      "sha256": "42c891b9ef6a37ce73372b9669a447fe1dd1f2eb30ef9a7d047d78692da343ab"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/RobustGCN.py",
+      "git_blob_sha1": "12677a048420e54df495e62490b737018c0663d6",
+      "sha256": "0d7b6ce5ad90021318b7d66761983fb07602e4a7a6bc7117a90584eff25ab5b4"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/models/SAGE.py",
+      "git_blob_sha1": "8f1e44c16f782723a336f4d25e54f8246a52e7f0",
+      "sha256": "570489c576bc4d1182e0c9f78a1dc0b1091945a172e2001ac5ebbf29e415c60b"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/run_adaptive.py",
+      "git_blob_sha1": "5c51612ffe5f09b194a298ebf02d6c81da527779",
+      "sha256": "39d1827492ce33b277a1c295df01157f4ebc58817b13f1f70e991e7ab0c898ce"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/run_clean.py",
+      "git_blob_sha1": "9efd8982fe8b25b3b8964129bc8e37fbf3c8800c",
+      "sha256": "344ff9ad567faa6f1bb87adfb20480e2ab0e78369c7abeb57217cbf045e78f77"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/run_GTA.py",
+      "git_blob_sha1": "ee4362177e49d80d25dd493e7948ddeec0347940",
+      "sha256": "84c24dec127fffea18caf6cf23d2743f6d37a716a2a254a288bf868919e7afae"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/script/Defend_GTA.sh",
+      "git_blob_sha1": "66c8eddd943aad7ac05fef291a76f4d64c822519",
+      "sha256": "cd6ef852658f54440f2ae73a9ffb7fd250420958f36ac27d89b099c752abc52f"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/script/Defend_UGBA.sh",
+      "git_blob_sha1": "9ffb28c10de91ed10ac060e43d4f290ba893ac9a",
+      "sha256": "a5385bf88ec742d5b03dbe1cec3820ceba167118f3dbd50b0b4b09f88f10b5b9"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/script/train_clean.sh",
+      "git_blob_sha1": "1198f35314b47e8343c5b1fd3de5e055c78c81a8",
+      "sha256": "be668b3f5bb4c53b75eed7bbcd59aca43a34e27e6d9816ed987192783689d2f8"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/train_model.py",
+      "git_blob_sha1": "02b3917f20ac57efa79fd6446ab99b02f6fde005",
+      "sha256": "2b47cb116be62f7d6dc21b907f7263146ba04075f7007f42397ebae4387ccc65"
+    },
+    {
+      "file": "upstream/MAD/MAD/GTA_and_UGBA/utils.py",
+      "git_blob_sha1": "b17aa577ff4110b4079df71debb35c7fe9b72de2",
+      "sha256": "ef5af295f88e3d4e9b20b5e9ba99b1a583450619c97b08cff9352bbaeb7629c9"
+    },
+    {
+      "file": "upstream/MAD/MAD/install.sh",
+      "git_blob_sha1": "6fda9877c97275b76283a0b80d9d0fa150369cb2",
+      "sha256": "3b5c3ecaedab458cb6b6a603c39247ab97d13f88564e9749a256531c246b9e6f"
+    },
+    {
+      "file": "upstream/MAD/MAD/README.md",
+      "git_blob_sha1": "15fe1e39578b408ca30dd31e49145eb801a865f8",
+      "sha256": "1229f5c243b8be094122c353924c89c83ec59d104b2d8c0deb2824e2a70d188c"
+    },
+    {
+      "file": "upstream/MAD/README.md",
+      "git_blob_sha1": "3245610c65966a922c74661f131cc21856feaa5a",
+      "sha256": "257b2e82ecb4948acd0e123f914667d3eac96ba0b47fecca4a46de4d069ebbbf"
+    }
+  ]
+}

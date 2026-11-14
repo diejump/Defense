@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from src import metrics as utils
+import utils
 from copy import deepcopy
 from torch_geometric.nn import SAGEConv
 import numpy as np
